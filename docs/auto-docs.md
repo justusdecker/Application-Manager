@@ -2,8 +2,6 @@
 
 # .//main.py
 
-# ./src/constants.py
-
 # ./src/data.py
 
 # ./src/errors.py
