@@ -61,6 +61,9 @@ def tcom():
         print(E)
         return False
 
+def get_jobs() -> list[Jobs]:
+    return SESSION.query(JobIds).all()
+
 def get_job_id(key: str):
     return SESSION.query(JobIds).filter_by(name = key).one().id
 
