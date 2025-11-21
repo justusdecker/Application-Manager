@@ -1,17 +1,16 @@
 from flask import Flask,jsonify, render_template, request, redirect
-from src.data import get_jobs, get_job_id
+from src.data import JobsTable, JobIdsTable, JobID, Job
 from src.errors import  http_status_codes
 app = Flask(__name__)
 
-GET, POST = 'GET', 'POST'
+GET, POST, DELETE = 'GET', 'POST', 'DELETE'
 
 def err_return(code: int = 404):
     return render_template('error.html', err=code, msg=http_status_codes[code]), code
 
 class JobQuery:
     def __init__(self, query: list[str]):
-        
-        duery = {k.split('=',maxsplit=1)[0]: k.split('=',maxsplit=1)[1] for k in query}
+        duery = query
         self.COMPANY = duery['company']
         self.TITLE_ID = int(duery['job_title'])
         self.URL = duery['url']
@@ -19,23 +18,43 @@ class JobQuery:
         self.PHONE_NUMBER = duery['phone_number']
         self.DESCRIPTION = duery['description']
         self.STATE = int(duery['state'])
-        
-        
+
+@app.route('/jobs/delete/<id>',methods = [DELETE, GET])
+def delete_job(id: int):
+    print(id)
+    return redirect('jobs_r.html')
+
+@app.route('/jobs/read/<id>',methods = [GET])
+def read_job(id: int):
+    print(id)
+    return render_template('jobs_r.html',
+                           values = Job.get_job_info(id))
+
 @app.route('/jobs/create',methods = [GET, POST])
 def create_job():
     if request.method.upper() == POST:
-        print(request.query_string.decode().split('&'))
-        #+ Add Job to DB
-        return 'Nothing here', 403
+        jq = JobQuery(request.form)
+        Job.add_job(
+            JobsTable(
+                company = jq.COMPANY,
+                description = jq.DESCRIPTION,
+                mail = jq.MAIL,
+                phone_number = jq.PHONE_NUMBER,
+                state = jq.STATE,
+                title_id = jq.TITLE_ID,
+                url = jq.URL
+            )
+        )
+        return redirect('read/-1')
     
     
     return render_template(
-        'jobs_cud.html',
-        jobs = get_jobs()
+        'jobs_cu.html',
+        jobs = JobID.get_job_ids()
         ), 200
 
-@app.route('/',methods = ['GET'])
-def user_login():
+@app.route('/',methods = [GET])
+def index():
     return err_return(501)
 
 if __name__ == '__main__':
