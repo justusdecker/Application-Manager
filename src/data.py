@@ -19,12 +19,12 @@ class JobApplianceStates:
     OFFER = 4
     DENIED = 5
 
-class JobIds(Base):
+class JobIdsTable(Base):
     __tablename__ = "JobIds"
     id = Column(Integer, primary_key=True)
     name = Column(Integer, nullable = False)
     
-class Jobs(Base):
+class JobsTable(Base):
     __tablename__ = "Jobs"
     id = Column(Integer, primary_key=True)
     company = Column(String, nullable = False)
@@ -35,12 +35,45 @@ class Jobs(Base):
     description = Column(String)
     state = Column(Integer, default=JobApplianceStates.NOT_APPLIED)
 
-class JobTitle:
+class Job:
+    def get_job_info(id: str) -> list[int, str]:
+        l = SESSION.query(JobsTable).count()
+        id = int(id)
+        if id == -1:
+            id = l - 1
+        print(id)
+        r = SESSION.query(JobsTable).filter_by(id = id).one()
+        return [
+            ('ID', r.id), 
+            ('Company', r.company), 
+            ('Title', r.title_id), 
+            ('URL', r.url), 
+            ('Mail', r.mail), 
+            ('Phone Number', r.phone_number), 
+            ('Description', r.description), 
+            ('State',r.state)
+        ]
+    def add_job(job: JobsTable) -> bool:
+        SESSION.add(job)
+        return tcom()
+
+class JobID:
+    def get_job_ids() -> list[JobIdsTable]:
+        return SESSION.query(JobIdsTable).all()
+
+    def get_job_id(key: str):
+        return SESSION.query(JobIdsTable).filter_by(name = key).one().id
+    def add_job_id(job_id: JobIdsTable):
+        SESSION.add(job_id)
+        return tcom()
+
+
+class JobTitleTable:
     __tablename__ = "JobTitle"
     id = Column(Integer, primary_key=True)
     title = Column(String, nullable = False)
 
-class ApplicationPreset:
+class ApplicationPresetTable:
     __tablename__ = "ApplicationPreset"
     id = Column(Integer, primary_key=True)
     job_title_id = Column(Integer, nullable = False)
@@ -61,19 +94,6 @@ def tcom():
         print(E)
         return False
 
-def get_jobs() -> list[Jobs]:
-    return SESSION.query(JobIds).all()
-
-def get_job_id(key: str):
-    return SESSION.query(JobIds).filter_by(name = key).one().id
 
 def get_job_names() -> list[str]:
-    return [e.name for e in SESSION.query(JobIds)]
-
-def add_job_id(job_id: JobIds):
-    SESSION.add(job_id)
-    return tcom()
-
-def add_job(job: Jobs) -> bool:
-    SESSION.add(job)
-    return tcom()
+    return [e.name for e in SESSION.query(JobIdsTable)]
