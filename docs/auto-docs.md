@@ -6,7 +6,7 @@
 
 # ./src/data.py
 
-# ./src/gui.py
+# ./src/errors.py
 
 # ./src/mail.py
 
