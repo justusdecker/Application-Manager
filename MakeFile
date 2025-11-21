@@ -1,0 +1,4 @@
+all:
+	python ./tools/auto_docs.py
+	python ./tools/update_version.py
+	python ./tools/git_automation.py
