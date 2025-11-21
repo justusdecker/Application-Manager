@@ -1,1 +1,11 @@
 # Application-Manager
+- Save Companys, positions, site-or-mail & requirements
+- Auto-Mails
+- CV Creator
+- Save all Job Applications as follows:
+    - denied
+    - wait
+    - applied
+    - screen
+    - interview
+    - offer
