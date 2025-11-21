@@ -1,0 +1,54 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <div class="user-input-div">
+        <form action="", method="post">
+            <label for="company">Company: </label>
+            <input type="text" name="company" id="company" value="{{ company }}">
+            <br>
+
+            <label for="job_title">Job Title: </label>
+            <select name="job_title" id="job_title" required value="{{ job_title }}">
+                {% for job in jobs %}
+                <option value="{{ job.id }}">{{ job.name }}</option>
+                {% endfor %}
+            </select>
+            <br>
+
+            <label for="url">Url: </label>
+            <input type="url" name="url" id="url" value="{{ url }}" required>
+            <br>
+
+            <label for="mail">Mail: </label>
+            <input type="email" name="mail" id="mail" value="{{ mail }}">
+            <br>
+
+            <label for="phone_number">phone_number: </label>
+            <input type="tel" name="phone_number" id="phone_number"  value="{{ phone_number }}">
+            <br>
+
+            <label for="description">description: </label>
+            <textarea name="description" id="description">{{ description }}</textarea>
+            <br>
+
+            <label for="state">State: </label>
+            <select name="state" id="state" required value="{{ state }}">
+                
+                <option value="0">NOT APPLIED</option>
+                <option value="1">APPLIED</option>
+                <option value="2">SCREEN</option>
+                <option value="3">INTERVIEW</option>
+                <option value="4">OFFER</option>
+                <option value="5">DENIED</option>
+            </select>
+            <br>
+            <input type="submit">
+        </form>
+    </div>
+</body>
+</html>
