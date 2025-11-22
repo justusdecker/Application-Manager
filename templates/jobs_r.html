@@ -1,25 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h2>{{ title }}</h2>
-    <table>
-        <tr>
-            <th>Key</th>
-            <th>Value</th>
-        </tr>
-        {% for key,val in values %}
-        <tr>
-            
-            <td>{{ key }}</td>
-            <td>{{ val }}</td>
-            
-        </tr>
-        {% endfor %}
-    </table>
-</body>
-</html>
+{% extends "default.html" %}
+{% block title %}Job{% endblock %}
+{% block header %}Job{% endblock %}
+{% block content %}
+<table>
+    <tr>
+        <th>Key</th>
+        <th>Value</th>
+    </tr>
+    {% for key,val in values %}
+    <tr>
+        
+        <td>{{ key }}</td>
+        <td>{{ val }}</td>
+        
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
