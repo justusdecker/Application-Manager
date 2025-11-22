@@ -18,11 +18,21 @@ class JobApplianceStates:
     INTERVIEW = 3
     OFFER = 4
     DENIED = 5
+    def get():
+        return [
+            ('INVALID', JobApplianceStates.INVALID),
+            ('NOT_APPLIED', JobApplianceStates.NOT_APPLIED),
+            ('APPLIED', JobApplianceStates.APPLIED),
+            ('SCREEN', JobApplianceStates.SCREEN),
+            ('INTERVIEW', JobApplianceStates.INTERVIEW),
+            ('OFFER', JobApplianceStates.OFFER),
+            ('DENIED', JobApplianceStates.DENIED)
+        ]
 
 class JobIdsTable(Base):
     __tablename__ = "JobIds"
     id = Column(Integer, primary_key=True)
-    name = Column(Integer, nullable = False)
+    name = Column(String, nullable = False)
     
 class JobsTable(Base):
     __tablename__ = "Jobs"
@@ -41,7 +51,6 @@ class Job:
         id = int(id)
         if id == -1:
             id = l - 1
-        print(id)
         r = SESSION.query(JobsTable).filter_by(id = id).one()
         return [
             ('ID', r.id), 
@@ -53,6 +62,45 @@ class Job:
             ('Description', r.description), 
             ('State',r.state)
         ]
+    def get_job_info_obj(id: str) -> list[int, str]:
+        l = SESSION.query(JobsTable).count()
+        id = int(id)
+        if id == -1:
+            id = l - 1
+        r = SESSION.query(JobsTable).filter_by(id = id).one()
+        return {
+            'id': r.id,
+            'company': r.company,
+            'job_title': JobID.get_job_name(r.title_id),
+            'url': r.url,
+            'mail': r.mail,
+            'phone_number': r.phone_number,
+            'description': r.description,
+            'state': r.state
+        }
+    
+    def update_job(id: int,
+                   company,
+            description,
+            mail,
+            phone_number,
+            state,
+            title_id,
+            url
+                   ):
+        o = SESSION.query(JobsTable).filter_by(id = int(id)).one()
+        o.company = company
+        o.description = description
+        o.mail = mail
+        o.phone_number = phone_number
+        o.state = int(state)
+        o.title_id = int(title_id)
+        o.url = url
+        SESSION.commit()
+    
+    def get_all_jobs():
+        return SESSION.query(JobsTable).all()
+    
     def add_job(job: JobsTable) -> bool:
         SESSION.add(job)
         return tcom()
@@ -63,6 +111,13 @@ class JobID:
 
     def get_job_id(key: str):
         return SESSION.query(JobIdsTable).filter_by(name = key).one().id
+    
+    def get_job_name(id: int):
+        try:
+            return SESSION.query(JobIdsTable).filter_by(id = id).one().name
+        except:
+            return 'None'
+    
     def add_job_id(job_id: JobIdsTable):
         SESSION.add(job_id)
         return tcom()
