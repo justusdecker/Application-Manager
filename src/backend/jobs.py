@@ -1,4 +1,5 @@
 from src.backend.flask_main import *
+from src.data import JOBS, JOBIDS, JobApplianceStates
 
 @app.route('/jobs/delete/<id>',methods = [DELETE, GET])
 def delete_job(id: int): #! NotImplemented
@@ -6,7 +7,7 @@ def delete_job(id: int): #! NotImplemented
     Deletes the entry of a job in the Database.
     Redirects to show_jobs
     """
-    Job.delete(id)
+    JOBS.delete(id)
     return redirect(url_for('show_jobs'))
 
 @app.route('/jobs/read/<id>',methods = [GET])
@@ -14,9 +15,14 @@ def read_job(id: int):
     """
     Shows the information about a Job
     """
-    print(id)
+    data = JOBS.read_as_dict(id, JOBIDS)
+    if data is None: return "Error occured"
+    
+    if str(data['id']) != str(id):
+        return redirect(url_for(f'read_job',id=data['id']))
+    
     return render_template('jobs_r.html',
-                           values = Job.read_as_dict(id))
+                           values = JOBS.read_as_dict(id, JOBIDS))
 
 @app.route('/jobs/update/<id>',methods = [GET, POST])
 def update_job(id: int):
@@ -32,7 +38,7 @@ def update_job(id: int):
     """
     if request.method.upper() == POST:
         jq = JobQuery(request.form)
-        Job.update(
+        JOBS.update(
             id = id,
             company = jq.COMPANY,
             description = jq.DESCRIPTION,
@@ -44,12 +50,18 @@ def update_job(id: int):
         )
 
         return redirect(url_for('show_jobs'))
+    jobs = JOBIDS.read_as_dict(id)
+    data = JOBS.read_as_dict(id, JOBIDS)
     
+    if jobs is None or data is None: return "Error occured"
+    
+    if str(data['id']) != str(id):
+        return redirect(url_for(f'update_job',id=data['id']))
     
     return render_template(
         'jobs_u.html',
-        jobs = JobID.read_as_dict(id),
-        data = Job.read_as_dict(id),
+        jobs = jobs,
+        data = data,
         states = JobApplianceStates.get()
         ), 200
 
@@ -67,7 +79,7 @@ def create_job():
     """
     if request.method.upper() == POST:
         jq = JobQuery(request.form)
-        Job.create(
+        JOBS.create(
             company = jq.COMPANY,
             description = jq.DESCRIPTION,
             mail = jq.MAIL,
@@ -76,14 +88,13 @@ def create_job():
             title_id = jq.TITLE_ID,
             url = jq.URL
         )
-        f = Job.get_last()
-        print(f)
-        return redirect(f'read/{f}')
+
+        return redirect(f'read/-1')
     
     
     return render_template(
         'jobs_c.html',
-        jobs = JobID.read_all(),
+        jobs = JOBIDS.read_all(),
         states = JobApplianceStates.get()
         ), 200
 
@@ -94,4 +105,4 @@ def show_jobs():
     * Fix the id problem(ID -> Text Translation)
     """
     return render_template('jobs_s.html',
-                           jobs=Job.read_all())
+                           jobs=JOBS.read_all(True, JOBIDS))
