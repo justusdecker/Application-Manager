@@ -1,5 +1,4 @@
 from flask import Flask,jsonify, render_template, request, redirect, url_for
-from src.data import JobsTable, JobIdsTable, JobID, Job, JobApplianceStates
 GET, POST, DELETE = 'GET', 'POST', 'DELETE'
 
 class JobQuery:
