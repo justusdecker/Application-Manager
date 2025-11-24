@@ -1,19 +1,17 @@
-from sqlalchemy import create_engine, Column, Integer, String, Numeric
+from sqlalchemy.orm.session import Session
+from sqlalchemy.exc import IntegrityError
+from src.validation import integer_or_default
+from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.engine.base import Engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy.orm.session import Session
-from sqlalchemy.sql import text
-from sqlalchemy.exc import IntegrityError, NoResultFound
+from sqlalchemy.exc import IntegrityError
 from src.validation import integer_or_default
-from typing import Any, List, Self
 
 DATABASE_PATH = f'./data.db'
 DATABASE_URL = f'sqlite:///{DATABASE_PATH}'
-Base = declarative_base()
 
-def remove_unused(obj) -> dict:
-    d: dict[str, Any] = obj.__dict__
-    return {e: d[e] for e in d if not e.startswith('_')}
+Base = declarative_base()
 
 class JobApplianceStates:
     INVALID = -1
@@ -50,99 +48,241 @@ class JobsTable(Base):
     description = Column(String)
     state_id = Column(Integer, default=JobApplianceStates.NOT_APPLIED)
 
-class JobTitleTable:
-    __tablename__ = "JobTitle"
-    id = Column(Integer, primary_key=True)
-    title = Column(String, nullable = False)
-
-class ApplicationPresetTable:
-    __tablename__ = "ApplicationPreset"
-    id = Column(Integer, primary_key=True)
-    job_title_id = Column(Integer, nullable = False)
-    
-def validate_id(id: str, table) -> int | None:
-    """
-    Validates and sanitizes a string ID for database lookup.
-
-    This function attempts to convert the input ID string to an integer. 
-    If the conversion fails or results in a default invalid value (e.g., -1 
-    from `integer_or_default`), the ID is set to the index of the last record 
-    in the `table` (i.e., `count - 1`).
-
-    Args:
-        id: The string ID to be validated.
-        table: The table to lookup
-
-    Returns:
-        The validated integer ID, which will be the ID of an existing job entry.
-        
-        Returns **None** if the `JobsTable` is completely empty.
-    """
-    l = SESSION.query(table).count()
-    if not l: return None
-    id = integer_or_default(id, -1)
-    if id == -1: 
-        id = l
-    return id
-
 def _get_state_as_text(id: int) -> str:
     for key, val in JobApplianceStates.get():
         if id == val:
             return key
 
 class SQL:
-
-    def read(table, id: int | str, query = None):
-        id = validate_id(id, table)
-        data = None
-        if id is None: return None
+    """
+    A generic wrapper for CRUD operations (Create, Read, Update, Delete)
+    on a specific SQLAlchemy model.
+    """
+    def __init__(self, 
+                 SESSION: Session,
+                 TABLE):
+        self.SESSION: Session = SESSION
+        self.TABLE = TABLE
         
-        query =  SESSION.query(table) if query is None else query
+    def read(self, id: int | str):
+        """
+        Retrieves a record by its ID.
+
+        Behavior:
+            Uses `validate_id_and_get`. If the provided ID is invalid or 
+            cannot be found, this method falls back to returning the 
+            last (newest) entry in the table.
+
+        Args:
+            id (int | str): The ID to search for.
+
+        Returns:
+            Object | None: The found database object or the last entry as fallback.
+                           Returns None if the table is empty.
+        """
+        return self.validate_id_and_get(id)
+
+    def create(self, **data):
+        """
+        Creates a new record.
+
+        Args:
+            **data: Keyword arguments matching the column names of the table.
+
+        Returns:
+            bool: True if successful, None if an error occurred (e.g., IntegrityError).
+        """
+        self.SESSION.add(self.TABLE(**data))
+        return self.commit()
+
+    def delete(self, id: int | str):
+        """
+        Deletes a record by its ID.
+
+        Safety:
+            Unlike `read`, this method performs NO fallback. If the ID does 
+            not exist exactly, nothing happens. This prevents accidental 
+            deletion of wrong data.
+
+        Args:
+            id (int | str): The ID of the record to delete.
+
+        Returns:
+            bool: True if commit was successful, None on database error.
+            None: If the ID was not found.
+        """
+        clean_id = integer_or_default(id, -1)
+        entry = self.SESSION.get(self.TABLE, clean_id)
+        
+        if entry is None: return None
+        
+        self.SESSION.delete(entry)
+        return self.commit()
+
+    def update(self, id: int | str, **data):
+        """
+        Updates an existing record.
+
+        Safety:
+            Like `delete`, this method performs NO fallback. Only exact ID matches
+            will be updated.
+
+        Args:
+            id (int | str): The ID of the record to update.
+            **data: The fields to update (key=value). Keys that do not exist 
+                    in the model are ignored.
+
+        Returns:
+            bool: True if commit was successful (or nothing changed).
+            None: If the ID was not found.
+        """
+        clean_id = integer_or_default(id, -1)
+        entry = self.SESSION.get(self.TABLE, clean_id)
+        
+        if entry is None: 
+            return None
+        
+        for key, value in data.items():
+            if hasattr(entry, key):
+                if getattr(entry, key) != value:
+                    setattr(entry, key, value)
+                
+        return self.commit()
+    
+    def commit(self) -> bool:
+        """
+        Executes the database commit and handles errors.
+
+        Returns:
+            bool: True on success, None on error (triggers rollback).
+        """
         try:
-            data = query.filter_by(id = id).one()
-        except NoResultFound: 
-            print(f'NoResultFound in {table.__tablename__}')
-        return data
+            self.SESSION.commit()
+            return True
+        except IntegrityError as e:
+            self.SESSION.rollback()
+            print(f"IntegrityError: {e}")
+            return None
+    
+    def validate_id_and_get(self, id: str):
+        """
+        Attempts to safely retrieve an object (with fallback logic).
 
-    def create(table, **data):
-        SESSION.add(table(**data))
-        return tcom()
+        Logic:
+        1. Tries to convert the ID to an integer.
+        2. Tries to load the object directly via Primary Key (Fast).
+        3. If 1 or 2 fails: Loads the last (newest) entry of the table as a fallback.
 
-    def delete(table, id: int | str):
-        print(id)
-        id = validate_id(id, table)
-        if id is None: return None
-        print(id)
-        r = SQL.read(table, id)
-        if r is None: return None
+        Args:
+            id (str | int): The raw ID.
+
+        Returns:
+            Object | None: The found object or None if table is empty/error.
+        """
+        clean_id = integer_or_default(id, -1)
+        #1. Try(Fast)
+        if clean_id != -1:
+            entry = self.SESSION.get(self.TABLE, clean_id)
+            if entry:
+                return entry
+            
+        try:
+            return self.SESSION.query(self.TABLE).order_by(self.TABLE.id.desc()).first()
+        except Exception:
+            return None
+    
+class JobIds(SQL):
+    """
+    Specialized Class for JobId-Operations.
+    Inherits all CRUD-Functions from SQL & expand it by JobId-specific logic.
+    """
+    def __init__(self, SESSION, TABLE):
+        super().__init__(SESSION, TABLE)
         
-        SESSION.delete(r)
-        return tcom()
-
-    def update(table, id: int | str, **data) -> bool:
-            id = validate_id(id, table)
-            if id is None: return None
-            old = SQL.read(table, id)
-            if old is None: 
-                return None
-
-            for e in remove_unused(old):
-                if e in data:
-                    setattr(old, e, data[e])
-                    print(old.__dict__[e], data[e])
-            return tcom()
-
-class Job:
+    def create(self, name: str) -> bool:
+        """Creates a new job with the given name"""
+        return super().create(name=name)
     
+    def update(self, id, name: str):
+        """Updates the name of a job."""
+        return super().update(id, name = name)
     
-    def create(company: str,
-                 title_id: int,
-                 url: str,
-                 mail: str = None,
-                 phone_number: str = None,
-                 description: str = None,
-                 state_id: int = JobApplianceStates.NOT_APPLIED):
-        return SQL.create(JobsTable,**{
+    def read_all(self, as_dict: bool = False) -> list:
+        """
+        Reads all jobs.
+        
+        if as_dict: gives you a list[dict]
+        else: gives you a list[SQLTable]
+        
+        """
+        query = self.SESSION.query(self.TABLE).all()
+        
+        if as_dict:
+            return [self._to_dict(entry) for entry in query]
+        return query
+    
+    def read_as_dict(self, id: int | str) -> dict | None:
+        """Reads a single jb & returns it as dictionary"""
+        entry = self.read(id)
+        if entry is None:
+            return None
+        return self._to_dict(entry)
+    
+    def get_job_name(self, id: int | str) -> str | None:
+        """
+        Gets only the job name corresponding to the id
+        """
+        entry = self.read(id)
+        if entry:
+            return entry.name
+        return None
+
+    def get_ids(self) -> list[int]:
+        """Gets the list of existing ids"""
+        return [res[0] for res in self.SESSION.query(self.TABLE.id).all()]
+
+    def get_last_entry(self):
+        """Gets the last(newest) JobId-Object."""
+        try:
+            return self.SESSION.query(self.TABLE).order_by(self.TABLE.id.desc()).first()
+        except Exception:
+            return None
+
+    def _to_dict(self, entry) -> dict:
+        """Internal Helper: Converts SQLAlchemy Object to dict."""
+        
+        return {k: v for k, v in entry.__dict__.items() if not k.startswith('_')}
+
+class Jobs(SQL):
+    """
+    Specialized Class for Job-Operations.
+    Inherits all CRUD-Functions from SQL and expand these by Job-Logic.
+    """
+
+    def __init__(self, SESSION, TABLE):
+        super().__init__(SESSION, TABLE)
+    
+    def create(self, 
+               company: str, 
+               title_id: int, 
+               url: str, 
+               mail: str = None, 
+               phone_number: str = None, 
+               description: str = None, 
+               state_id: int = JobApplianceStates.NOT_APPLIED) -> bool:
+        """
+        Creates a new job-entry.
+        ### Valid data:
+
+            company: str, 
+            title_id: int, 
+            url: str, 
+            mail: str, 
+            phone_number: str, 
+            description: str, 
+            state_id: int
+        """
+        return super().create(**{
             'company': company,
             'title_id': title_id,
             'url': url,
@@ -151,70 +291,70 @@ class Job:
             'description': description,
             'state_id': state_id})
     
-    def read_all(as_type: bool = False) -> list[JobsTable] | list[dict[str, Any]]:
-        q = SESSION.query(JobsTable)
-        l = q.all()
-        if as_type:
-            return [Job.read_as_sql(i.id, q) for i in l]
-        else:
-            return [Job.read_as_dict(i.id, q) for i in l]
+    def update(self, id: int | str, **data) -> bool | None:
+        """
+        Updates the Job-Entry
+        
+        ### Valid data:
 
-    def read_as_sql(id: str | int, query = None) -> JobsTable:
-        return SQL.read(JobsTable, id, query)
-    
-    def read_as_dict(id: str | int, query = None) -> dict:
-        data = SQL.read(JobsTable, id, query)
-        if data is None: return None
-        data = remove_unused(data)
-        title = JobID._get_job_name(data['title_id'])
-        state = _get_state_as_text(id)
-        data |= {'title': title, 'state': state}
+            company: str, 
+            title_id: int, 
+            url: str, 
+            mail: str, 
+            phone_number: str, 
+            description: str, 
+            state_id: int
+        """
+        return super().update(id, **data)
+
+
+    def read_all(self, as_dict: bool = False, job_id_instance: JobIds = None) -> list:
+        if job_id_instance is None: return []
+        """Reads all job-entrys"""
+        query = self.SESSION.query(self.TABLE).all()
+        
+        if as_dict:
+            return [self.read_as_dict(entry.id, job_id_instance) for entry in query]
+        return query
+
+    def read_as_dict(self, id: int | str, job_id_instance: JobIds) -> dict | None:
+        """
+        Reads a single job-entry and returns it as dict.
+        Returns None if id does not exist
+        """
+        entry = self.read(id)
+        if entry is None:
+            return None
+            
+        data = self._to_dict(entry)
+        try:
+            title = job_id_instance.get_job_name(data['title_id'])
+            state = _get_state_as_text(data['state_id'])
+            
+            data['title'] = title
+            data['state'] = state
+        except Exception as e:
+            data['title'] = data.get('title', '')
+            data['state'] = data.get('state', '')
+            print(f"Warning: Error while data enrich: {e}, using default \"\"")
+            
         return data
 
-    def update(id: int | str, name: str):
-        return SQL.update(JobsTable, id, **{'name': name})
+    def get_last_id(self) -> int | None:
+        """Returns the last id in the table or None"""
+        try:
+            last_entry = self.SESSION.query(self.TABLE.id).order_by(self.TABLE.id.desc()).first()
+            return last_entry[0] if last_entry else None
+        except Exception:
+            return None
+            
+    def _to_dict(self, entry) -> dict:
+        """
+        Internal Helper: Converts SQLAlchemy Object to dict
+        """
+        
+        return {k: v for k, v in entry.__dict__.items() if not k.startswith('_')}
     
-    def delete(id: str | int):
-        return SQL.delete(JobsTable, id)
-
-    def get_last():
-        return max([e.id for e in Job.read_all(True) if e is not None])
-
-class JobID:
-    def create(name: str):
-        return SQL.create(JobIdsTable,**{'name': name})
-    
-    def read_all(as_type: bool = False) -> list[JobIdsTable] | list[dict[str, Any]]:
-        q = SESSION.query(JobIdsTable)
-        l = q.all()
-        if as_type:
-            return [JobID.read_as_sql(i, q) for i in l]
-        else:
-            return [JobID.read_as_dict(i.id, q) for i in l]
-
-    def read_as_sql(id: str | int, query = None) -> JobIdsTable:
-        return SQL.read(JobIdsTable, id, query)
-    
-    def read_as_dict(id: str | int, query = None) -> dict:
-        data = SQL.read(JobIdsTable, id, query)
-        if data is None: return None
-        return remove_unused(data)
-
-    def update(id: int | str, name: str):
-        return SQL.update(JobIdsTable, id, **{'name': name})
-    
-    def delete(id: str | int):
-        return SQL.delete(JobIdsTable, id)
-    
-    def _get_job_name(id: int):
-        data = JobID.read_all()
-        for j in data:
-            if j['id'] == id:
-                return j['name']
-    
-    def get_last():
-        return max([e.id for e in JobID.read_all(True) if e is not None])
-
 def connect() -> tuple[Engine, Session]:
     engine = create_engine(DATABASE_URL)
     Base.metadata.create_all(engine)
@@ -222,28 +362,5 @@ def connect() -> tuple[Engine, Session]:
     return engine, session
 
 ENGINE, SESSION = connect()
-
-def tcom():
-    try:
-        SESSION.commit()
-        return True
-    except IntegrityError as E:
-        print(E)
-        return False
-
-Job.create(
-                company = "Test",
-                description = "Nothing here",
-                mail = "j@gmx.tv",
-                phone_number = "+3118054646",
-                state_id = 0,
-                title_id = 0,
-                url = "afa"
-            
-        )
-
-Job.delete(-1)
-JobID.create(name='123')
-#JobID.update(1,name='test')
-print(JobID.read_as_dict(2))
-print(Job.read_all())
+JOBS = Jobs(SESSION, JobsTable)
+JOBIDS = JobIds(SESSION, JobIdsTable)
