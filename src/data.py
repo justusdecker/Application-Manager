@@ -141,12 +141,12 @@ class SQL:
         
         if entry is None: 
             return None
-        
+
         for key, value in data.items():
             if hasattr(entry, key):
                 if getattr(entry, key) != value:
                     setattr(entry, key, value)
-                
+   
         return self.commit()
     
     def commit(self) -> bool:
