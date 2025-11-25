@@ -8,12 +8,12 @@
             <input type="text" name="company" id="company" value="{{ data['company'] }}">
             <br>
 
-            <label for="job_title">Job Title: </label>
-            <select name="job_title" id="job_title" required>
+            <label for="title_id">Job Title: </label>
+            <select name="title_id" id="title_id" required>
                 
                 {% for job in jobs %}
                 
-                <option value="{{ job.id }}" {% if job.name == data['job_title'] %}selected{% endif %}>{{ job.name }}</option>
+                <option value="{{ job['id'] }}" {% if job['id'] == data['title_id'] %}selected{% endif %}>{{ job['name'] }}</option>
                 {% endfor %}
             </select>
             <br>
@@ -34,11 +34,11 @@
             <textarea name="description" id="description">{{ data['description'] }}</textarea>
             <br>
 
-            <label for="state">State: </label>
-            <select name="state" id="state" required>
+            <label for="state_id">State: </label>
+            <select name="state_id" id="state_id" required>
                 {% for state, nr in states %}
                 
-                <option value="{{ nr }}" {% if nr == data['state'] %}selected{% endif %}>{{ state }}</option>
+                <option value="{{ nr }}" {% if nr == data['state_id'] %}selected{% endif %}>{{ state }}</option>
                 {% endfor %}
             </select>
             <br>
