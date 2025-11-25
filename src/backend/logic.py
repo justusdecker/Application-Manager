@@ -41,7 +41,7 @@ def update_job(id: int):
         JOBS.update(id = id, **request.form)
         return redirect(url_for('show_jobs'))
     
-    jobs = JOBIDS.read_as_dict(id)
+    jobs = JOBIDS.read_all(True)
     data = JOBS.read_as_dict(id, JOBIDS)
     
     if data is None: return "Error occured"
@@ -67,26 +67,18 @@ def create_job():
         Adds the Job to the Database
         Redirects to jobs/read/-1
     """
-    if request.method.upper() == POST:
-        jq = JobQuery(request.form)
-        JOBS.create(
-            company = jq.COMPANY,
-            description = jq.DESCRIPTION,
-            mail = jq.MAIL,
-            phone_number = jq.PHONE_NUMBER,
-            state_id = jq.STATE,
-            title_id = jq.TITLE_ID,
-            url = jq.URL
-        )
-
-        return redirect(url_for('read_job', id="-1"))
-    
-    
-    return render_template(
+    template = render_template(
         'jobs_c.html',
-        jobs = JOBIDS.read_all(),
+        jobs = JOBIDS.read_all(True),
         states = JobApplianceStates.get()
         ), 200
+    
+    if request.method.upper() == POST:
+        JOBS.create(**request.form)
+
+        return template
+    
+    return template
 
 @app.route('/jobs',methods = [GET])
 def show_jobs():
