@@ -1,6 +1,5 @@
 from src.backend.flask_main import *
-from src.backend.jobs import *
-from src.backend.job_titles import *
+from src.backend.logic import *
 GET, POST, DELETE = 'GET', 'POST', 'DELETE'
 
 def err_return(code: int = 404):
