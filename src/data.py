@@ -203,9 +203,9 @@ class JobIds(SQL):
         """Creates a new job with the given name"""
         return super().create(name=name)
     
-    def update(self, id, name: str):
+    def update(self, id, **data):
         """Updates the name of a job."""
-        return super().update(id, name = name)
+        return super().update(id, **data)
     
     def read_all(self, as_dict: bool = False) -> list:
         """
