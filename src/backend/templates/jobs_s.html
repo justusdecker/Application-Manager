@@ -8,21 +8,18 @@
     </tr>
     {% for job in jobs %}
     <tr>
-        <td>{{ job.id }}</td>
-        <td>{{ job.company }}</td>
-        <td>{{ job.title_id }}</td>
-        <td>{{ job.url }}</td>
-        <td>{{ job.mail }}</td>
-        <td>{{ job.phone_number }}</td>
-        <td>{{ job.state }}</td>
+        <td>{{ job['id'] }}</td>
+        <td>{{ job['company']}}</td>
+        <td>{{ job['title'] }}</td>
+        <td>{{ job['state'] }}</td>
         <td>
-            <form action="jobs/update/{{ job.id }}" method="get">
+            <form action="jobs/update/{{ job['id'] }}" method="get">
                 <input type="submit" value="update">
             </form>
         </td>
 
         <td>
-            <form action="jobs/delete/{{ job.id }}" method="post">
+            <form action="jobs/delete/{{ job['id'] }}" method="post">
                 <input type="submit" value="delete">
             </form>
         </td>
