@@ -8,8 +8,8 @@
             <input type="text" name="company" id="company">
             <br>
 
-            <label for="job_title">Job Title: </label>
-            <select name="job_title" id="job_title" required>
+            <label for="title_id">Job Title: </label>
+            <select name="title_id" id="title_id" required>
                 {% for job in jobs %}
                 <option value="{{ job['id'] }}">{{ job['name'] }}</option>
                 {% endfor %}
@@ -32,9 +32,9 @@
             <textarea name="description" id="description"></textarea>
             <br>
 
-            <label for="state">State: </label>
-            <label for="state">State: </label>
-            <select name="state" id="state" required>
+            <label for="state_id">State: </label>
+            <label for="state_id">State: </label>
+            <select name="state_id" id="state_id" required>
                 {% for state, nr in states %}
                 
                 <option value="{{ nr }}">{{ state }}</option>
