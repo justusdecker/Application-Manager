@@ -7,7 +7,32 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>{% block header %}{% endblock %}</h1>
-    {% block content %}{% endblock %}
+    <nav class="navbar">
+        <div class="logo">
+            <a href="/">logo</a>
+        </div>
+        <ul class="nav-links">
+            <li>
+                <a href="/jobs">Jobs</a>
+                <ul>
+                <li><a href="/jobs/create">Create</a></li>
+                </ul>
+            </li>
+            
+            <li>
+                <a href="/job_titles">Job titles</a>
+                <ul>
+                <li><a href="/job_titles/create">Create</a></li>
+                </ul>
+            </li>
+            <li><a href="/services">Services</a></li>
+            <li><a href="/contact">Kontakt</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1>{% block header %}{% endblock %}</h1>
+        {% block content %}{% endblock %}
+    </div>
 </body>
 </html>
