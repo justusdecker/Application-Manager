@@ -1,0 +1,28 @@
+{% extends "default.html" %}
+{% block title %}Jobs{% endblock %}
+{% block header %}Jobslist{% endblock %}
+{% block content %}
+<table>
+    <tr>
+        <th>Jobs</th>
+    </tr>
+    {% for job in jobs %}
+    <tr>
+        <td>{{ job.id }}</td>
+        <td>{{ job.name }}</td>
+        <td>
+            <form action="job_titles/update/{{ job.id }}" method="get">
+                <input type="submit" value="update">
+            </form>
+        </td>
+
+        <td>
+            <form action="job_titles/delete/{{ job.id }}" method="post">
+                <input type="submit" value="delete">
+            </form>
+        </td>
+        
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
