@@ -171,24 +171,24 @@ Internal Helper: Converts SQLAlchemy Object to dict
 
 # ./src/backend/flask_main.py
 
-# ./src/backend/jobs.py
+# ./src/backend/logic.py
 
 ## delete_job
 Deletes the entry of a job in the Database.
-Redirects to show_jobs
+Redirects to show_jobs with id = -1
 
 ## read_job
 Shows the information about a Job
+redirect to itself with data id if data id is not input
 
 ## update_job
 For updating an existing Job in the Database
-
+redirect to itself with data id if data id is not input
 GET:
     Let the user create a new job
 POST:
     Adds the Job to the Database
-    Redirects to show_jobs
-! Has no ID verification
+    Redirects to show_jobs with id = -1
 
 ## create_job
 For creating a new Job in the Database
@@ -198,33 +198,9 @@ GET:
 POST:
     Adds the Job to the Database
     Redirects to jobs/read/-1
-! Has no ID verification
 
 ## show_jobs
 Shows all jobs, listed in the database.
-* Fix the id problem(ID -> Text Translation)
-
-# ./src/backend/job_titles.py
-
-## create_job_title
-For creating a new Job-Title in the Database
-
-GET:
-    Let the user create a new job-title
-POST:
-    Adds the Job-Title to the Database
-    Redirects to job_title/read/-1
-! Has no ID verification
-
-## update_job_title
-For updating an existing Job-Title in the Database
-
-GET:
-    Let the user update the job-title
-POST:
-    Updates the Job-Title in the Database
-    Redirects to job_titles
-! Has no ID verification
 
 # ./src/backend/techstack.py
 
