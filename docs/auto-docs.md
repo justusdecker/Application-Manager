@@ -1,5 +1,12 @@
 # Automatic-Documentator by Justus Decker
 
+# .//ai_api.py
+
+## improve_writing
+Returns a improved version of the text you input.
+
+Uses the Masterschool API.
+
 # .//main.py
 
 ## err_return
