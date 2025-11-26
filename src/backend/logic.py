@@ -85,8 +85,11 @@ def show_jobs():
     """
     Shows all jobs, listed in the database.
     """
+    jobs = JOBS.read_all(True, JOBIDS)
+    l = len(jobs)
     return render_template('jobs_s.html',
-                           jobs=JOBS.read_all(True, JOBIDS))
+                           jobs=jobs,
+                           ammount = l)
     
 @app.route('/job_titles/create',methods = [POST, GET])
 def create_job_title():
@@ -146,3 +149,25 @@ def show_job_titles():
         states = JobApplianceStates.get()
         ), 200
     
+@app.route('/export',methods = [GET])
+def export():
+    return jsonify(JOBS.read_all(True, JOBIDS))
+
+@app.route('/summary',methods = [GET, POST])
+def summary():
+    
+    
+    if request.method.upper() == POST:
+        from ai_api import improve_writing
+        return improve_writing(request.form.get('text'))
+    
+    
+    return render_template(
+        'summary_writer.html',
+    )
+
+@app.route('/cv',methods = [GET])
+def cv():
+    return render_template(
+        'cv_create_from_scratch.html'
+    )
