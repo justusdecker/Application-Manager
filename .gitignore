@@ -1,3 +1,6 @@
 *.db
 .vscode/*
 *.pyc
+ai_api.py
+cv_create_from_scratch.html
+cv_styles.css
