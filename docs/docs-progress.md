@@ -2,6 +2,7 @@
 
 |file(object)|type|status|
 |---|---|---|
+|[improve_writing](..//ai_api.py)|function|🟢|
 |[err_return](..//main.py)|function|🟢|
 |[index](..//main.py)|function|🟡|
 |[JobApplianceStates](../src/data.py)|class|🔴|
@@ -45,6 +46,9 @@
 |[update_job_title](../src/backend/logic.py)|function|🔴|
 |[delete_job_title](../src/backend/logic.py)|function|🔴|
 |[show_job_titles](../src/backend/logic.py)|function|🔴|
+|[export](../src/backend/logic.py)|function|🔴|
+|[summary](../src/backend/logic.py)|function|🔴|
+|[cv](../src/backend/logic.py)|function|🔴|
 |[create_tech_stack](../src/backend/techstack.py)|function|🔴|
 |[read_tech_stack](../src/backend/techstack.py)|function|🔴|
 |[update_tech_stack](../src/backend/techstack.py)|function|🔴|
