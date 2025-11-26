@@ -1,6 +1,6 @@
 {% extends "default.html" %}
 {% block title %}Jobs{% endblock %}
-{% block header %}Jobslist{% endblock %}
+{% block header %}Jobslist ({{ ammount }} results){% endblock %}
 {% block content %}
 <table>
     <tr>
@@ -12,6 +12,12 @@
         <td>{{ job['company']}}</td>
         <td>{{ job['title'] }}</td>
         <td>{{ job['state'] }}</td>
+        <td>
+            <form action="jobs/read/{{ job['id'] }}" method="get">
+                <input type="submit" value="view">
+            </form>
+        </td>
+
         <td>
             <form action="jobs/update/{{ job['id'] }}" method="get">
                 <input type="submit" value="update">
