@@ -8,3 +8,5 @@ info:
 	python ./tools/code_statistics.py
 doc:
 	python ./tools/auto_docs.py
+debug:
+	flask --app main.py --debug run
