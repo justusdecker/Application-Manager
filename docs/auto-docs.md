@@ -170,6 +170,15 @@ Internal Helper: Converts SQLAlchemy Object to dict
 
 # ./src/gemini_api.py
 
+# ./src/linkedin_job_search_fetch.py
+
+## fetch_linkedin_job_data
+Gets you the logo, job_title, company_name, description & also returns the job_id in the dict.
+
+## fetch_job_ids
+Takes a html-structure in string form, runs the HTML parser and fetches the job ids from there.
+For this to work you need to copy the html from your browser and paste this into a file!
+
 # ./src/mail.py
 
 # ./src/validation.py
