@@ -171,3 +171,21 @@ def cv():
     return render_template(
         'cv_create_from_scratch.html'
     )
+@app.route('/linkedin',methods = [GET, POST])
+def linkedin():
+    if request.method.upper() == POST:
+        files = request.files.getlist('file')
+        print(files)
+        from src.linkedin_job_search_fetch import fetch_job_ids, fetch_linkedin_job_data
+        all_jobs = []
+        for file in files:
+            data = file.stream.read().decode()
+            jobs = fetch_job_ids(data)
+            with open('test.html','wb') as f:
+                f.write(data.encode())
+            all_jobs.extend([fetch_linkedin_job_data(id) for id in jobs])
+        return render_template('linkedin_job_viewer.html', data = all_jobs, ammount = len(all_jobs))
+    return render_template(
+        'linkedin_job_getter.html'
+    )
+
