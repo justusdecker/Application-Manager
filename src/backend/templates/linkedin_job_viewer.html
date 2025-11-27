@@ -1,0 +1,21 @@
+{% extends "default.html" %}
+{% block title %}LinkedIn Jobviewer{% endblock %}
+{% block header %}LinkedIn Jobviewer ({{ ammount }} results){% endblock %}
+{% block content %}
+<table>
+    <tr>
+        <th>Company_name</th>
+        <th>title</th>
+        <th>id</th>
+        <th>logo</th>
+    </tr>
+    {% for row in data %}
+    <tr>
+        <td>{{ row['company_name'] }}</td>
+        <td>{{ row['job_title'] }}</td>
+        <td>{{ row['job_id'] }}</td>
+        <td><img src="{{ row['logo'] }}" alt=""></tr>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
