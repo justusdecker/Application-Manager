@@ -34,6 +34,16 @@
 |[read_as_dict](../src/data.py)|function|🟢|
 |[get_last_id](../src/data.py)|function|🟢|
 |[_to_dict](../src/data.py)|function|🟢|
+|[attr_finder](../src/linkedin_job_search_fetch.py)|function|🔴|
+|[IDGetterSearch](../src/linkedin_job_search_fetch.py)|class|🔴|
+|[FetchJob](../src/linkedin_job_search_fetch.py)|class|🔴|
+|[get_linkedin_job_site](../src/linkedin_job_search_fetch.py)|function|🔴|
+|[fetch_linkedin_job_data](../src/linkedin_job_search_fetch.py)|function|🟢|
+|[fetch_job_ids](../src/linkedin_job_search_fetch.py)|function|🟢|
+|[handle_starttag](../src/linkedin_job_search_fetch.py)|function|🔴|
+|[feed](../src/linkedin_job_search_fetch.py)|function|🔴|
+|[handle_starttag](../src/linkedin_job_search_fetch.py)|function|🔴|
+|[handle_data](../src/linkedin_job_search_fetch.py)|function|🔴|
 |[integer_or_default](../src/validation.py)|function|🔴|
 |[JobQuery](../src/backend/flask_main.py)|class|🔴|
 |[delete_job](../src/backend/logic.py)|function|🟢|
@@ -49,6 +59,7 @@
 |[export](../src/backend/logic.py)|function|🔴|
 |[summary](../src/backend/logic.py)|function|🔴|
 |[cv](../src/backend/logic.py)|function|🔴|
+|[linkedin](../src/backend/logic.py)|function|🔴|
 |[create_tech_stack](../src/backend/techstack.py)|function|🔴|
 |[read_tech_stack](../src/backend/techstack.py)|function|🔴|
 |[update_tech_stack](../src/backend/techstack.py)|function|🔴|
