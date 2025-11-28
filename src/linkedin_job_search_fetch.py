@@ -1,6 +1,8 @@
 from html.parser import HTMLParser
+from requests import get
 def attr_finder(attrs, search_for) -> list:
     return [i for i in attrs if i[0] == search_for]
+
 class IDGetterSearch(HTMLParser):
     def __init__(self, *, convert_charrefs = True):
         super().__init__(convert_charrefs=convert_charrefs)
@@ -70,7 +72,7 @@ class FetchJob(HTMLParser):
             self.company_name_miss += 1
             self.next_is_company_name = False            
         
-from requests import get
+
 def get_linkedin_job_site(job_id: int):
     try:
         return get(f'https://www.linkedin.com/jobs/view/{job_id}/')._content.decode()
@@ -84,17 +86,16 @@ def fetch_linkedin_job_data(job_id: int) -> dict:
     content = get_linkedin_job_site(job_id)
     if content is None: 
         return {'error': 'Get return is none'}
-    with open('test1.html','wb') as f:
-        f.write(content.encode())
     parser = FetchJob()
     parser.feed(content)
     return {
         'logo': parser.logo, 
         'job_title': parser.job_title, 
-        'company_name': parser.company_name,
+        'company': parser.company_name,
         'description': parser.description,
-        'job_id': job_id
+        'lid': job_id
     }
+    
 def fetch_job_ids(html: str) -> list:
     """
     Takes a html-structure in string form, runs the HTML parser and fetches the job ids from there.
