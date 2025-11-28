@@ -8,10 +8,12 @@
 |[JobApplianceStates](../src/data.py)|class|🔴|
 |[JobIdsTable](../src/data.py)|class|🔴|
 |[JobsTable](../src/data.py)|class|🔴|
+|[LinkedInJobsTable](../src/data.py)|class|🔴|
 |[_get_state_as_text](../src/data.py)|function|🔴|
 |[SQL](../src/data.py)|class|🟢|
 |[JobIds](../src/data.py)|class|🟢|
 |[Jobs](../src/data.py)|class|🟢|
+|[LinkedInJobs](../src/data.py)|class|🟢|
 |[connect](../src/data.py)|function|🔴|
 |[get](../src/data.py)|function|🔴|
 |[read](../src/data.py)|function|🟢|
@@ -32,6 +34,13 @@
 |[update](../src/data.py)|function|🟢|
 |[read_all](../src/data.py)|function|🔴|
 |[read_as_dict](../src/data.py)|function|🟢|
+|[get_last_id](../src/data.py)|function|🟢|
+|[_to_dict](../src/data.py)|function|🟢|
+|[create](../src/data.py)|function|🟢|
+|[update](../src/data.py)|function|🟢|
+|[read_all](../src/data.py)|function|🟡|
+|[read_as_dict](../src/data.py)|function|🟢|
+|[is_lid_inthere](../src/data.py)|function|🔴|
 |[get_last_id](../src/data.py)|function|🟢|
 |[_to_dict](../src/data.py)|function|🟢|
 |[attr_finder](../src/linkedin_job_search_fetch.py)|function|🔴|
@@ -59,7 +68,8 @@
 |[export](../src/backend/logic.py)|function|🔴|
 |[summary](../src/backend/logic.py)|function|🔴|
 |[cv](../src/backend/logic.py)|function|🔴|
-|[linkedin](../src/backend/logic.py)|function|🔴|
+|[linkedin_show](../src/backend/logic.py)|function|🔴|
+|[linkedin_add](../src/backend/logic.py)|function|🔴|
 |[create_tech_stack](../src/backend/techstack.py)|function|🔴|
 |[read_tech_stack](../src/backend/techstack.py)|function|🔴|
 |[update_tech_stack](../src/backend/techstack.py)|function|🔴|
