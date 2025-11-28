@@ -4,18 +4,22 @@
 {% block content %}
 <table>
     <tr>
+        <th>id</th>
         <th>Company_name</th>
         <th>title</th>
-        <th>id</th>
+        <th>lid</th>
         <th>logo</th>
     </tr>
     {% for row in data %}
+    
     <tr>
-        <td>{{ row['company_name'] }}</td>
-        <td>{{ row['job_title'] }}</td>
-        <td>{{ row['job_id'] }}</td>
-        <td><img src="{{ row['logo'] }}" alt=""></tr>
+            <td>{{ row['id'] }}</td>
+            <td><a href="https://www.linkedin.com/jobs/view/{{ row['lid'] }}/">{{ row['company'] }}</a></td>
+            <td>{{ row['job_title'] }}</td>
+            <td>{{ row['lid'] }}</td>
+            <td><img src="{{ row['logo'] }}" alt=""></tr>
     </tr>
+    
     {% endfor %}
 </table>
 {% endblock %}
