@@ -48,6 +48,16 @@ class JobsTable(Base):
     description = Column(String)
     state_id = Column(Integer, default=JobApplianceStates.NOT_APPLIED)
 
+class LinkedInJobsTable(Base):
+    __tablename__ = "LinkedInJobs"
+    id = Column(Integer, primary_key=True)
+    lid = Column(String)
+    company = Column(String, nullable = False)
+    job_title = Column(String, nullable = False)
+    logo = Column(String, nullable = False)
+    description = Column(String, nullable = False)
+    
+
 def _get_state_as_text(id: int) -> str:
     for key, val in JobApplianceStates.get():
         if id == val:
@@ -354,7 +364,100 @@ class Jobs(SQL):
         """
         
         return {k: v for k, v in entry.__dict__.items() if not k.startswith('_')}
+
+
+
+class LinkedInJobs(SQL):
+    """
+    Specialized Class for LinkedInJob-Operations.
+    Inherits all CRUD-Functions from SQL and expand these by LinkedInJob-Logic.
+    """
+
+    def __init__(self, SESSION, TABLE):
+        super().__init__(SESSION, TABLE)
     
+    def create(self, 
+               company: str, 
+               job_title: int,
+               lid: str, 
+               description: str,
+               logo: str) -> bool:
+        """
+        Creates a new linkedInjob-entry.
+        ### Valid data:
+
+            company: str, 
+            job_title: int,
+            lid: int, 
+            description: str,
+            logo: str
+        """
+        #if self.is_lid_inthere(lid):
+        #    return False
+        return super().create(**{
+            'company': company,
+            'job_title': job_title,
+            'lid': lid,
+            'logo': logo,
+            'description': description})
+    
+    def update(self, id: int | str, **data) -> bool | None:
+        """
+        Updates the LinkedInJob-Entry
+        
+        ### Valid data:
+
+            company: str, 
+            job_title: int,
+            lid: int, 
+            description: str,
+            logo: str
+        """
+        return super().update(id, **data)
+
+
+    def read_all(self, as_dict: bool = False) -> list:
+        """Reads all LinkedInjob-entrys"""
+        query = self.SESSION.query(self.TABLE).all()
+        
+        if as_dict:
+            return [self.read_as_dict(entry.id) for entry in query]
+        return query
+
+    def read_as_dict(self, id: int | str) -> dict | None:
+        """
+        Reads a single LinkedInjob-entry and returns it as dict.
+        Returns None if id does not exist
+        """
+        entry = self.read(id)
+        if entry is None:
+            return None
+            
+        data = self._to_dict(entry)
+        return data
+
+    def is_lid_inthere(self, lid) -> bool:
+        entry = self.SESSION.query(self.TABLE).get({'lid':lid})
+
+        return False if entry is None else True
+    
+    def get_last_id(self) -> int | None:
+        """Returns the last id in the table or None"""
+        try:
+            last_entry = self.SESSION.query(self.TABLE.id).order_by(self.TABLE.id.desc()).first()
+            return last_entry[0] if last_entry else None
+        except Exception:
+            return None
+            
+    def _to_dict(self, entry) -> dict:
+        """
+        Internal Helper: Converts SQLAlchemy Object to dict
+        """
+        
+        return {k: v for k, v in entry.__dict__.items() if not k.startswith('_')}
+
+
+
 def connect() -> tuple[Engine, Session]:
     engine = create_engine(DATABASE_URL)
     Base.metadata.create_all(engine)
@@ -364,3 +467,4 @@ def connect() -> tuple[Engine, Session]:
 ENGINE, SESSION = connect()
 JOBS = Jobs(SESSION, JobsTable)
 JOBIDS = JobIds(SESSION, JobIdsTable)
+LJOBS = LinkedInJobs(SESSION, LinkedInJobsTable)
