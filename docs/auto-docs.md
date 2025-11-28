@@ -29,6 +29,10 @@ Inherits all CRUD-Functions from SQL & expand it by JobId-specific logic.
 Specialized Class for Job-Operations.
 Inherits all CRUD-Functions from SQL and expand these by Job-Logic.
 
+## LinkedInJobs
+Specialized Class for LinkedInJob-Operations.
+Inherits all CRUD-Functions from SQL and expand these by LinkedInJob-Logic.
+
 ## read
 Retrieves a record by its ID.
 
@@ -158,6 +162,40 @@ Updates the Job-Entry
 
 ## read_as_dict
 Reads a single job-entry and returns it as dict.
+Returns None if id does not exist
+
+## get_last_id
+Returns the last id in the table or None
+
+## _to_dict
+Internal Helper: Converts SQLAlchemy Object to dict
+
+## create
+Creates a new linkedInjob-entry.
+### Valid data:
+
+    company: str, 
+    job_title: int,
+    lid: int, 
+    description: str,
+    logo: str
+
+## update
+Updates the LinkedInJob-Entry
+
+### Valid data:
+
+    company: str, 
+    job_title: int,
+    lid: int, 
+    description: str,
+    logo: str
+
+## read_all
+Reads all LinkedInjob-entrys
+
+## read_as_dict
+Reads a single LinkedInjob-entry and returns it as dict.
 Returns None if id does not exist
 
 ## get_last_id
