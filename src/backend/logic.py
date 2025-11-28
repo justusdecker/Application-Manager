@@ -1,5 +1,5 @@
 from src.backend.flask_main import *
-from src.data import JOBS, JOBIDS, JobApplianceStates
+from src.data import JOBS, JOBIDS, LJOBS, JobApplianceStates
 from typing import Callable
 
 @app.route('/jobs/delete/<id>',methods = [POST])
@@ -171,8 +171,14 @@ def cv():
     return render_template(
         'cv_create_from_scratch.html'
     )
-@app.route('/linkedin',methods = [GET, POST])
-def linkedin():
+    
+@app.route('/linkedin',methods = [GET])
+def linkedin_show(): 
+    all_jobs = LJOBS.read_all(True)
+    return render_template('linkedin_job_viewer.html', data = all_jobs, ammount = len(all_jobs))
+
+@app.route('/linkedin/add',methods = [GET, POST])
+def linkedin_add():
     if request.method.upper() == POST:
         files = request.files.getlist('file')
         print(files)
@@ -181,10 +187,13 @@ def linkedin():
         for file in files:
             data = file.stream.read().decode()
             jobs = fetch_job_ids(data)
-            with open('test.html','wb') as f:
-                f.write(data.encode())
             all_jobs.extend([fetch_linkedin_job_data(id) for id in jobs])
-        return render_template('linkedin_job_viewer.html', data = all_jobs, ammount = len(all_jobs))
+        for job in all_jobs:
+            print(job)
+            LJOBS.create(**job)
+            print(LJOBS.read(-1))
+        # Store all jobs from linkedIn into the database
+        return redirect(url_for('linkedin_show'))
     return render_template(
         'linkedin_job_getter.html'
     )
