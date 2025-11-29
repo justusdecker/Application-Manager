@@ -46,6 +46,10 @@
 |[attr_finder](../src/linkedin_job_search_fetch.py)|function|🔴|
 |[IDGetterSearch](../src/linkedin_job_search_fetch.py)|class|🔴|
 |[FetchJob](../src/linkedin_job_search_fetch.py)|class|🔴|
+|[phone_number_compatible_char](../src/linkedin_job_search_fetch.py)|function|🔴|
+|[get_phone_number](../src/linkedin_job_search_fetch.py)|function|🔴|
+|[get_mails](../src/linkedin_job_search_fetch.py)|function|🔴|
+|[get_links](../src/linkedin_job_search_fetch.py)|function|🔴|
 |[get_linkedin_job_site](../src/linkedin_job_search_fetch.py)|function|🔴|
 |[fetch_linkedin_job_data](../src/linkedin_job_search_fetch.py)|function|🟢|
 |[fetch_job_ids](../src/linkedin_job_search_fetch.py)|function|🟢|
@@ -70,6 +74,7 @@
 |[cv](../src/backend/logic.py)|function|🔴|
 |[linkedin_show](../src/backend/logic.py)|function|🔴|
 |[linkedin_add](../src/backend/logic.py)|function|🔴|
+|[load](../src/backend/logic.py)|function|🔴|
 |[create_tech_stack](../src/backend/techstack.py)|function|🔴|
 |[read_tech_stack](../src/backend/techstack.py)|function|🔴|
 |[update_tech_stack](../src/backend/techstack.py)|function|🔴|
