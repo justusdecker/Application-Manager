@@ -198,3 +198,9 @@ def linkedin_add():
         'linkedin_job_getter.html'
     )
 
+@app.route('/load',methods = [GET])
+def load():
+    return render_template(
+        'load.html'
+    )
+    
