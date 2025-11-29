@@ -10,28 +10,27 @@
 
 </head>
 <body>
-    <nav class="navbar">
-        <div class="logo">
-            <a href="/">logo</a>
+    <aside class="sidebar">
+        <div class="title-align">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="" class="logo">
+            <div>
+                <h1>Application Manager</h1>
+                <p>&copy 2025 Justus Decker - GPL V3</p>
+            </div>
         </div>
-        <ul class="nav-links">
-            <li>
-                <a href="/jobs">Jobs</a>
-                <ul>
-                <li><a href="/jobs/create">Create</a></li>
-                </ul>
-            </li>
-            
-            <li>
-                <a href="/job_titles">Job titles</a>
-                <ul>
-                <li><a href="/job_titles/create">Create</a></li>
-                </ul>
-            </li>
-            <li><a href="/services">Services</a></li>
-            <li><a href="/contact">Kontakt</a></li>
-        </ul>
-    </nav>
+        <a class="nav-link" href="/jobs">Jobs</a>
+        <a class="nav-link" href="/jobs/create">Job Create</a>
+
+        <a class="nav-link" href="/job_titles">Job titles</a>
+        <a class="nav-link" href="/job_titles/create">JT Create</a>
+
+        <a class="nav-link" href="/cv">CV</a>
+
+        <a class="nav-link" href="/export">Application Export</a>
+
+        <a class="nav-link" href="/about">About</a>
+        <a class="nav-link" href="/help">Help</a>
+    </aside>
 
     <div class="container">
         
