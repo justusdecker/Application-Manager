@@ -1,8 +1,9 @@
 {% extends "default.html" %}
-{% block title %}Create Job{% endblock %}
+
 {% block header %}Create a Job{% endblock %}
 {% block content %}
 <div class="user-input-div">
+    <h1>Create Job</h1>
         <form action="", method="post">
             <label for="company">Company: </label>
             <input type="text" name="company" id="company">
@@ -40,7 +41,7 @@
                 <option value="{{ nr }}">{{ state }}</option>
                 {% endfor %}
             </select>
-            <br>
+            <div class="send-spacer"></div>
             <input type="submit">
         </form>
     </div>
