@@ -1,6 +1,6 @@
 # Application-Manager(WIP)
 
-<img src="./src/backend/static/logo.png">
+<img src="./src/backend/static/logo.png" width="25%">
 
 This is an easy to use Manager for your job-applications.
 
