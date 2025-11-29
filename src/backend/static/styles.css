@@ -9,7 +9,7 @@
     /* Placeholder text and label color */
     --dm-text-secondary: #a0a0a0;
     /* The 'focus' color when clicking an input (a nice blue/purple) */
-    --dm-accent-color: #8ab4f8;
+    --dm-accent-color: #994747;
     /* A semi-transparent version of the accent for focus rings */
     --dm-accent-ring: rgba(138, 180, 248, 0.25);
     /* Color for buttons */
@@ -17,7 +17,12 @@
     /* Disabled state colors */
     --dm-disabled-bg: #2a2a2a;
     --dm-disabled-text: #666666;
+
+    --theme-color: #994747;
 }
+
+* {font-family: monospace;}
+
 body {
   background-image: linear-gradient(90deg,#363636 0%, #242424 50%, #363636 100%);
 }
@@ -154,4 +159,36 @@ tr:nth-child(even) {
 
 .send-spacer {
     margin-top: 3%;
+}
+
+
+
+.nav-link {
+    background-color: var(--dm-disabled-bg);
+    padding-top: 0.5em;
+    border-radius: 10px;
+    border: 1px solid var(--dm-input-border);
+    width: 25%;
+    min-width: 25%;
+    height: 2em;
+    text-align: center;
+    color: white;
+    margin-bottom: 0.25%;
+    text-decoration: none;
+    display: block;
+}
+.nav-link:hover {
+    background-color: #994747;
+}
+
+.logo {
+    width: 5%;
+    padding-right: 3%;
+}
+
+.title-align {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 3%;
 }
