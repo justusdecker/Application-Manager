@@ -1,5 +1,7 @@
 # Application-Manager(WIP)
 
+<img src="./src/backend/static/logo.png">
+
 This is an easy to use Manager for your job-applications.
 
 Did you ever struggle with the massive ammount of data, errors, the linkedIn search or creating a CV?
