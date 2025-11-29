@@ -1,5 +1,6 @@
 from html.parser import HTMLParser
 from requests import get
+import re
 def attr_finder(attrs, search_for) -> list:
     return [i for i in attrs if i[0] == search_for]
 
@@ -71,7 +72,33 @@ class FetchJob(HTMLParser):
         if self.next_is_company_name and self.company_name_miss < 2:
             self.company_name_miss += 1
             self.next_is_company_name = False            
-        
+
+def phone_number_compatible_char(char: str) -> bool:
+    return char.isdecimal() or char == '+' or char.isspace()
+
+def get_phone_number(text: str):
+    nums = set()
+    for idx, char in enumerate(text):
+        if phone_number_compatible_char(char):
+            number = ''
+            for num_char in text[idx:]:
+                if phone_number_compatible_char(num_char):
+                    number += num_char
+                else: break
+            if not number or number.isspace() or number == '+': continue
+            number = number.strip()
+            if number[0] == '+' and number.count('+') == 1:
+                number = number[1:].replace(' ', '')
+                if len(number) <= 17 and len(number) >= 6:
+                    nums.add(number)
+
+    return list(nums)
+
+def get_mails(text: str) -> list[str]:
+    return [word for word in text.split() if '@' in word]
+
+def get_links(text: str) -> list[str]:
+    return [word for word in text.split() if word.startswith(('www.', 'https://'))]
 
 def get_linkedin_job_site(job_id: int):
     try:
