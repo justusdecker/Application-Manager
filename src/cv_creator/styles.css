@@ -1,0 +1,144 @@
+:root {
+    /* Set page-size to DIN A4 standard */
+    --page-width: 210mm;
+    --page-height: 297mm;
+    --page-color: white;
+
+    /*  Sidebar related variables */
+    --sidebar-size: 30%;
+    --sidebar-color: #252525;
+    --sidebar-title-one-color: white;
+    --sidebar-title-two-color: #ddd;
+    --sidebar-text-color: #ccc;
+    /* The spacing of the right side of the sidebar */
+    --sidebar-space-right: 0.5%; 
+    --normal-text-color: black;
+
+    --title-two-line-height: .85;
+    --title-one-line-height: .5;
+    --normal-line-height: .9;
+}
+body {
+    background-color: #342424;
+    font-family: monospace;
+}
+
+a, p, h3, h4 { color: var(--normal-text-color); }
+
+/* Line spacings */
+div { line-height: var(--title-two-line-height); }
+
+a, p { line-height: var(--normal-line-height); }
+
+h3, h4 { line-height: var(--title-one-line-height); }
+
+.page {
+    width: var(--page-width);
+    height: var(--page-height);
+    background-color:var(--page-color);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    display: grid;
+}
+
+.sidebar {
+    width: var(--sidebar-size);
+    min-width: var(--sidebar-size);
+    height: inherit;
+    background-color: var(--sidebar-color);
+    margin-left: auto;
+    margin-right: var(--sidebar-space-right);
+    height: 100%;
+}
+
+.sidebar-mtr { margin-left: 4%; }
+
+.sidebar-title-one { color: var(--sidebar-title-one-color); }
+
+.sidebar-title-two { color: var(--sidebar-title-two-color); }
+
+.sidebar-text { color: var(--sidebar-text-color); }
+
+.wrapper { 
+    /* 
+    Main Content on the left & sidebar on the right.
+    Change flex-direction to row for "vice versa"
+    */
+    display: flex;
+    flex-direction: row-reverse;
+    padding-left: 4%;
+}
+
+.better-text-view {
+    padding-right: 5%;
+    line-height: 1.4;
+}
+
+.borderline-spacer {
+    vertical-align: bottom;
+    padding-bottom: 1.5%;
+    border: none;
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+    border-bottom: 0.75mm;
+    border-style: solid;
+    border-color: black;
+    margin-right: 5%;
+
+}
+
+.borderline-spacer-sidebar {
+    vertical-align: bottom;
+    padding-bottom: 2%;
+    margin-left: 4%;
+    border: none;
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+    border-bottom: 0.25mm;
+    border-style: solid;
+    border-color: var(--sidebar-title-one-color);
+    margin-right: 5%;
+
+}
+
+/* Hey you found me 🦆*/
+.text-header-relocate { padding-right: 6%; }
+
+.more-weight { font-weight: 600; }
+
+.mo-topspace { margin-top: 3%; }
+
+.title-aligner {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between; 
+}
+
+#profile-and-header-align {
+    display: flex;
+    flex-direction: row;
+}
+
+@media print {
+    /* 
+    Printing optimization 
+    Removes the unnessesary stuff you dont want
+    */
+    body {
+        background: none;
+        padding: 0;
+        margin: 0;
+    }
+    .page {
+        box-shadow: none;
+        margin: 0;
+        width: var(--page-width);
+        height: var(--page-height);
+    }
+    @page {
+        size: A4;
+        margin: 0;
+    }
+}
