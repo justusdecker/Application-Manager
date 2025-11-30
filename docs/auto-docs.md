@@ -258,3 +258,9 @@ Shows all jobs, listed in the database.
 
 # ./src/backend/techstack.py
 
+# ./src/cv_creator/cvc.py
+
+# ./src/cv_creator/cv_generator.py
+
+# ./src/cv_creator/objects.py
+
