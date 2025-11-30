@@ -1,8 +1,28 @@
 {% extends "default.html" %}
-{% block header %}Create a Job{% endblock %}
+{% block header %}CVs ({{ ammount }} results){% endblock %}
 {% block content %}
-<div class="user-input-div">
-    <h1>Create a Job-id</h1>
-    Here will be the CV's shown
-</div>
+<table>
+    <tr>
+        <th>CV</th>
+        <th>Name</th>
+        <th>Options</th>
+    </tr>
+    {% for cv in cvs %}
+    <tr>
+        <td>{{ cv['name'] }}</td>
+        <td>
+            <form action="cv/read/{{ cv['id'] }}" method="get">
+                <input type="submit" value="view">
+            </form>
+        </td>
+
+        <td>
+            <form action="cv/delete/{{ cv['id'] }}" method="post">
+                <input type="submit" value="delete">
+            </form>
+        </td>
+        
+    </tr>
+    {% endfor %}
+</table>
 {% endblock %}
