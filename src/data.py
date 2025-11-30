@@ -459,7 +459,6 @@ class LinkedInJobs(SQL):
         
         return {k: v for k, v in entry.__dict__.items() if not k.startswith('_')}
 
-
 class CVC(SQL):
     """
     Specialized Class for CV-Operations.
@@ -469,14 +468,15 @@ class CVC(SQL):
     def __init__(self, SESSION, TABLE):
         super().__init__(SESSION, TABLE)
     
-    def create(self, cvc: str) -> bool:
+    def create(self, cvc: str, name: str) -> bool:
         """
         Creates a new CV-entry.
         ### Valid data:
 
             cvc: str
+            name: str
         """
-        return super().create(**{'cvc': cvc})
+        return super().create(**{'cvc': cvc, 'name': name})
     
     def update(self, id: int | str, **data) -> bool | None:
         """
@@ -484,6 +484,7 @@ class CVC(SQL):
         
         ### Valid data:
             cvc: str
+            name: str
         """
         return super().update(id, **data)
 
@@ -522,7 +523,6 @@ class CVC(SQL):
         """
         
         return {k: v for k, v in entry.__dict__.items() if not k.startswith('_')}
-
 
 def connect() -> tuple[Engine, Session]:
     engine = create_engine(DATABASE_URL)
