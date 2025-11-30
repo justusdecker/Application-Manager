@@ -18,6 +18,7 @@ What you can do:
 * [x] Easy job application report export in json format
 * [ ] Easy job application report export in csv format
 * [x] Auto-extract the phone-number, e-mail & address from the linkedin job page.
+* [ ] Word highlighting in linkedIn-descriptions
 * [ ] Set the job application timestamp.
 
 
