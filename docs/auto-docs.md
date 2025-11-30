@@ -15,6 +15,8 @@ Returns a simple template for debugging purposes.
 ## index
 Index redirects to /Jobs
 
+# .//t.py
+
 # ./src/data.py
 
 ## SQL
@@ -32,6 +34,10 @@ Inherits all CRUD-Functions from SQL and expand these by Job-Logic.
 ## LinkedInJobs
 Specialized Class for LinkedInJob-Operations.
 Inherits all CRUD-Functions from SQL and expand these by LinkedInJob-Logic.
+
+## CVC
+Specialized Class for CV-Operations.
+Inherits all CRUD-Functions from SQL and expand these by CV-Logic.
 
 ## read
 Retrieves a record by its ID.
@@ -204,6 +210,31 @@ Returns the last id in the table or None
 ## _to_dict
 Internal Helper: Converts SQLAlchemy Object to dict
 
+## create
+Creates a new CV-entry.
+### Valid data:
+
+    cvc: str
+
+## update
+Updates the CV-Entry
+
+### Valid data:
+    cvc: str
+
+## read_all
+Reads all CV-entrys
+
+## read_as_dict
+Reads a single CV-entry and returns it as dict.
+Returns None if id does not exist
+
+## get_last_id
+Returns the last id in the table or None
+
+## _to_dict
+Internal Helper: Converts SQLAlchemy Object to dict
+
 # ./src/errors.py
 
 # ./src/gemini_api.py
@@ -255,6 +286,12 @@ POST:
 
 ## show_jobs
 Shows all jobs, listed in the database.
+
+## export_json
+Downloads the jobs-database as json.
+
+## export_csv
+Downloads the jobs-database as csv.
 
 # ./src/backend/techstack.py
 
