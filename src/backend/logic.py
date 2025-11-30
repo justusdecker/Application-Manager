@@ -4,6 +4,8 @@ from typing import Callable
 from jinja2 import Template
 import io
 from json import dumps
+from src.cv_creator.cv_generator import generate
+
 
 @app.route('/jobs/delete/<id>',methods = [POST])
 def delete_job(id: int):
@@ -214,10 +216,6 @@ def load():
     return render_template(
         'load.html'
     )
-    
-@app.route('/cv',methods = [GET])
-def cv_show():
-    return "no"
 
 @app.route('/cv/create',methods = [GET, POST])
 def cv_create():
@@ -227,34 +225,38 @@ def cv_create():
         for file in files:
             name = file.filename.split('.', maxsplit=1)[0]
             cvc = file.stream.read()
-            CVCS.create(name, cvc)
+            CVCS.create(cvc, name)
                 
-        return redirect(url_for('cv_read/-1'))
+        return redirect(url_for('cv_read',id=-1))
     return render_template(
         'cv_c.html'
     )
 
 @app.route('/cv/read/<id>',methods = [GET])
 def cv_read(id: int):
-    
-    if request.method.upper() == POST:
-        files = request.files.getlist('cvcs')
-        print(files)
-        for file in files:
-            name = file.filename.split('.', maxsplit=1)[0]
-            cvc = file.stream.read()
-            CVCS.create(name, cvc)
-            with open(f'./src/cv_creator/cvc.py', 'wb') as f:
-                f.write(cvc)
+    cvc = CVCS.read(id)
+    cvc = generate(f'{cvc.name}.html', cvc.cvc)
+    return cvc
 
-            from src.cv_creator.cv_generator import generate
-            generate(f'{name}.html')
-            
-            
-        with open(f'./src/cv_creator/cvc.py', 'wb') as f:
-            f.write("".encode())
-                
-        return redirect(url_for('cv_show'))
+@app.route('/cv/delete/<id>',methods = [POST])
+def cv_delete(id: int):
+    CVCS.delete(id)
+    return redirect(url_for('cv_show'))
+
+@app.route('/cv',methods = [GET])
+def cv_show():
+    cvs = CVCS.read_all()
     return render_template(
-        'cv_c.html'
+        'cv_s.html',
+        cvs = cvs,
+        ammount = len(cvs)
+    )
+
+@app.route('/license',methods = [GET])
+def license():
+    with open('LICENSE') as f:
+        LICENSE = f.read()
+    return render_template(
+        'license.html',
+        license = LICENSE
     )
