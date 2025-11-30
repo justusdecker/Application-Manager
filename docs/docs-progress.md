@@ -84,13 +84,16 @@
 |[linkedin_show](../src/backend/logic.py)|function|🔴|
 |[linkedin_create](../src/backend/logic.py)|function|🔴|
 |[load](../src/backend/logic.py)|function|🔴|
-|[cv_show](../src/backend/logic.py)|function|🔴|
 |[cv_create](../src/backend/logic.py)|function|🔴|
 |[cv_read](../src/backend/logic.py)|function|🔴|
+|[cv_delete](../src/backend/logic.py)|function|🔴|
+|[cv_show](../src/backend/logic.py)|function|🔴|
+|[license](../src/backend/logic.py)|function|🔴|
 |[create_tech_stack](../src/backend/techstack.py)|function|🔴|
 |[read_tech_stack](../src/backend/techstack.py)|function|🔴|
 |[update_tech_stack](../src/backend/techstack.py)|function|🔴|
 |[delete_tech_stack](../src/backend/techstack.py)|function|🔴|
+|[CVC](../src/cv_creator/cvc.py)|class|🔴|
 |[generate](../src/cv_creator/cv_generator.py)|function|🔴|
 |[Links](../src/cv_creator/objects.py)|class|🔴|
 |[Head](../src/cv_creator/objects.py)|class|🔴|
