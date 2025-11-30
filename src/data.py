@@ -57,6 +57,11 @@ class LinkedInJobsTable(Base):
     logo = Column(String, nullable = False)
     description = Column(String, nullable = False)
     
+class CVCTable(Base):
+    __tablename__ = "CVCS"
+    id = Column(Integer, primary_key=True)
+    cvc = Column(String, nullable= False)
+    name = Column(String, nullable= False)
 
 def _get_state_as_text(id: int) -> str:
     for key, val in JobApplianceStates.get():
@@ -365,8 +370,6 @@ class Jobs(SQL):
         
         return {k: v for k, v in entry.__dict__.items() if not k.startswith('_')}
 
-
-
 class LinkedInJobs(SQL):
     """
     Specialized Class for LinkedInJob-Operations.
@@ -457,6 +460,69 @@ class LinkedInJobs(SQL):
         return {k: v for k, v in entry.__dict__.items() if not k.startswith('_')}
 
 
+class CVC(SQL):
+    """
+    Specialized Class for CV-Operations.
+    Inherits all CRUD-Functions from SQL and expand these by CV-Logic.
+    """
+
+    def __init__(self, SESSION, TABLE):
+        super().__init__(SESSION, TABLE)
+    
+    def create(self, cvc: str) -> bool:
+        """
+        Creates a new CV-entry.
+        ### Valid data:
+
+            cvc: str
+        """
+        return super().create(**{'cvc': cvc})
+    
+    def update(self, id: int | str, **data) -> bool | None:
+        """
+        Updates the CV-Entry
+        
+        ### Valid data:
+            cvc: str
+        """
+        return super().update(id, **data)
+
+
+    def read_all(self, as_dict: bool = False) -> list:
+        """Reads all CV-entrys"""
+        query = self.SESSION.query(self.TABLE).all()
+        
+        if as_dict:
+            return [self.read_as_dict(entry.id) for entry in query]
+        return query
+
+    def read_as_dict(self, id: int | str) -> dict | None:
+        """
+        Reads a single CV-entry and returns it as dict.
+        Returns None if id does not exist
+        """
+        entry = self.read(id)
+        if entry is None:
+            return None
+            
+        data = self._to_dict(entry)
+        return data
+    
+    def get_last_id(self) -> int | None:
+        """Returns the last id in the table or None"""
+        try:
+            last_entry = self.SESSION.query(self.TABLE.id).order_by(self.TABLE.id.desc()).first()
+            return last_entry[0] if last_entry else None
+        except Exception:
+            return None
+            
+    def _to_dict(self, entry) -> dict:
+        """
+        Internal Helper: Converts SQLAlchemy Object to dict
+        """
+        
+        return {k: v for k, v in entry.__dict__.items() if not k.startswith('_')}
+
 
 def connect() -> tuple[Engine, Session]:
     engine = create_engine(DATABASE_URL)
@@ -468,3 +534,4 @@ ENGINE, SESSION = connect()
 JOBS = Jobs(SESSION, JobsTable)
 JOBIDS = JobIds(SESSION, JobIdsTable)
 LJOBS = LinkedInJobs(SESSION, LinkedInJobsTable)
+CVCS = CVC(SESSION, CVCTable)
