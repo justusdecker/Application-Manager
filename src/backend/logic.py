@@ -1,6 +1,7 @@
 from src.backend.flask_main import *
 from src.data import JOBS, JOBIDS, LJOBS, JobApplianceStates
 from typing import Callable
+from jinja2 import Template
 
 @app.route('/jobs/delete/<id>',methods = [POST])
 def delete_job(id: int):
@@ -165,12 +166,6 @@ def summary():
     return render_template(
         'summary_writer.html',
     )
-
-@app.route('/cv',methods = [GET])
-def cv():
-    return render_template(
-        'cv_create_from_scratch.html'
-    )
     
 @app.route('/linkedin',methods = [GET])
 def linkedin_show(): 
@@ -204,3 +199,29 @@ def load():
         'load.html'
     )
     
+@app.route('/cv',methods = [GET])
+def cv_show():
+    return "no"
+
+@app.route('/cv/create',methods = [GET, POST])
+def cv_create():
+    if request.method.upper() == POST:
+        files = request.files.getlist('cvcs')
+        print(files)
+        for file in files:
+            name = file.filename.split('.', maxsplit=1)[0]
+            cvc = file.stream.read()
+            
+            with open(f'./src/cv_creator/cvc.py', 'wb') as f:
+                f.write(cvc)
+
+            from src.cv_creator.cv_generator import generate
+            generate(f'{name}.html')
+            
+        with open(f'./src/cv_creator/cvc.py', 'wb') as f:
+            f.write("".encode())
+                
+        return redirect(url_for('cv_show'))
+    return render_template(
+        'cv_c.html'
+    )
