@@ -2,3 +2,4 @@
 .vscode/*
 *.pyc
 ai_api.py
+src/cv_creator/cvc.py
