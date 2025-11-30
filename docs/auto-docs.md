@@ -215,12 +215,14 @@ Creates a new CV-entry.
 ### Valid data:
 
     cvc: str
+    name: str
 
 ## update
 Updates the CV-Entry
 
 ### Valid data:
     cvc: str
+    name: str
 
 ## read_all
 Reads all CV-entrys
