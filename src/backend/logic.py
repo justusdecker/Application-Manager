@@ -1,7 +1,9 @@
 from src.backend.flask_main import *
-from src.data import JOBS, JOBIDS, LJOBS, JobApplianceStates
+from src.data import JOBS, JOBIDS, LJOBS, CVCS, JobApplianceStates
 from typing import Callable
 from jinja2 import Template
+import io
+from json import dumps
 
 @app.route('/jobs/delete/<id>',methods = [POST])
 def delete_job(id: int):
@@ -150,14 +152,28 @@ def show_job_titles():
         states = JobApplianceStates.get()
         ), 200
     
-@app.route('/export',methods = [GET])
-def export():
+@app.route('/export/json',methods = [GET])
+def export_json():
+    """
+    Downloads the jobs-database as json.
+    """
     return jsonify(JOBS.read_all(True, JOBIDS))
+
+@app.route('/export/csv',methods = [GET])
+def export_csv():
+    """
+    Downloads the jobs-database as csv.
+    """
+    TABLE = []
+    for entry in JOBS.read_all(True, JOBIDS):
+        TABLE.append('|'.join([str(entry[key]) for key in entry if key not in ('description', 'state_id', 'job_id', 'id')]))
+    return send_file(
+        io.BytesIO("\n".join(TABLE).encode()),
+        download_name= 'JobApplicationSummary.csv'
+    )
 
 @app.route('/summary',methods = [GET, POST])
 def summary():
-    
-    
     if request.method.upper() == POST:
         from ai_api import improve_writing
         return improve_writing(request.form.get('text'))
@@ -172,8 +188,8 @@ def linkedin_show():
     all_jobs = LJOBS.read_all(True)
     return render_template('linkedin_job_viewer.html', data = all_jobs, ammount = len(all_jobs))
 
-@app.route('/linkedin/add',methods = [GET, POST])
-def linkedin_add():
+@app.route('/linkedin/create',methods = [GET, POST])
+def linkedin_create():
     if request.method.upper() == POST:
         files = request.files.getlist('file')
         print(files)
@@ -211,12 +227,29 @@ def cv_create():
         for file in files:
             name = file.filename.split('.', maxsplit=1)[0]
             cvc = file.stream.read()
-            
+            CVCS.create(name, cvc)
+                
+        return redirect(url_for('cv_read/-1'))
+    return render_template(
+        'cv_c.html'
+    )
+
+@app.route('/cv/read/<id>',methods = [GET])
+def cv_read(id: int):
+    
+    if request.method.upper() == POST:
+        files = request.files.getlist('cvcs')
+        print(files)
+        for file in files:
+            name = file.filename.split('.', maxsplit=1)[0]
+            cvc = file.stream.read()
+            CVCS.create(name, cvc)
             with open(f'./src/cv_creator/cvc.py', 'wb') as f:
                 f.write(cvc)
 
             from src.cv_creator.cv_generator import generate
             generate(f'{name}.html')
+            
             
         with open(f'./src/cv_creator/cvc.py', 'wb') as f:
             f.write("".encode())
