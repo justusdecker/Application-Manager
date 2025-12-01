@@ -206,3 +206,16 @@ tr:nth-child(even) {
     visibility: hidden;
 }
 
+.skill {
+    margin-right: 1%;
+}
+
+h2.telement {
+    color: #bbbbbb
+}
+h3.telement {
+    color: #969696
+}
+a.telement {
+    text-decoration: none;
+}
