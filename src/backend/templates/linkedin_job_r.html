@@ -1,0 +1,27 @@
+{% extends "default.html" %}
+{% block header %}LinkedIn Job{% endblock %}
+{% block content %}
+
+Show data trunc...
+Only show keywords if there are any
+<table>
+    <tr>
+        <th>id</th>
+        <th>Company_name</th>
+        <th>title</th>
+        <th>lid</th>
+        <th>logo</th>
+    </tr>
+    {% for row in data %}
+    
+    <tr>
+            <td>{{ row['id'] }}</td>
+            <td><a href="https://www.linkedin.com/jobs/view/{{ row['lid'] }}/">{{ row['company'] }}</a></td>
+            <td>{{ row['job_title'] }}</td>
+            <td>{{ row['lid'] }}</td>
+            <td><img src="{{ row['logo'] }}" alt=""></tr>
+    </tr>
+    
+    {% endfor %}
+</table>
+{% endblock %}
