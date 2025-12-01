@@ -1,6 +1,7 @@
 {% extends "default.html" %}
 {% block header %}CVs ({{ ammount }} results){% endblock %}
 {% block content %}
+<div class="user-input-div">
 <table>
     <tr>
         <th>CV</th>
@@ -25,4 +26,5 @@
     </tr>
     {% endfor %}
 </table>
+</div>
 {% endblock %}
