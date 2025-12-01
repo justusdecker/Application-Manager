@@ -5,7 +5,7 @@ from jinja2 import Template
 import io
 from json import dumps
 from src.cv_creator.cv_generator import generate
-
+from src.linkedin_job_search_fetch import fetch_job_ids, fetch_linkedin_job_data
 
 
 @app.route('/jobs/delete/<id>',methods = [POST])
@@ -186,31 +186,58 @@ def summary():
         'summary_writer.html',
     )
     
-@app.route('/linkedin',methods = [GET])
+@app.route('/linkedin',methods = [GET, POST])
 def linkedin_show(): 
     all_jobs = LJOBS.read_all(True)
-    return render_template('linkedin_job_viewer.html', data = all_jobs, ammount = len(all_jobs))
+    from src.linkedin_job_search_fetch import get_tags
+    tags = [get_tags(job['description']) for job in all_jobs]
+    t = ''
+    if request.method.upper() == POST:
+        t = request.form['search'].lower()
+        if t:
+            new_jobs = []
+            new_tags = []
+            
+            for job, _tags in zip(all_jobs, tags):
+                
+                if any([t in s for s, _ in _tags]) or\
+                    t in job['company'].lower() or\
+                        t in job['job_title'].lower() or\
+                            t in str(job['lid']):
+                                new_jobs.append(job)
+                                new_tags.append(_tags)
+                
+            all_jobs = new_jobs
+            tags = new_tags
+            print(tags)
+            t = f'Results for {t}'
+
+    return render_template('linkedin_job_viewer.html', data = all_jobs, ammount = len(all_jobs), tags = tags, zip = zip, searchfor=t)
 
 @app.route('/linkedin/create',methods = [GET, POST])
 def linkedin_create():
     if request.method.upper() == POST:
+        
         files = request.files.getlist('file')
-        print(files)
-        from src.linkedin_job_search_fetch import fetch_job_ids, fetch_linkedin_job_data
         all_jobs = []
-        for file in files:
-            data = file.stream.read().decode()
-            jobs = fetch_job_ids(data)
-            all_jobs.extend([fetch_linkedin_job_data(id) for id in jobs])
+        data = files[0].stream.read().decode()
+        jobs = fetch_job_ids(data)
+        all_jobs.extend([fetch_linkedin_job_data(id) for id in jobs])
         for job in all_jobs:
-            print(job)
+            if job is None: 
+                print('Job is corrupted')
+                continue
             LJOBS.create(**job)
-            print(LJOBS.read(-1))
-        # Store all jobs from linkedIn into the database
         return redirect(url_for('linkedin_show'))
     return render_template(
         'linkedin_job_getter.html'
     )
+    
+@app.route('/linkedin/delete/<id>',methods = [GET])
+def linkedin_delete(id: int): 
+    LJOBS.delete(id)
+        
+    return redirect(url_for('linkedin_show'))
 
 @app.route('/load',methods = [GET])
 def load():
