@@ -61,6 +61,7 @@
 |[get_phone_number](../src/linkedin_job_search_fetch.py)|function|🔴|
 |[get_mails](../src/linkedin_job_search_fetch.py)|function|🔴|
 |[get_links](../src/linkedin_job_search_fetch.py)|function|🔴|
+|[get_tags](../src/linkedin_job_search_fetch.py)|function|🔴|
 |[get_linkedin_job_site](../src/linkedin_job_search_fetch.py)|function|🔴|
 |[fetch_linkedin_job_data](../src/linkedin_job_search_fetch.py)|function|🟢|
 |[fetch_job_ids](../src/linkedin_job_search_fetch.py)|function|🟢|
@@ -86,6 +87,7 @@
 |[summary](../src/backend/logic.py)|function|🔴|
 |[linkedin_show](../src/backend/logic.py)|function|🔴|
 |[linkedin_create](../src/backend/logic.py)|function|🔴|
+|[linkedin_delete](../src/backend/logic.py)|function|🔴|
 |[load](../src/backend/logic.py)|function|🔴|
 |[cv_create](../src/backend/logic.py)|function|🔴|
 |[cv_read](../src/backend/logic.py)|function|🔴|
