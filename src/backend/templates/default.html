@@ -6,16 +6,21 @@
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 
-        {% block custom_css %}{% endblock %}
+    {% block custom_css %}{% endblock %}
+    <script src="{{ url_for('static', filename='menu.js') }}"></script>
 
 </head>
 <body>
-    <aside class="sidebar">
+    <button id="menu-open-btn" onclick="menuClickToSee()">Show</button>
+    <aside class="sidebar" id="sidebar">
+        <button onclick="menuClickToHide()">Hide</button>
         <div class="title-align">
             <img src="{{ url_for('static', filename='logo.png') }}" alt="" class="logo">
             <div>
                 <h1>Application Manager</h1>
                 <p>&copy 2025 Justus Decker - GPL V3</p>
+                <br>
+                <p>{{ __version__ }}</p>
             </div>
         </div>
         <a class="nav-link" href="/jobs">Jobs</a>
@@ -26,6 +31,9 @@
 
         <a class="nav-link" href="/cv">CV</a>
         <a class="nav-link" href="/cv/create">CV Create</a>
+
+        <a class="nav-link" href="/linkedin">linkedIn</a>
+        <a class="nav-link" href="/linkedin/create">linkedIn Create</a>
 
         <a class="nav-link" href="/export/json">JSON Export</a>
         <a class="nav-link" href="/export/csv">CSV Download</a>
