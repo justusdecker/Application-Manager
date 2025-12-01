@@ -2,7 +2,7 @@
 
 {% block header %}Create a Job{% endblock %}
 {% block content %}
-<div class="user-input-div">
+<div class="user-input-div" style="width:25vw">
     <h1>Create Job</h1>
         <form action="", method="post">
             <label for="company">Company: </label>
@@ -32,8 +32,6 @@
             <label for="description">description: </label>
             <textarea name="description" id="description"></textarea>
             <br>
-
-            <label for="state_id">State: </label>
             <label for="state_id">State: </label>
             <select name="state_id" id="state_id" required>
                 {% for state, nr in states %}
