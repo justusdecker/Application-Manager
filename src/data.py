@@ -395,8 +395,9 @@ class LinkedInJobs(SQL):
             description: str,
             logo: str
         """
-        #if self.is_lid_inthere(lid):
-        #    return False
+        if self.is_lid_inthere(lid):
+            print('Entry already exists')
+            return False
         return super().create(**{
             'company': company,
             'job_title': job_title,
@@ -440,9 +441,9 @@ class LinkedInJobs(SQL):
         return data
 
     def is_lid_inthere(self, lid) -> bool:
-        entry = self.SESSION.query(self.TABLE).get({'lid':lid})
+        entry = self.SESSION.query(self.TABLE).filter_by(lid=lid).first()
 
-        return False if entry is None else True
+        return entry is not None
     
     def get_last_id(self) -> int | None:
         """Returns the last id in the table or None"""
