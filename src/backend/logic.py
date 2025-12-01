@@ -7,6 +7,7 @@ from json import dumps
 from src.cv_creator.cv_generator import generate
 
 
+
 @app.route('/jobs/delete/<id>',methods = [POST])
 def delete_job(id: int):
     """
