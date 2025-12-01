@@ -3,22 +3,51 @@
 {% block header %}LinkedIn Jobviewer ({{ ammount }} results){% endblock %}
 {% block content %}
 <div class="user-input-div">
+<h1>LinkedIn Jobviewer ({{ ammount }} results)</h1>
+<p>{{ searchfor }}</p>
+<form action="" method="post">
+    <input type="search" name="search">
+    <br>
+    <input type="submit" value="Search">
+</form>
+ <!--
+    Searchfunction:
+    by tag
+    by profession
+    ignore this profession
+    ignore this
+    -->
 <table>
     <tr>
-        <th>id</th>
-        <th>Company_name</th>
+        <th>logo</th>
         <th>title</th>
         <th>lid</th>
-        <th>logo</th>
+        <th>actions</th>
+        
     </tr>
-    {% for row in data %}
-    
+    {% for row, _tags in zip(data, tags) %}
+   
     <tr>
-            <td>{{ row['id'] }}</td>
-            <td><a href="https://www.linkedin.com/jobs/view/{{ row['lid'] }}/">{{ row['company'] }}</a></td>
-            <td>{{ row['job_title'] }}</td>
-            <td>{{ row['lid'] }}</td>
-            <td><img src="{{ row['logo'] }}" alt=""></tr>
+        <td><a class="telement" href="https://www.linkedin.com/jobs/view/{{ row['lid'] }}/"><img src="{{ row['logo'] }}"></a></td>
+        <td>
+            <a class="telement" href="https://www.linkedin.com/jobs/view/{{ row['lid'] }}/"><h2 class="telement">{{ row['company'] }}</h2></a>
+            <h3 class="telement">{{ row['job_title'] }}</h3>
+            <div>
+            {% for tag, c in _tags %}
+            <b class="skill" style="background-color:{{ c }}">{{ tag }}</b>
+            {% endfor %}
+            </div>
+        </td>
+        <td>{{ row['lid'] }}</td>
+        <td>
+            <form action="/create_by_li/{{ row['id'] }}" method="post">
+                <input type="submit" value="Create Job">
+            </form>
+            <form action="/linkedin/delete/{{ row['id'] }}" method="get">
+                <input type="submit" value="Delete Job">
+            </form>
+        </td>
+            
     </tr>
     
     {% endfor %}
