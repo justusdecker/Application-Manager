@@ -24,13 +24,8 @@ Then is this your go to app for job-applications.
 
 ## 🗺Roadmap
 * [ ] LinkedIn Job to regular converter(using the new linkedin-get functions)(single & multiple)
-* [ ] Word highlighting in linkedIn-descriptions.(that is very simple)
-* [ ] Add word_highlighting Settings    
-    * Here you can set all the words you want to get highlighted
-    * You can set: `word`, `fg-color` & `bg-color`
 * [ ] Add CVC Builder
     * We need Javascript to create multiple elements on the fly
-
 * [ ] Set the job application timestamp.
 * [ ] Add the AI improve-writing to CV creator
 
