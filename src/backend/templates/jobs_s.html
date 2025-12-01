@@ -1,7 +1,8 @@
 {% extends "default.html" %}
-{% block title %}Jobs{% endblock %}
-{% block header %}Jobslist ({{ ammount }} results){% endblock %}
+{% block title %}Jobslist ({{ ammount }} results){% endblock %}
 {% block content %}
+<div class="user-input-div">
+<h1>Jobslist ({{ ammount }} results)</h1>
 <table>
     <tr>
         <th>Jobs</th>
@@ -33,4 +34,5 @@
     </tr>
     {% endfor %}
 </table>
+</div>
 {% endblock %}
