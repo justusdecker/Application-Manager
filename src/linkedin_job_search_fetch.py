@@ -1,6 +1,7 @@
 from html.parser import HTMLParser
 from requests import get
 import re
+from src.coding_tags import TAG_LIST, CRECOLORS, TAG_COLOR_LINK
 def attr_finder(attrs, search_for) -> list:
     return [i for i in attrs if i[0] == search_for]
 
@@ -100,6 +101,22 @@ def get_mails(text: str) -> list[str]:
 def get_links(text: str) -> list[str]:
     return [word for word in text.split() if word.startswith(('www.', 'https://'))]
 
+def get_tags(text: str) -> list[str]:
+    f = {}
+    _ret = set()
+    for r in '()-,':
+        text = text.replace(r, '')
+    for word in text.lower().split():
+        if word in TAG_LIST:
+            c = TAG_LIST.index(word)
+            l = TAG_COLOR_LINK[c]
+            _ret.add((word, CRECOLORS[l]))
+            if word in f:
+                f[word] += 1
+            else:
+                f[word] = 1
+    return _ret
+        
 def get_linkedin_job_site(job_id: int):
     try:
         return get(f'https://www.linkedin.com/jobs/view/{job_id}/')._content.decode()
@@ -115,6 +132,9 @@ def fetch_linkedin_job_data(job_id: int) -> dict:
         return {'error': 'Get return is none'}
     parser = FetchJob()
     parser.feed(content)
+    if None in [parser.logo, parser.job_title, parser.company_name, parser.description, job_id]:
+        #! Investigate this error further
+        return None
     return {
         'logo': parser.logo, 
         'job_title': parser.job_title, 
@@ -130,5 +150,4 @@ def fetch_job_ids(html: str) -> list:
     """
     parser = IDGetterSearch()
     parser.feed(html)
-    
     return parser.data_job_ids
