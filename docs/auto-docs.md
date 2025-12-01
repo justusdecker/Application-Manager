@@ -241,6 +241,24 @@ Internal Helper: Converts SQLAlchemy Object to dict
 
 # ./src/gemini_api.py
 
+The Gemini API Access
+
+To use this you must create a .env file in the root directory with the `GOOGLE_API_KEY` inside.
+
+## configuration
+Load the `GOOGLE_API_KEY` from the .env File
+
+## create_payload
+Create & get the JSON structure required for the Gemini API
+
+## send_gemini
+Sends a POST Request to gemini & receives the generated `text` from it.
+
+Returns the gemini result -> `str`.
+
+If a error occoures: 
+    returns a dict that only contains the `error`.
+
 # ./src/linkedin_job_search_fetch.py
 
 ## fetch_linkedin_job_data
