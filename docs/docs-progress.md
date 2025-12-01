@@ -51,6 +51,9 @@
 |[read_as_dict](../src/data.py)|function|🟢|
 |[get_last_id](../src/data.py)|function|🟢|
 |[_to_dict](../src/data.py)|function|🟢|
+|[configuration](../src/gemini_api.py)|function|🟢|
+|[create_payload](../src/gemini_api.py)|function|🟢|
+|[send_gemini](../src/gemini_api.py)|function|🟢|
 |[attr_finder](../src/linkedin_job_search_fetch.py)|function|🔴|
 |[IDGetterSearch](../src/linkedin_job_search_fetch.py)|class|🔴|
 |[FetchJob](../src/linkedin_job_search_fetch.py)|class|🔴|
