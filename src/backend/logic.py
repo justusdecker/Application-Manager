@@ -341,3 +341,10 @@ def create_job_from_linkedin(id: int):
     JOBS.create(**new_jobs)
     
     return redirect(url_for('read_job',id="-1"))
+
+@app.route('/jobsearch_settings',methods = [GET])
+def jobsearch_settings():
+    
+    return render_template(
+        'jobsearch_settings.html'
+    )
