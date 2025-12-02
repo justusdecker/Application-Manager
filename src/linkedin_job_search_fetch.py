@@ -142,7 +142,7 @@ def fetch_linkedin_job_data(job_id: int) -> dict:
         'description': parser.description,
         'lid': job_id
     }
-    
+
 def fetch_job_ids(html: str) -> list:
     """
     Takes a html-structure in string form, runs the HTML parser and fetches the job ids from there.
