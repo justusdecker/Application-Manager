@@ -1,0 +1,42 @@
+{% extends "default.html" %}
+{% block header %}About{% endblock %}
+
+{% block content %}
+
+<div class="user-input-div">
+    <div class="tag-canvas">
+        <div class="tag-canvas-title">
+            <h2 class="tag-canvas-title">Language</h2>
+        </div>
+        <div class="tag-box">
+            <ul class="tag-list"></ul> 
+        </div>
+        <input type="text" class="tag-input" placeholder="Add Language...">
+    </div>
+
+    <div class="tag-canvas">
+        <div class="tag-canvas-title">
+            <h2 class="tag-canvas-title">Profession</h2>
+        </div>
+        <div class="tag-box">
+            <ul class="tag-list"></ul>
+        </div>
+        <input type="text" class="tag-input" placeholder="Add Profession...">
+    </div>
+
+    <div class="tag-canvas">
+        <div class="tag-canvas-title">
+            <h2 class="tag-canvas-title">OTher</h2>
+        </div>
+        <div class="tag-box">
+            <ul class="tag-list"></ul>
+        </div>
+        <input type="text" class="tag-input" placeholder="Add Profession...">
+    </div>
+</div>
+<!--
+send the data
+retreive the data
+-->
+<script src="{{ url_for('static', filename='jobsettings.js') }}"></script>
+{% endblock %}
