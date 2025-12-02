@@ -98,6 +98,7 @@
 |[license](../src/backend/logic.py)|function|🔴|
 |[help_show](../src/backend/logic.py)|function|🔴|
 |[create_job_from_linkedin](../src/backend/logic.py)|function|🟢|
+|[jobsearch_settings](../src/backend/logic.py)|function|🔴|
 |[create_tech_stack](../src/backend/techstack.py)|function|🔴|
 |[read_tech_stack](../src/backend/techstack.py)|function|🔴|
 |[update_tech_stack](../src/backend/techstack.py)|function|🔴|
