@@ -199,11 +199,11 @@ tr:nth-child(even) {
     height: 100vh;
     width: 30%;
     background-color: #131313;
+    visibility: hidden;
 }
 
 #menu-open-btn {
     position: fixed;
-    visibility: hidden;
 }
 
 .skill {
