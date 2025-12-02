@@ -261,6 +261,8 @@ Returns the gemini result -> `str`.
 If a error occoures: 
     returns a dict that only contains the `error`.
 
+# ./src/help.py
+
 # ./src/linkedin_job_search_fetch.py
 
 ## fetch_linkedin_job_data
@@ -314,6 +316,19 @@ Downloads the jobs-database as json.
 
 ## export_csv
 Downloads the jobs-database as csv.
+
+## create_job_from_linkedin
+company: str, 
+title_id: int, 
+url: str, 
+mail: str, 
+phone_number: str, 
+description: str, 
+state_id: int
+
+edge cases:
+    - job-title does not exist
+    
 
 # ./src/backend/techstack.py
 
