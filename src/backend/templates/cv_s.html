@@ -2,6 +2,9 @@
 {% block header %}CVs ({{ ammount }} results){% endblock %}
 {% block content %}
 <div class="user-input-div">
+<form action="cv/create" method="get">
+    <button type="submit"><span class="material-symbols-outlined">add_ad</span></button>
+</form>
 <table>
     <tr>
         <th>CV</th>
@@ -13,13 +16,13 @@
         <td>{{ cv['name'] }}</td>
         <td>
             <form action="cv/read/{{ cv['id'] }}" method="get">
-                <input type="submit" value="view">
+                <button type="submit"><span class="material-symbols-outlined">read_more</span></button>
             </form>
         </td>
 
         <td>
             <form action="cv/delete/{{ cv['id'] }}" method="post">
-                <input type="submit" value="delete">
+                <button type="submit"><span class="material-symbols-outlined">delete</span></button>
             </form>
         </td>
         
