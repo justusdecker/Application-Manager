@@ -4,11 +4,13 @@
 {% block content %}
 <div class="user-input-div">
 <h1>LinkedIn Jobviewer ({{ ammount }} results)</h1>
+<form action="/linkedin/create" method="get">
+    <button type="submit"><span class="material-symbols-outlined">add_ad</span></button>
+</form>
 <p>{{ searchfor }}</p>
 <form action="" method="post">
-    <input type="search" name="search">
-    <br>
-    <input type="submit" value="Search">
+    <input type="search" name="search" style="width:25%">
+    <button type="submit"><span class="material-symbols-outlined">search</span></button>
 </form>
  <!--
     Searchfunction:
@@ -40,11 +42,11 @@
         </td>
         <td>{{ row['lid'] }}</td>
         <td>
-            <form action="/create_by_li/{{ row['id'] }}" method="post">
-                <input type="submit" value="Create Job">
+            <form action="/create_by_linkedin/{{ row['id'] }}" method="post">
+                <button type="submit"><span class="material-symbols-outlined">add_home_work</span></button>
             </form>
             <form action="/linkedin/delete/{{ row['id'] }}" method="get">
-                <input type="submit" value="Delete Job">
+                <button type="submit"><span class="material-symbols-outlined">delete</span></button>
             </form>
         </td>
             
