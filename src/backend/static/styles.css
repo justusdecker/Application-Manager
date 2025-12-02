@@ -219,3 +219,70 @@ h3.telement {
 a.telement {
     text-decoration: none;
 }
+
+
+/* All tag-related stuff is AI-generated, issues will be fixed later*/
+.tag-canvas {
+    background-color: #333;
+    color: #f0f0f0;
+    width: 25vw;
+    min-height: 20vh;
+    border-radius: 10px;
+    padding: 15px 15px 10px 15px; 
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.tag-canvas-title h2.tag-canvas-title {
+    font-size: 1.5em; 
+    font-weight: 700;
+    margin: 0 0 10px 0;
+    color: #aaa;
+}
+
+.tag-box {
+   
+    border: 1px solid #555;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: #444;
+    flex-grow: 1;
+    
+    display: flex; 
+    flex-wrap: wrap; 
+    align-items: center;
+}
+
+.tag-list {
+    list-style: none; 
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0;
+}
+
+.tag-entry {
+    background: #666;
+    color: #f0f0f0;
+    padding: 6px 10px;
+    margin: 3px 5px 3px 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 0.9em;
+    user-select: none;
+}
+
+.tag-entry:hover {
+    background-color: #e33c3c;
+    color: white;
+}
+
+
+.tag-input {
+    padding: 5px;
+    min-width: 100px;
+    font-size: 1em;
+}
