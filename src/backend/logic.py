@@ -5,7 +5,7 @@ from jinja2 import Template
 import io
 from json import dumps
 from src.cv_creator.cv_generator import generate
-from src.linkedin_job_search_fetch import fetch_job_ids, fetch_linkedin_job_data
+from src.linkedin_job_search_fetch import fetch_job_ids, fetch_linkedin_job_data, get_tags, get_mails, get_phone_number
 
 
 @app.route('/jobs/delete/<id>',methods = [POST])
@@ -189,7 +189,6 @@ def summary():
 @app.route('/linkedin',methods = [GET, POST])
 def linkedin_show(): 
     all_jobs = LJOBS.read_all(True)
-    from src.linkedin_job_search_fetch import get_tags
     tags = [get_tags(job['description']) for job in all_jobs]
     t = ''
     if request.method.upper() == POST:
@@ -288,3 +287,57 @@ def license():
         'license.html',
         license = LICENSE
     )
+
+@app.route('/help',methods = [GET])
+def help_show():
+    from src.help import generate_help
+    
+    return render_template(
+        'help.html',
+        help = generate_help()
+    )
+    
+@app.route('/create_by_linkedin/<id>',methods = [POST])
+def create_job_from_linkedin(id: int):
+    """
+    company: str, 
+    title_id: int, 
+    url: str, 
+    mail: str, 
+    phone_number: str, 
+    description: str, 
+    state_id: int
+    
+    edge cases:
+        - job-title does not exist
+        
+    """
+    data = LJOBS.read_as_dict(id)
+    if data is None: return "no data"
+    
+    # Job title assign
+    job_exist = JOBIDS.get_job_exist(data['job_title'])
+    if not job_exist:
+        JOBIDS.create(data['job_title'])
+        job_exist = JOBIDS.get_job_exist(data['job_title'])
+
+    mails = get_mails(data['description'])
+    phone_numbers = get_phone_number(data['description'])
+    
+    mails = mails[-1] if mails else None
+    phone_numbers = phone_numbers[-1] if phone_numbers else None
+    
+    new_jobs = {
+        'company' : data['company'],
+        'description': data['description'],
+        'url': f'https://www.linkedin.com/jobs/view/{data["lid"]}',
+        'mail': mails,
+        'phone_number': phone_numbers,
+        'title_id': job_exist
+    }
+    
+    print(new_jobs)
+    
+    JOBS.create(**new_jobs)
+    
+    return redirect(url_for('read_job',id="-1"))
