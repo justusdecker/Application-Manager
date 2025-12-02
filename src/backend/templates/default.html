@@ -8,12 +8,16 @@
 
     {% block custom_css %}{% endblock %}
     <script src="{{ url_for('static', filename='menu.js') }}"></script>
-
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&icon_names=add_ad,add_home_work,delete,home,menu,read_more,search,settings,update" rel="stylesheet" />
 </head>
 <body>
-    <button id="menu-open-btn" onclick="menuClickToSee()">Show</button>
+    <div class="container">
+        
+        {% block content %}{% endblock %}
+    </div>
+    <button id="menu-open-btn" onclick="menuClickToSee()"><span class="material-symbols-outlined">menu</span></button>
     <aside class="sidebar" id="sidebar">
-        <button onclick="menuClickToHide()">Hide</button>
+        <button onclick="menuClickToHide()"><span class="material-symbols-outlined">menu</span></button>
         <div class="title-align">
             <img src="{{ url_for('static', filename='logo.png') }}" alt="" class="logo">
             <div>
@@ -24,16 +28,12 @@
             </div>
         </div>
         <a class="nav-link" href="/jobs">Jobs</a>
-        <a class="nav-link" href="/jobs/create">Job Create</a>
 
         <a class="nav-link" href="/job_titles">Job titles</a>
-        <a class="nav-link" href="/job_titles/create">JT Create</a>
 
         <a class="nav-link" href="/cv">CV</a>
-        <a class="nav-link" href="/cv/create">CV Create</a>
 
         <a class="nav-link" href="/linkedin">linkedIn</a>
-        <a class="nav-link" href="/linkedin/create">linkedIn Create</a>
 
         <a class="nav-link" href="/export/json">JSON Export</a>
         <a class="nav-link" href="/export/csv">CSV Download</a>
@@ -42,9 +42,6 @@
         <a class="nav-link" href="/help">Help</a>
     </aside>
 
-    <div class="container">
-        
-        {% block content %}{% endblock %}
-    </div>
+    
 </body>
 </html>
