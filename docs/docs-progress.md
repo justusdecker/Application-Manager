@@ -29,6 +29,7 @@
 |[read_all](../src/data.py)|function|🟢|
 |[read_as_dict](../src/data.py)|function|🟢|
 |[get_job_name](../src/data.py)|function|🟢|
+|[get_job_exist](../src/data.py)|function|🔴|
 |[get_ids](../src/data.py)|function|🟡|
 |[get_last_entry](../src/data.py)|function|🟢|
 |[_to_dict](../src/data.py)|function|🟢|
@@ -54,6 +55,7 @@
 |[configuration](../src/gemini_api.py)|function|🟢|
 |[create_payload](../src/gemini_api.py)|function|🟢|
 |[send_gemini](../src/gemini_api.py)|function|🟢|
+|[generate_help](../src/help.py)|function|🔴|
 |[attr_finder](../src/linkedin_job_search_fetch.py)|function|🔴|
 |[IDGetterSearch](../src/linkedin_job_search_fetch.py)|class|🔴|
 |[FetchJob](../src/linkedin_job_search_fetch.py)|class|🔴|
@@ -94,6 +96,8 @@
 |[cv_delete](../src/backend/logic.py)|function|🔴|
 |[cv_show](../src/backend/logic.py)|function|🔴|
 |[license](../src/backend/logic.py)|function|🔴|
+|[help_show](../src/backend/logic.py)|function|🔴|
+|[create_job_from_linkedin](../src/backend/logic.py)|function|🟢|
 |[create_tech_stack](../src/backend/techstack.py)|function|🔴|
 |[read_tech_stack](../src/backend/techstack.py)|function|🔴|
 |[update_tech_stack](../src/backend/techstack.py)|function|🔴|
