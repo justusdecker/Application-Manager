@@ -251,7 +251,11 @@ class JobIds(SQL):
         if entry:
             return entry.name
         return None
-
+    
+    def get_job_exist(self, name: str) -> int:
+        e = self.SESSION.query(self.TABLE).filter_by(name=name).first()
+        return e.id if e else False
+        
     def get_ids(self) -> list[int]:
         """Gets the list of existing ids"""
         return [res[0] for res in self.SESSION.query(self.TABLE.id).all()]
