@@ -21,6 +21,17 @@ Index redirects to /Jobs
 
 # ./src/data.py
 
+## sfa
+single-file-access
+you dont need to write the 'with' stuff anymore :D
+
+Does the same as context manager open()
+```python
+with open(fp, m) as f:
+    return f.read()
+    return f.read() -> str | return f.write(d) -> None
+```
+
 ## SQL
 A generic wrapper for CRUD operations (Create, Read, Update, Delete)
 on a specific SQLAlchemy model.
