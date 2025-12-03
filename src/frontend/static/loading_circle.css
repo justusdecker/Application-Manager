@@ -1,0 +1,36 @@
+.loader {
+  width: 1em;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 8px solid lightblue;
+  border-right-color: orange;
+  animation: l2 1s infinite linear;
+}
+body {
+  background-image: radial-gradient(#252525, #484848);
+}
+
+h1 {
+  color: orange;
+  font-weight: 1000;
+  font-family: monospace;
+  text-shadow: 0 0 10px orange;
+}
+.cbox {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.ebox {
+  width: 15%;
+  height: 5%;
+  min-width: 15%;
+  min-height: 5%;
+  background-color: rgb(99, 124, 132);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes l2 {to{transform: rotate(1turn)}}
