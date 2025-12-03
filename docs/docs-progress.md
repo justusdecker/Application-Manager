@@ -76,6 +76,10 @@
 |[handle_starttag](../src/linkedin_job_search_fetch.py)|function|🔴|
 |[handle_data](../src/linkedin_job_search_fetch.py)|function|🔴|
 |[send_email](../src/mail.py)|function|🔴|
+|[LowerCaseStr](../src/search.py)|class|🟢|
+|[linkedin_search_result](../src/search.py)|function|🔴|
+|[get_jobsearch_settings](../src/search.py)|function|🔴|
+|[linkedin_search](../src/search.py)|function|🔴|
 |[integer_or_default](../src/validation.py)|function|🔴|
 |[JobQuery](../src/backend/flask_main.py)|class|🔴|
 |[delete_job](../src/backend/logic.py)|function|🟢|
