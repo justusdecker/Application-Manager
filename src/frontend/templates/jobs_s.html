@@ -1,0 +1,43 @@
+{% extends "default.html" %}
+{% block title %}Jobslist ({{ ammount }} results){% endblock %}
+{% block content %}
+<div class="user-input-div">
+<h1>Jobslist ({{ ammount }} results)</h1>
+
+<form action="jobs/create" method="get">
+    <button type="submit"><span class="material-symbols-outlined">add_ad</span></button>
+</form>
+<table>
+    <tr>
+        <th>Jobs</th>
+    </tr>
+    {% for job in jobs %}
+    <tr>
+        <td>{{ job['id'] }}</td>
+        <td>{{ job['company']}}</td>
+        <td>{{ job['title'] }}</td>
+        <td>{{ job['state'] }}</td>
+        <td>
+            <a href=""></a>
+            <form action="jobs/read/{{ job['id'] }}" method="get">
+                <button type="submit"><span class="material-symbols-outlined">read_more</span></button>
+            </form>
+        </td>
+
+        <td>
+            <form action="jobs/update/{{ job['id'] }}" method="get">
+                <button type="submit"><span class="material-symbols-outlined">update</span></button>
+            </form>
+        </td>
+
+        <td>
+            <form action="jobs/delete/{{ job['id'] }}" method="post">
+                <button type="submit"><span class="material-symbols-outlined">delete</span></button>
+            </form>
+        </td>
+        
+    </tr>
+    {% endfor %}
+</table>
+</div>
+{% endblock %}
