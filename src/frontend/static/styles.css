@@ -1,0 +1,310 @@
+
+:root {
+    /* The background of the actual input field */
+    --dm-input-bg: #1e1e1e;
+    /* The border color around inputs */
+    --dm-input-border: #444444;
+    /* Main typing text color */
+    --dm-text-primary: #e0e0e0;
+    /* Placeholder text and label color */
+    --dm-text-secondary: #a0a0a0;
+    /* The 'focus' color when clicking an input (a nice blue/purple) */
+    --dm-accent-color: #994747;
+    /* A semi-transparent version of the accent for focus rings */
+    --dm-accent-ring: rgba(138, 180, 248, 0.25);
+    /* Color for buttons */
+    --dm-button-text: #121212;
+    /* Disabled state colors */
+    --dm-disabled-bg: #2a2a2a;
+    --dm-disabled-text: #666666;
+
+    --theme-color: #994747;
+
+    --create-color: #47994b;
+    --delete-color: #994747;
+    --update-color: #478d99;
+    --read-color: #6b4799;
+}
+
+* {font-family: monospace;}
+
+body {
+  background-image: linear-gradient(90deg,#363636 0%, #242424 50%, #363636 100%);
+}
+body {
+
+    background-color: #121212;
+    color: var(--dm-text-primary);
+}
+
+body input[type="text"], body input[type="password"], body input[type="email"],
+body input[type="number"], body input[type="search"], body input[type="tel"],
+body input[type="url"], body input[type="date"], body input[type="datetime-local"],
+body input[type="month"], body input[type="week"], body input[type="time"],
+body textarea, body select {
+    background-color: var(--dm-input-bg);
+    color: var(--dm-text-primary);
+    border: 1px solid var(--dm-input-border);
+    border-radius: 6px;
+    padding: 12px 16px; /* generous tap area */
+    font-size: 16px; /* prevents auto-zoom on mobile iOS */
+    line-height: 1.5;
+    width: 100%; /* defaults to full width container */
+    box-sizing: border-box; /* ensures padding doesn't affect width */
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    /* Removes default OS styling (crucial for Safari/iOS dark mode) */
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+textarea {
+        resize: vertical; /* Allow vertical resizing only */
+        min-height: 100px;
+}
+label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: var(--dm-text-secondary);
+        letter-spacing: 0.5px;
+    }
+select {
+        padding-right: 40px; /* make room for the arrow */
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a0a0a0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        background-size: 16px;
+    }
+input[type="checkbox"],
+input[type="radio"] {
+    accent-color: var(--dm-accent-color);
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    vertical-align: middle;
+    margin-right: 8px;
+    /* Slight adjustment for alignment with labels */
+    position: relative;
+    top: -1px;
+}
+
+button,
+    input[type="submit"],
+    input[type="reset"],
+    input[type="button"] {
+        background-color: var(--dm-accent-color);
+        color: var(--dm-button-text);
+        font-weight: 600;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: filter 0.2s, transform 0.1s;
+        /* Resetting standard input styles for buttons */
+        width: auto;
+        -webkit-appearance: button;
+        appearance: button;
+    }
+
+    /* Button Hover State */
+    button:hover,
+    input[type="submit"]:hover,
+    input[type="reset"]:hover,
+    input[type="button"]:hover {
+        /* Makes the button slightly brighter on hover */
+        filter: brightness(110%);
+    }
+
+    /* Button Active/Click State */
+    button:active,
+    input[type="submit"]:active,
+    input[type="reset"]:active,
+    input[type="button"]:active {
+        transform: scale(0.98); /* Subtle press effect */
+        filter: brightness(100%);
+    }
+
+input:disabled,
+textarea:disabled,
+select:disabled,
+button:disabled {
+    background-color: var(--dm-disabled-bg) !important;
+    color: var(--dm-disabled-text) !important;
+    border-color: transparent !important;
+    cursor: not-allowed;
+    pointer-events: none;
+    filter: none; /* override hover brightness on buttons */
+    opacity: 0.7;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+td {
+    background-clip: padding-box;
+}
+
+tr:nth-child(even) {
+    background-color: #121212;
+}
+
+
+.user-input-div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    max-width: 50vw;
+    background-color: #080808;
+    padding: 2%;
+    border-radius: 10px;
+
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.send-spacer {
+    margin-top: 3%;
+}
+
+
+
+.nav-link {
+    background-color: var(--dm-disabled-bg);
+    padding-top: 0.5em;
+    border-radius: 10px;
+    border: 1px solid var(--dm-input-border);
+    height: 2em;
+    text-align: center;
+    color: white;
+    margin-bottom: 0.25%;
+    text-decoration: none;
+    display: block;
+}
+.nav-link:hover {
+    background-color: #994747;
+}
+
+.logo {
+    width: 20%;
+    padding-right: 3%;
+}
+
+.title-align {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 3%;
+}
+
+.sidebar {
+    position: fixed;
+    height: 100vh;
+    width: 30%;
+    background-color: #131313;
+    visibility: hidden;
+}
+
+#menu-open-btn {
+    position: fixed;
+}
+
+.skill {
+    margin-right: 1%;
+}
+
+h2.telement {
+    color: #bbbbbb
+}
+h3.telement {
+    color: #969696
+}
+a.telement {
+    text-decoration: none;
+}
+
+
+/* All tag-related stuff is AI-generated, issues will be fixed later*/
+.tag-canvas {
+    background-color: #333;
+    color: #f0f0f0;
+    width: 25vw;
+    min-height: 20vh;
+    border-radius: 10px;
+    padding: 15px 15px 10px 15px; 
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.tag-canvas-title h2.tag-canvas-title {
+    font-size: 1.5em; 
+    font-weight: 700;
+    margin: 0 0 10px 0;
+    color: #aaa;
+}
+
+.tag-box {
+   
+    border: 1px solid #555;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: #444;
+    flex-grow: 1;
+    
+    display: flex; 
+    flex-wrap: wrap; 
+    align-items: center;
+}
+
+.tag-list {
+    list-style: none; 
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0;
+}
+
+.tag-entry {
+    background: #666;
+    color: #f0f0f0;
+    padding: 6px 10px;
+    margin: 3px 5px 3px 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 0.9em;
+    user-select: none;
+}
+
+.tag-entry:hover {
+    background-color: #e33c3c;
+    color: white;
+}
+
+
+.tag-input {
+    padding: 5px;
+    min-width: 100px;
+    font-size: 1em;
+}
+
+.btns-flex {
+    display: flex;
+}
+
+.btn-create {
+    background-color: var(--create-color);
+}
+.btn-read {
+    background-color: var(--read-color);
+}
+.btn-update {
+    background-color: var(--update-color);
+}
+.btn-delete {
+    background-color: var(--delete-color);
+}
