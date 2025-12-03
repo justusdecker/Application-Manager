@@ -5,15 +5,16 @@
 <div class="user-input-div">
 <h1>LinkedIn Jobviewer ({{ ammount }} {% if max_ammount != ammount %}/ {{ max_ammount }}{% endif %} results)</h1>
 <form action="/linkedin/create" method="get">
-    <button type="submit"><span class="material-symbols-outlined">add_ad</span></button>
+    <button type="submit" class="btn-create"><span class="material-symbols-outlined">add_ad</span></button>
 </form>
 <form action="/jobsearch_settings" method="get">
     <button type="submit"><span class="material-symbols-outlined">settings</span></button>
 </form>
-<p>{{ searchfor }}</p>
 <form action="" method="post">
-    <input type="search" name="search" style="width:25%">
+    <div class="btns-flex">
+    <input type="search" name="search" style="width:25%" value="{{ searchfor }}">
     <button type="submit"><span class="material-symbols-outlined">search</span></button>
+    </div>
 </form>
  <!--
     Searchfunction:
@@ -45,12 +46,17 @@
         </td>
         <td>{{ row['lid'] }}</td>
         <td>
-            <form action="/create_by_linkedin/{{ row['id'] }}" method="post">
-                <button type="submit"><span class="material-symbols-outlined">add_home_work</span></button>
-            </form>
-            <form action="/linkedin/delete/{{ row['id'] }}" method="get">
-                <button type="submit"><span class="material-symbols-outlined">delete</span></button>
-            </form>
+            <div class="btns-flex">
+                <form action="/create_by_linkedin/{{ row['id'] }}" method="post">
+                    <button type="submit" class="btn-create"><span class="material-symbols-outlined">add_home_work</span></button>
+                </form>
+                <form action="/linkedin/read/{{ row['id'] }}" method="get">
+                    <button type="submit" class="btn-read"><span class="material-symbols-outlined">read_more</span></button>
+                </form>
+                <form action="/linkedin/delete/{{ row['id'] }}" method="get">
+                    <button type="submit" class="btn-delete"><span class="material-symbols-outlined">delete</span></button>
+                </form>
+            </div>
         </td>
             
     </tr>
