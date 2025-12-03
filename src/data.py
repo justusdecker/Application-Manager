@@ -7,11 +7,40 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy.orm.session import Session
 from sqlalchemy.exc import IntegrityError
 from src.validation import integer_or_default
+from os.path import isfile
 
 DATABASE_PATH = f'./data.db'
 DATABASE_URL = f'sqlite:///{DATABASE_PATH}'
 
 Base = declarative_base()
+
+def sfa(fp: str, m: str, d: str = None) -> str | None:
+    """
+    single-file-access
+    you dont need to write the 'with' stuff anymore :D
+    
+    Does the same as context manager open()
+    ```python
+    with open(fp, m) as f:
+        return f.read()
+        return f.read() -> str | return f.write(d) -> None
+    ```
+    """
+    if (m == 'w' or m == 'x') and d is None: raise TypeError('Illegal None-writing')
+    with open(fp, m) as f:
+        if m == 'r': return f.read()
+        if m == 'w': f.write(d)
+        if m == 'x': f.write(d)
+
+def create_file_if_not_exist(filepath: str, default_data: str):
+    if not isfile(filepath):
+        sfa(filepath, 'x', default_data)
+
+def file_read(filepath : str) -> str:
+    return sfa(filepath, 'r')
+
+def file_write(filepath : str, data : str):
+    sfa(filepath, 'w', data)
 
 class JobApplianceStates:
     INVALID = -1
