@@ -97,6 +97,7 @@
 |[summary](../src/backend/logic.py)|function|🔴|
 |[linkedin_show](../src/backend/logic.py)|function|🔴|
 |[linkedin_create](../src/backend/logic.py)|function|🔴|
+|[linkedin_read](../src/backend/logic.py)|function|🔴|
 |[linkedin_delete](../src/backend/logic.py)|function|🔴|
 |[load](../src/backend/logic.py)|function|🔴|
 |[cv_create](../src/backend/logic.py)|function|🔴|
