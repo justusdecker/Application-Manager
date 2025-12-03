@@ -27,14 +27,23 @@ async function load() {
 
 async function send() {
     // Will send the data to the internal server.
-    var contents = [];
+    var contents = '';
     inputs.forEach(input =>{
-        contents.push(input.tags);
+        contents = `${contents};`
+        input.tags.forEach(tag => {
+            contents = `${contents},${tag}`
+            console.log(contents)
+        })
     });
+    console.log(contents)
     console.log(contents);
     const blob = new Blob([JSON.stringify(contents, null, 2)], {type: 'application/json'});
     const formData = new FormData();
-    formData.append('file', blob, 'test.txt')
+    formData.append('file', blob, 'data.json')
+    const response = await fetch('/jobsearch_settings_as_json', {
+                    method: 'POST',
+                    body: formData
+                });
 }
 
 // AI-generated
