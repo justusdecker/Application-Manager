@@ -1,5 +1,5 @@
 from jinja2 import Template
-from src.backend.flask_main import url_for
+from src.flask_main import url_for
 PATH = "./src/cv_creator/"
 from src.cv_creator.objects import *
 
