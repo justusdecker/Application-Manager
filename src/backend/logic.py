@@ -1,12 +1,11 @@
 from src.backend.flask_main import *
-from src.data import JOBS, JOBIDS, LJOBS, CVCS, JobApplianceStates, file_read, create_file_if_not_exist
+from src.data import JOBS, JOBIDS, LJOBS, CVCS, JobApplianceStates, file_read, create_file_if_not_exist, file_write
 from typing import Callable
 from jinja2 import Template
 import io
 from json import dumps, loads
 from src.cv_creator.cv_generator import generate
 from src.linkedin_job_search_fetch import fetch_job_ids, fetch_linkedin_job_data, get_tags, get_mails, get_phone_number
-
 
 @app.route('/jobs/delete/<id>',methods = [POST])
 def delete_job(id: int):
@@ -189,29 +188,14 @@ def summary():
 @app.route('/linkedin',methods = [GET, POST])
 def linkedin_show(): 
     all_jobs = LJOBS.read_all(True)
+    all_jobs_length = len(all_jobs)
     tags = [get_tags(job['description']) for job in all_jobs]
-    t = ''
-    if request.method.upper() == POST:
-        t = request.form['search'].lower()
-        if t:
-            new_jobs = []
-            new_tags = []
-            
-            for job, _tags in zip(all_jobs, tags):
-                
-                if any([t in s for s, _ in _tags]) or\
-                    t in job['company'].lower() or\
-                        t in job['job_title'].lower() or\
-                            t in str(job['lid']):
-                                new_jobs.append(job)
-                                new_tags.append(_tags)
-                
-            all_jobs = new_jobs
-            tags = new_tags
-            print(tags)
-            t = f'Results for {t}'
+    from src.search import linkedin_search
+    t = request.form.get('search','').lower()
+    all_jobs, tags = linkedin_search(t, all_jobs, tags)
+    t = f'Results for {t}'
 
-    return render_template('linkedin_job_viewer.html', data = all_jobs, ammount = len(all_jobs), tags = tags, zip = zip, searchfor=t)
+    return render_template('linkedin_job_viewer.html', data = all_jobs, ammount = len(all_jobs),max_ammount = all_jobs_length, tags = tags, zip = zip, searchfor=t)
 
 @app.route('/linkedin/create',methods = [GET, POST])
 def linkedin_create():
@@ -349,11 +333,24 @@ def jobsearch_settings():
         'jobsearch_settings.html'
     )
     
-@app.route('/jobsearch_settings_as_json',methods = [GET])
+@app.route('/jobsearch_settings_as_json',methods = [GET, POST])
 def jobsearch_settings_as_json():
-    create_file_if_not_exist('./settings/jobsearch_settings.json', '[[],[],[]]')
+    if request.method.upper() == POST:
+        files = request.files.getlist('file')
+        print(files)
+        data = files[0].stream.read().decode()
+        print(data)
 
-    data = loads(file_read('./settings/jobsearch_settings.json'))
-    res = ";".join([",".join([tag for tag in taglist]) for taglist in data])
-    return res
+        cleaned_tags = [",".join([tag for tag in tags.split(',') if tag]) for tags in data[2:-1].split(';')]
+        print(cleaned_tags)
+        cleaned_tags = ";".join(cleaned_tags)
+        
+        print(cleaned_tags)
+        file_write('./settings/jobsearch_settings.json', cleaned_tags)
+        return 'finished writing', 202
+    
+    create_file_if_not_exist('./settings/jobsearch_settings.json', '[[],[],[]]')
+    data = file_read('./settings/jobsearch_settings.json')
+    #res = ";".join([",".join([tag for tag in taglist]) for taglist in data])
+    return data
     
