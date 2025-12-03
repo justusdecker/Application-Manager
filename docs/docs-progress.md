@@ -5,6 +5,10 @@
 |[improve_writing](..//ai_api.py)|function|🟢|
 |[err_return](..//main.py)|function|🟢|
 |[index](..//main.py)|function|🟡|
+|[sfa](../src/data.py)|function|🟢|
+|[create_file_if_not_exist](../src/data.py)|function|🔴|
+|[file_read](../src/data.py)|function|🔴|
+|[file_write](../src/data.py)|function|🔴|
 |[JobApplianceStates](../src/data.py)|class|🔴|
 |[JobIdsTable](../src/data.py)|class|🔴|
 |[JobsTable](../src/data.py)|class|🔴|
@@ -99,6 +103,7 @@
 |[help_show](../src/backend/logic.py)|function|🔴|
 |[create_job_from_linkedin](../src/backend/logic.py)|function|🟢|
 |[jobsearch_settings](../src/backend/logic.py)|function|🔴|
+|[jobsearch_settings_as_json](../src/backend/logic.py)|function|🔴|
 |[create_tech_stack](../src/backend/techstack.py)|function|🔴|
 |[read_tech_stack](../src/backend/techstack.py)|function|🔴|
 |[update_tech_stack](../src/backend/techstack.py)|function|🔴|
