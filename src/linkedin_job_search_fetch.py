@@ -1,7 +1,7 @@
 from html.parser import HTMLParser
 from requests import get
 import re
-from src.coding_tags import TAG_LIST, CRECOLORS, TAG_COLOR_LINK
+from src.constants import TAG_LIST, CRECOLORS, TAG_COLOR_LINK
 def attr_finder(attrs, search_for) -> list:
     return [i for i in attrs if i[0] == search_for]
 
