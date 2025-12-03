@@ -1,4 +1,4 @@
-from src.backend.flask_main import *
+from src.flask_main import *
 from src.backend.logic import *
 GET, POST, DELETE = 'GET', 'POST', 'DELETE'
 
