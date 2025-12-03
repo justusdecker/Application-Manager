@@ -1,0 +1,46 @@
+{% extends "default.html" %}
+{% block title %}Summary writer{% endblock %}
+{% block header %}Summary writer{% endblock %}
+{% block content %}
+{% macro shtxt(key, label_text, type) %}
+    <label for="{{ key }}">{{ label_text }} </label>
+    <input type="{{ type }}" name="{{ key }}" id="{{ key }}" required>
+    <br>
+{% endmacro %}
+
+{% macro shopt(options, key, label_text, required) %}
+    <label for="{{ key }}">{{ label_text }} </label>
+
+    <select name="{{ key }}" id="{{ key }}" {% if required %}required{% endif %}>
+        {% for option in options %}
+        <option value="{{ option[0] }}">{{ option[1] }}</option>
+        {% endfor %}
+    </select>
+    <br>
+{% endmacro %}
+
+<div class="user-input-div">
+        <form action="", method="post">
+            {{ shopt([("de","German"),("en","English")], "language", "Language:", "true") }}
+            {{ shtxt("name", "Name:", "text") }}
+            
+            Skills
+            {{ shopt([("technical","Technical"),("professional","Professional"),("personal","Personal")], "target", "Target:", "true") }}
+            
+            <label for="word_count_max">{{ label_text }} </label>
+            <input type="range" name="word_count_max" id="word_count_max" min="60" max="90" required>
+            <br>
+            Focus
+            Language & Style
+            Current Job
+            TextStructure
+            Hobby
+
+            <label for="text">Text: </label>
+            <textarea name="text" id="text"></textarea>
+            <br>
+
+            <input type="submit">
+        </form>
+    </div>
+{% endblock %}
