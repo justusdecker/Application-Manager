@@ -17,7 +17,7 @@ Index redirects to /Jobs
 
 # .//t.py
 
-# ./src/coding_tags.py
+# ./src/constants.py
 
 # ./src/data.py
 
@@ -250,7 +250,7 @@ Returns the last id in the table or None
 ## _to_dict
 Internal Helper: Converts SQLAlchemy Object to dict
 
-# ./src/errors.py
+# ./src/flask_main.py
 
 # ./src/gemini_api.py
 
@@ -298,8 +298,6 @@ a: str = "".lower()
 # ./src/validation.py
 
 # ./src/version.py
-
-# ./src/backend/flask_main.py
 
 # ./src/backend/logic.py
 
