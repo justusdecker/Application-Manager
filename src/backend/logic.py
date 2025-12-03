@@ -1,9 +1,9 @@
 from src.backend.flask_main import *
-from src.data import JOBS, JOBIDS, LJOBS, CVCS, JobApplianceStates
+from src.data import JOBS, JOBIDS, LJOBS, CVCS, JobApplianceStates, file_read, create_file_if_not_exist
 from typing import Callable
 from jinja2 import Template
 import io
-from json import dumps
+from json import dumps, loads
 from src.cv_creator.cv_generator import generate
 from src.linkedin_job_search_fetch import fetch_job_ids, fetch_linkedin_job_data, get_tags, get_mails, get_phone_number
 
@@ -348,3 +348,12 @@ def jobsearch_settings():
     return render_template(
         'jobsearch_settings.html'
     )
+    
+@app.route('/jobsearch_settings_as_json',methods = [GET])
+def jobsearch_settings_as_json():
+    create_file_if_not_exist('./settings/jobsearch_settings.json', '[[],[],[]]')
+
+    data = loads(file_read('./settings/jobsearch_settings.json'))
+    res = ";".join([",".join([tag for tag in taglist]) for taglist in data])
+    return res
+    
