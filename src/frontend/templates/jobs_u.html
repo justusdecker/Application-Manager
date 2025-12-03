@@ -1,0 +1,48 @@
+{% extends "default.html" %}
+{% block header %}Update Job{% endblock %}
+{% block content %}
+<div class="user-input-div">
+        <h1>Update Job</h1>
+        <form action="", method="post">
+            <label for="company">Company: </label>
+            <input type="text" name="company" id="company" value="{{ data['company'] }}">
+            <br>
+
+            <label for="title_id">Job Title: </label>
+            <select name="title_id" id="title_id" required>
+                
+                {% for job in jobs %}
+                
+                <option value="{{ job['id'] }}" {% if job['id'] == data['title_id'] %}selected{% endif %}>{{ job['name'] }}</option>
+                {% endfor %}
+            </select>
+            <br>
+
+            <label for="url">Url: </label>
+            <input type="url" name="url" id="url" value="{{ data['url'] }}" required>
+            <br>
+
+            <label for="mail">Mail: </label>
+            <input type="email" name="mail" id="mail" value="{{ data['mail'] }}">
+            <br>
+
+            <label for="phone_number">phone_number: </label>
+            <input type="tel" name="phone_number" id="phone_number"  value="{{ data['phone_number'] }}">
+            <br>
+
+            <label for="description">description: </label>
+            <textarea name="description" id="description">{{ data['description'] }}</textarea>
+            <br>
+
+            <label for="state_id">State: </label>
+            <select name="state_id" id="state_id" required>
+                {% for state, nr in states %}
+                
+                <option value="{{ nr }}" {% if nr == data['state_id'] %}selected{% endif %}>{{ state }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <input type="submit">
+        </form>
+    </div>
+{% endblock %}
