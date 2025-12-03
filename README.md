@@ -23,7 +23,6 @@ Then is this your go to app for job-applications.
 
 
 ## 🗺Roadmap
-* [ ] LinkedIn Job to regular converter(using the new linkedin-get functions)(single & multiple)
 * [ ] Add CVC Builder
     * We need Javascript to create multiple elements on the fly
 * [ ] Set the job application timestamp.
