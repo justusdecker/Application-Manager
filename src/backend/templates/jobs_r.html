@@ -16,6 +16,14 @@
         
     </tr>
     {% endfor %}
+    <tr>
+        <td>tags</td>
+        <td>
+            {% for t, c in tags %}
+            <b style="background-color: {{ c }};">{{ t }}</b>
+            {% endfor %}
+        </td>
+    </tr>
 </table>
 </div>
 {% endblock %}
