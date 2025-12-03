@@ -56,6 +56,7 @@
 |[read_as_dict](../src/data.py)|function|🟢|
 |[get_last_id](../src/data.py)|function|🟢|
 |[_to_dict](../src/data.py)|function|🟢|
+|[JobQuery](../src/flask_main.py)|class|🔴|
 |[configuration](../src/gemini_api.py)|function|🟢|
 |[create_payload](../src/gemini_api.py)|function|🟢|
 |[send_gemini](../src/gemini_api.py)|function|🟢|
@@ -81,7 +82,6 @@
 |[get_jobsearch_settings](../src/search.py)|function|🔴|
 |[linkedin_search](../src/search.py)|function|🔴|
 |[integer_or_default](../src/validation.py)|function|🔴|
-|[JobQuery](../src/backend/flask_main.py)|class|🔴|
 |[delete_job](../src/backend/logic.py)|function|🟢|
 |[read_job](../src/backend/logic.py)|function|🟢|
 |[update_job](../src/backend/logic.py)|function|🟢|
