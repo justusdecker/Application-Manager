@@ -1,4 +1,4 @@
-from src.backend.flask_main import *
+from src.flask_main import *
 
 @app.route('/tech_stack/create',methods = [DELETE, GET])
 def create_tech_stack():
