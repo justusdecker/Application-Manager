@@ -29,7 +29,7 @@ def read_job(id: int):
         return redirect(url_for(f'read_job',id=data['id']))
     
     return render_template('jobs_r.html',
-                           values = JOBS.read_as_dict(id, JOBIDS))
+                           values = JOBS.read_as_dict(id, JOBIDS), tags = get_tags(data['description']))
 
 @app.route('/jobs/update/<id>',methods = [GET, POST])
 def update_job(id: int):
@@ -193,7 +193,6 @@ def linkedin_show():
     from src.search import linkedin_search
     t = request.form.get('search','').lower()
     all_jobs, tags = linkedin_search(t, all_jobs, tags)
-    t = f'Results for {t}'
 
     return render_template('linkedin_job_viewer.html', data = all_jobs, ammount = len(all_jobs),max_ammount = all_jobs_length, tags = tags, zip = zip, searchfor=t)
 
@@ -215,7 +214,12 @@ def linkedin_create():
     return render_template(
         'linkedin_job_getter.html'
     )
-    
+
+@app.route('/linkedin/read/<id>',methods = [GET])
+def linkedin_read(id: int): 
+    data = LJOBS.read_as_dict(id)
+    return render_template('linkedin_job_r.html', data = data, tags = get_tags(data['description']))
+
 @app.route('/linkedin/delete/<id>',methods = [GET])
 def linkedin_delete(id: int): 
     LJOBS.delete(id)
