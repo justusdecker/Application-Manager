@@ -1,4 +1,4 @@
-from src.backend.flask_main import *
+from src.flask_main import *
 from src.data import JOBS, JOBIDS, LJOBS, CVCS, JobApplianceStates, file_read, create_file_if_not_exist, file_write
 from typing import Callable
 from jinja2 import Template
