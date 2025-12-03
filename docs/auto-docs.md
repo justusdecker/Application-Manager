@@ -285,6 +285,16 @@ For this to work you need to copy the html from your browser and paste this into
 
 # ./src/mail.py
 
+# ./src/search.py
+
+## LowerCaseStr
+The string should be in lower-case
+For performance & case-insensitive search reasons.
+    
+```python
+a: str = "".lower()
+```
+
 # ./src/validation.py
 
 # ./src/version.py
