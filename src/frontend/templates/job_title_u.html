@@ -1,0 +1,13 @@
+{% extends "default.html" %}
+{% block header %}Update Jobtitle{% endblock %}
+{% block content %}
+<div class="user-input-div">
+        <h1>Update Jobtitle</h1>
+        <form action="", method="post">
+            <label for="name">Name: </label>
+            <input type="text" name="name" id="name" value="{{ job_ids['name'] }}">
+            <br>
+            <input type="submit">
+        </form>
+    </div>
+{% endblock %}
