@@ -1,16 +1,64 @@
 
-document.addEventListener('DOMContentLoaded', () => {
+const inputs = document.querySelectorAll('.tag-input');
 
-    const inputs = document.querySelectorAll('.tag-input');
+async function load() {
 
-    inputs.forEach(input => {
-        input.tags = [];
-        input.addEventListener('keyup', addTag);
+    var data = []
+    const response = await fetch('/jobsearch_settings_as_json', {
+        method: 'GET',
+        headers: {
+            'Accept': 'text/plain'
+        }
+    }
+    )
+    const text = await response.text()
+    text.split(';').forEach(tagList => {
+            var tags = [];
+            tagList.split(',').forEach(tag => {
+                tags.push(tag);
+            })
+            data.push(tags)
+        })
+    return data
+}
+
+
+
+
+async function send() {
+    // Will send the data to the internal server.
+    var contents = [];
+    inputs.forEach(input =>{
+        contents.push(input.tags);
     });
+    console.log(contents);
+    const blob = new Blob([JSON.stringify(contents, null, 2)], {type: 'application/json'});
+    const formData = new FormData();
+    formData.append('file', blob, 'test.txt')
+}
+
+// AI-generated
+document.addEventListener('DOMContentLoaded', () => {
+    load().then(all_data => {
+    console.log(all_data)
+
+        var i = 0;
+        inputs.forEach(input => {
+            var data = all_data[i]
+            input.tags = data;
+            data.forEach(tag => {
+                console.log(tag);
+                addTagManually(tag, input);
+            })
+            i++;
+            input.addEventListener('keyup', addTag);
+    });
+    })
+    
 
     function createTags(inputElement) {
         const canvas = inputElement.closest('.tag-canvas');
-        
+
         const tagList = canvas.querySelector('.tag-list');
 
         tagList.querySelectorAll('li').forEach(li => li.remove());
@@ -60,5 +108,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 inputElement.value = '';
             }
         }
+    }
+
+    function addTagManually(text, inputE) {
+        let inputElement = text;
+        let val = inputElement.replace(/\s+/g, ' ').trim();
+
+        
+        if (val.length > 1) {
+            val.split(',').forEach(tag => {
+                let cleanTag = tag.trim().toLowerCase();
+                
+                if (cleanTag.length > 0 && !inputElement.includes(cleanTag)) {
+                    inputElement.tags.push(cleanTag);
+                }
+            });
+            
+            createTags(inputE);
+        }
+        
     }
 });
