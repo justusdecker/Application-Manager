@@ -1,9 +1,0 @@
-{% extends "default.html" %}
-{% block header %}About{% endblock %}
-{% block content %}
-<div class="user-input-div"><!--Broken-->
-{% for line in license.splitlines() %} 
-<p>{{ line }}</p><br>
-{% endfor %}
-</div>
-{% endblock %}
