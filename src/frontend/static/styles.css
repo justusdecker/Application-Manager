@@ -211,8 +211,19 @@ tr:nth-child(even) {
     position: fixed;
 }
 
+.skill-container {
+    display:flex;
+    flex-wrap:wrap;
+}
+
 .skill {
-    margin-right: 1%;
+    margin: 1% 1% 2% 0;
+    padding: 1%;
+    border-radius: 10px;
+}
+
+.rimg {
+    border-radius: 10px;
 }
 
 h2.telement {
