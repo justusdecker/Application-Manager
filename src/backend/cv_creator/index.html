@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV</title>
+    <style>{{ css }}</style>
+</head>
+<body>
+    {% for i, _ in enumerate("12") %}
+    <div class="page" style="{% if i %}margin-top:3%;{% endif %}">
+        <div class="wrapper">
+
+            <div class="sidebar">
+                {% if not i%}
+                    {% for info in data.SIDEBAR_ELEMENTS %}
+                        {{ info.get() }}
+                    {% endfor %}
+                {% endif %}
+            </div>
+            
+            <div class="main-content mo-topspace">
+                {% if not i %}
+                <div id="profile-and-header-align">
+                    <img src="{{ profile_path }}" alt="" width="90em">
+                    <div style="margin-left: 5%;">
+                        <h3>{{ data.NAME }}</h3>
+                        <h4>{{ data.PROFESSION }}</h4>
+                        <p>{{ data.CITY }}, {{ data.COUNTRY }} <a href="tel:{{ data.PHONE_NUMBER }}">{{ data.PHONE_NUMBER }}</a> <a href="mailto:{{ data.MAIL }}">{{ data.MAIL }}</a></p>
+                    </div>
+                </div>
+                
+                <div id="summary">
+                    <div class="borderline-spacer more-weight mo-topspace">Summary</div>
+                    <div>
+                        <p class="better-text-view">{{ data.SUMMARY_CONTENT }}</p>
+                    </div>
+                </div>
+
+                <div id="projects">
+                    <div class="borderline-spacer more-weight mo-topspace">Projects</div>
+                    {% for project in data.PROJECTS %}
+                    <div id="first-project">
+                        <div>
+                            <div class="title-aligner">
+                                <p class="more-weight text-header-relocate">{{ project.TITLE }}</p>
+                                <p class="more-weight text-header-relocate">{{ project.SPAN }}</p>
+                            </div>
+                            <a href="{{ project['github_link'] }}">GitHub Repository</a>
+                            <ul>
+                                {% for bulletpoint in project.BULLETPOINTS %}
+                                <li>
+                                    {{ bulletpoint.get() }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    
+                </div>
+                
+                
+                <div id="education">
+                    <div id="first-project">
+
+                        <div class="borderline-spacer bold-text">Education</div>
+                        {% for xp in data.EXPERIENCE %}
+                        <div>
+                            <div class="title-aligner">
+                                <p class="more-weight text-header-relocate">{{ xp.TITLE }}</p>
+                                <p class="more-weight text-header-relocate">{{ xp.SPAN }}</p>
+                            </div>
+
+                            <div class="title-aligner">
+                                <p class="text-header-relocate">{{ xp.PROFESSION }}</p>
+                                <p class="text-header-relocate">{{ xp.LOCATION }}</p>
+                            </div>
+                            <ul>
+                                {% for bulletpoint in xp.BULLETPOINTS %}
+                                <li>
+                                    {{ bulletpoint.get() }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if i %}
+                <div id="experience">
+                    <div id="first-project">
+
+                        <div class="borderline-spacer bold-text">Experience</div>
+                        {% for edu in data.EDUCATION %}
+                        <div>
+                            <div class="title-aligner">
+                                <p class="more-weight text-header-relocate">{{ edu.TITLE }}</p>
+                                <p class="more-weight text-header-relocate">{{ edu.SPAN }}</p>
+                            </div>
+
+                            <div class="title-aligner">
+                                <p class="text-header-relocate">{{ edu.PROFESSION }}</p>
+                                <p class="text-header-relocate">{{ edu.LOCATION }}</p>
+                            </div>
+                            <ul>
+                                {% for bulletpoint in edu.BULLETPOINTS %}
+                                <li>
+                                    {{ bulletpoint.get() }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+        
+    </div>
+    {% endfor %}
+</body>
+</html>
+
+
