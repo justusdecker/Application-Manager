@@ -236,12 +236,13 @@ def load():
 @app.route('/cv/create',methods = [GET, POST])
 def cv_create():
     if request.method.upper() == POST:
-        files = request.files.getlist('cvcs')
-        print(files)
-        for file in files:
-            name = file.filename.split('.', maxsplit=1)[0]
-            cvc = file.stream.read()
-            CVCS.create(cvc, name)
+        files = request.files.getlist('file')
+        file = files[0]
+
+        name = file.filename.split('.', maxsplit=1)[0]
+        content = file.stream.read().decode()
+        
+        CVCS.create(content, name)
                 
         return redirect(url_for('cv_read',id=-1))
     return render_template(
