@@ -25,6 +25,8 @@ Index redirects to /Jobs
 
 # ./src/backend/data.py
 
+Contains all file-accesses, Table-definitions, SQL-interactions & other file-related functions, classes for the runtime.
+
 ## sfa
 single-file-access
 you dont need to write the 'with' stuff anymore :D
@@ -35,6 +37,73 @@ with open(fp, m) as f:
     return f.read()
     return f.read() -> str | return f.write(d) -> None
 ```
+
+Args:
+    fp (str): filepath
+    m (str): mode
+    d (str, optional): data. Defaults to None.
+
+Raises:
+    TypeError: If the mode is writing and the data is None
+
+Returns:
+    str | None: The read-data if mode `r`
+
+## create_file_if_not_exist
+Will create a file with the `default_data` if file does not exist.
+
+Args:
+    filepath (str)
+    default_data (str): If the file does not exist, this data will be written to the `filepath`
+
+## file_read
+Reads from `filepath` in mode: `r`
+
+Args:
+    filepath (str)
+
+Returns:
+    str: the data that the file contains
+
+## file_write
+Writes `data` to `filepath` in mode: `w`
+
+Args:
+    filepath (str)
+    data (str)
+
+## JobApplianceStates
+A simple Dataclass used for the State in the job-appliance.
+
+Used for the read, show page for jobs.
+
+```python
+INVALID = -1
+NOT_APPLIED = 0
+APPLIED = 1
+SCREEN = 2
+INTERVIEW = 3
+OFFER = 4
+DENIED = 5
+```
+
+## JobIdsTable
+The JobIdsTable alias(Job-title or Profession)
+
+## JobsTable
+The Jobs-Table
+
+## LinkedInJobsTable
+The LinkedInJobsTable
+
+This is a "temp" Database so the Jobs-DB(The jobs you apply to) is not crowded everytime the user imports from linkedIn.
+
+## CVCTable
+The CVCTable
+
+> [!ATTENTION]
+> Only store the python-script in the `cvc` column.
+> Otherwise the app will not work!
 
 ## SQL
 A generic wrapper for CRUD operations (Create, Read, Update, Delete)
@@ -55,6 +124,22 @@ Inherits all CRUD-Functions from SQL and expand these by LinkedInJob-Logic.
 ## CVC
 Specialized Class for CV-Operations.
 Inherits all CRUD-Functions from SQL and expand these by CV-Logic.
+
+## connect
+Creates the SQL Engine & Session for the runtime
+
+## get
+gives you all states
+
+Returns:
+    list[tuple[str, int]]: [`name`, `id`]
+
+## _get_state_as_text
+Args:
+    id (int): the id you want to get the name of
+
+Returns:
+    str: the name
 
 ## read
 Retrieves a record by its ID.
@@ -149,6 +234,13 @@ Reads a single jb & returns it as dictionary
 ## get_job_name
 Gets only the job name corresponding to the id
 
+## get_job_exist
+Args:
+    name (str): the name of the job
+
+Returns:
+    int | False: The corresponding id or False
+
 ## get_ids
 Gets the list of existing ids
 
@@ -182,6 +274,9 @@ Updates the Job-Entry
     phone_number: str, 
     description: str, 
     state_id: int
+
+## read_all
+Reads all job-entrys
 
 ## read_as_dict
 Reads a single job-entry and returns it as dict.
@@ -220,6 +315,13 @@ Reads all LinkedInjob-entrys
 ## read_as_dict
 Reads a single LinkedInjob-entry and returns it as dict.
 Returns None if id does not exist
+
+## is_lid_inthere
+Args:
+    lid (str): the linkedIn id
+
+Returns:
+    bool: Is linkedIn id in the database?
 
 ## get_last_id
 Returns the last id in the table or None
@@ -290,7 +392,7 @@ Deletes the entry of a job in the Database.
 Redirects to show_jobs with id = -1
 
 ## read_job
-Shows the information about a Job
+Shows the information about a single Job
 redirect to itself with data id if data id is not input
 
 ## update_job
@@ -313,6 +415,15 @@ POST:
 
 ## show_jobs
 Shows all jobs, listed in the database.
+
+## create_job_title
+For creating a new Job-title in the Database
+
+GET:
+    Let the user create a new job-title
+POST:
+    Adds the Job-title to the Database
+    Redirects to job_titles/read/-1
 
 ## export_json
 Downloads the jobs-database as json.
@@ -347,9 +458,65 @@ a: str = "".lower()
 
 # ./src/backend/validation.py
 
-# ./src/backend/cv_creator/cvc.py
-
 # ./src/backend/cv_creator/cv_generator.py
 
 # ./src/backend/cv_creator/objects.py
+
+## Links
+Represents a collection of hyperlinked text elements, typically for a sidebar,
+and generates the corresponding HTML string.
+
+## Head
+Represents a main heading for a section, typically in a sidebar,
+and generates the corresponding HTML string.
+
+## Title
+Represents a sub-title or secondary heading, typically in a sidebar,
+and generates the corresponding HTML string.
+
+## Content
+Represents a block of general text content, typically in a sidebar,
+and generates the corresponding HTML string.
+
+## Bulletpoint
+Represents a single bullet point item, and generates the corresponding HTML string.
+Note: This does not wrap the content in a standard HTML list (ul/li).
+
+## Project
+A data structure class representing a project entry, likely for a resume or portfolio.
+It holds data but does not generate HTML itself.
+
+## EducationOrExperience
+A data structure class representing an entry for education or professional experience.
+It holds data but does not generate HTML itself.
+
+## get
+Generates the HTML string containing all links, enclosed in a div with
+specific sidebar styling.
+
+:return: An HTML string of linked titles separated by ", ".
+
+## get
+Generates the HTML string for the heading, wrapped in a div with
+border and main title styling.
+
+:return: An HTML string for the section heading.
+
+## get
+Generates the HTML string for the sub-title, wrapped in a div with
+secondary title styling.
+
+:return: An HTML string for the sub-title.
+
+## get
+Generates the HTML string for the content, wrapped in a div and a paragraph
+tag with specific sidebar text styling.
+
+:return: An HTML string for the content block.
+
+## get
+Generates the HTML string for the bullet point content, wrapped in a paragraph
+tag with a specific class for viewing.
+
+:return: An HTML string for the bullet point.
 
