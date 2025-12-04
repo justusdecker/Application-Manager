@@ -19,7 +19,11 @@ Index redirects to /Jobs
 
 # ./src/constants.py
 
-# ./src/data.py
+# ./src/flask_main.py
+
+# ./src/version.py
+
+# ./src/backend/data.py
 
 ## sfa
 single-file-access
@@ -250,9 +254,7 @@ Returns the last id in the table or None
 ## _to_dict
 Internal Helper: Converts SQLAlchemy Object to dict
 
-# ./src/flask_main.py
-
-# ./src/gemini_api.py
+# ./src/backend/gemini_api.py
 
 The Gemini API Access
 
@@ -272,9 +274,7 @@ Returns the gemini result -> `str`.
 If a error occoures: 
     returns a dict that only contains the `error`.
 
-# ./src/help.py
-
-# ./src/linkedin_job_search_fetch.py
+# ./src/backend/linkedin_job_search_fetch.py
 
 ## fetch_linkedin_job_data
 Gets you the logo, job_title, company_name, description & also returns the job_id in the dict.
@@ -282,22 +282,6 @@ Gets you the logo, job_title, company_name, description & also returns the job_i
 ## fetch_job_ids
 Takes a html-structure in string form, runs the HTML parser and fetches the job ids from there.
 For this to work you need to copy the html from your browser and paste this into a file!
-
-# ./src/mail.py
-
-# ./src/search.py
-
-## LowerCaseStr
-The string should be in lower-case
-For performance & case-insensitive search reasons.
-    
-```python
-a: str = "".lower()
-```
-
-# ./src/validation.py
-
-# ./src/version.py
 
 # ./src/backend/logic.py
 
@@ -349,11 +333,23 @@ edge cases:
     - job-title does not exist
     
 
-# ./src/backend/techstack.py
+# ./src/backend/mail.py
 
-# ./src/cv_creator/cvc.py
+# ./src/backend/search.py
 
-# ./src/cv_creator/cv_generator.py
+## LowerCaseStr
+The string should be in lower-case
+For performance & case-insensitive search reasons.
+    
+```python
+a: str = "".lower()
+```
 
-# ./src/cv_creator/objects.py
+# ./src/backend/validation.py
+
+# ./src/backend/cv_creator/cvc.py
+
+# ./src/backend/cv_creator/cv_generator.py
+
+# ./src/backend/cv_creator/objects.py
 
