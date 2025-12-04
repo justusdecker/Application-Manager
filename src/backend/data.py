@@ -1,12 +1,11 @@
 from sqlalchemy.orm.session import Session
 from sqlalchemy.exc import IntegrityError
-from src.validation import integer_or_default
+from src.backend.validation import integer_or_default
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.engine.base import Engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy.orm.session import Session
 from sqlalchemy.exc import IntegrityError
-from src.validation import integer_or_default
 from os.path import isfile
 
 DATABASE_PATH = f'./data.db'
