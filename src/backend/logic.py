@@ -20,7 +20,7 @@ def delete_job(id: int):
 @app.route('/jobs/read/<id>',methods = [GET])
 def read_job(id: int):
     """
-    Shows the information about a Job
+    Shows the information about a single Job
     redirect to itself with data id if data id is not input
     """
     data = JOBS.read_as_dict(id, JOBIDS)
@@ -99,6 +99,16 @@ def show_jobs():
     
 @app.route('/job_titles/create',methods = [POST, GET])
 def create_job_title():
+    """
+    For creating a new Job-title in the Database
+    
+    GET:
+        Let the user create a new job-title
+    POST:
+        Adds the Job-title to the Database
+        Redirects to job_titles/read/-1
+    """
+    
     if request.method.upper() == POST:
         name = request.form.get('name')
 
