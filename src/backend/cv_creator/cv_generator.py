@@ -23,7 +23,7 @@ def generate(filepath: str, settings: str) -> str:
     )
     del loc['CVC']
     # Writing & Return
-    with open(filepath, 'wb') as f:
-        f.write(result.encode())
+    #with open(filepath, 'wb') as f:
+    #    f.write(result.encode())
         
     return result
