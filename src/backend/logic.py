@@ -1,12 +1,13 @@
 from src.flask_main import *
-from src.data import JOBS, JOBIDS, LJOBS, CVCS, JobApplianceStates, file_read, create_file_if_not_exist, file_write
+from src.backend.data import JOBS, JOBIDS, LJOBS, CVCS, JobApplianceStates, file_read, create_file_if_not_exist, file_write
 from typing import Callable
 from jinja2 import Template
 import io
 from json import dumps, loads
-from src.cv_creator.cv_generator import generate
-from src.linkedin_job_search_fetch import fetch_job_ids, fetch_linkedin_job_data, get_tags, get_mails, get_phone_number
-
+from src.backend.cv_creator.cv_generator import generate
+from src.backend.linkedin_job_search_fetch import fetch_job_ids, fetch_linkedin_job_data, get_tags, get_mails, get_phone_number
+from src.backend.search import linkedin_search
+from src.constants import HELP
 @app.route('/jobs/delete/<id>',methods = [POST])
 def delete_job(id: int):
     """
@@ -190,7 +191,7 @@ def linkedin_show():
     all_jobs = LJOBS.read_all(True)
     all_jobs_length = len(all_jobs)
     tags = [get_tags(job['description']) for job in all_jobs]
-    from src.search import linkedin_search
+    
     t = request.form.get('search','').lower()
     all_jobs, tags = linkedin_search(t, all_jobs, tags)
 
@@ -278,11 +279,10 @@ def license():
 
 @app.route('/help',methods = [GET])
 def help_show():
-    from src.help import generate_help
     
     return render_template(
         'help.html',
-        help = generate_help()
+        help = HELP
     )
     
 @app.route('/create_by_linkedin/<id>',methods = [POST])
