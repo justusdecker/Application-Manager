@@ -1,7 +1,7 @@
 from jinja2 import Template
 from src.flask_main import url_for
-PATH = "./src/cv_creator/"
-from src.cv_creator.objects import *
+PATH = "./src/backend/cv_creator/"
+from src.backend.cv_creator.objects import *
 
 def generate(filepath: str, settings: str) -> str:
     # Reading
