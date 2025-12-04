@@ -8,9 +8,27 @@ Did you ever struggle with the massive ammount of data, errors, the linkedIn sea
 
 Then is this your go to app for job-applications.
 
+Manage your job-applications, job-titles/professions, linkedIn jobs, create & manage CVs and more.
+
+# How to get started?
+
+Before you get started you need to install some packages:
+```bash
+pip install -r requirements.txt
+```
+
+Now you can start the flask-application:
+```bash
+python main.py
+```
+
+Go to your browser and enter `127.0.0.1:5000`
+
 ## Functionality
 
 ### Import Jobs from LinkedIn
+
+<img src="./demo/linkedinjv.png" width="50%">
 
 You can easily import Jobs from LinkedIn by parsing the `LinkedIn/jobs` site `html` to the app.
 
@@ -31,6 +49,11 @@ You can easily import Jobs from LinkedIn by parsing the `LinkedIn/jobs` site `ht
 > * Do the step 3 & 4 again
 
 ### Creating Jobs
+
+<img src="./demo/jobs_create.png" width="50%">
+
+<img src="./demo/jobslist.png" width="50%">
+
 You can save your job-applications for later use or statistics in `jobs/create`.
 
 The following values are accepted here:
@@ -43,64 +66,124 @@ The following values are accepted here:
 
 ### Creating a job-id
 
+<img src="./demo/job_titles.png" width="50%">
+
 A job/profession-id is needed for creating a job.
 
 The following values are accepted here:
 * **name**
 
-### Creating CVC Data
-...
+### CV Creation
 
-### Creating a CV
-...
+<img src="./demo/cv.png" width="50%">
+
+The CVC data is in stored in a python class.
+
+You need to import this in `cv/create`, here you must set a name for your `CVC`.
+
+The data will be stored in the CVC Database and loaded in runtime!
+
+Now select your CV in `cv/` and go to the read page of this element.
+
+Here you need to hit `strg + p` and select the `save as pdf` option.
+
+> [!NOTE] The contents on the left side must be greater than the left-side itself!
+> Otherwise the CV break, this is a bug, that if will fix later.
+
+An CVC Example:
+```python
+from src.backend.cv_creator.objects import *
+
+class CVC:
+    NAME = "John Doe"
+    PROFESSION = "Developer"
+    CITY = "Berlin"
+    COUNTRY = "Germany"
+    PHONE_NUMBER = "+49abcxyz"
+    MAIL = "john.doe@xyz.com"
+    SUMMARY_CONTENT = "This is my summaryThis is my summaryThis is my summaryThis is my summaryThis is my summaryThis is my summaryThis is my summaryThis is my summaryThis is my summaryThis is my summaryThis is my summaryThis is my summaryThis is my summaryThis is my summary"
+    SIDEBAR_ELEMENTS = [
+        Head('Profiles'),
+            Links(['xyz.de','xyz.en'], ['GitHub', 'LinkedIn']),
+        Head('Technical Skills'),
+            Title('Programming Languages'),
+                Content('Python, Java, C, Kotlin'),
+            Title('Web Development'),
+                Content('HTML, CSS, Javascript, jinja'),
+            Title('Frameworks & Libraries'),
+                Content('Flask, tkinter, win32api, selenium, sqlite3, pytest'),
+            Title('Databases'),
+                Content('SQLite, SQLAlchemy'),
+            Title('Project & Development Tools'),
+                Content('Git, GitHub, Git Actions'),
+            Title('OS'),
+                Content('Windows, Linux, Mac OS X, WSL Ubuntu'),
+            Title('Other'),
+                Content('OOP'),
+        Head('Soft Skills'),
+            Title('Problem-solving'),
+            Title('Teamwork'),
+            Title('Communication'),
+            Title('Analytical thinking'),
+            Title('Fast learner'),
+        Head('Languages'),
+            Title('German'),
+                Content('Native'),
+            Title('English'),
+                Content('B2'),
+    ]
+    PROJECTS = [
+        Project('Test', '2024 - 2025', '#nope', 'GitHub Repository', 
+                [
+                    Bulletpoint('ABC'),
+                    Bulletpoint('DEF'),
+                    Bulletpoint('GHI')
+                ]),
+        Project('This repo', '2023 - 2024', '#nope', 'GitHub Repository', 
+                [
+                    Bulletpoint('KLM'),
+                    Bulletpoint('NOP'),
+                    Bulletpoint('QRS')
+                ])
+    ]
+    EDUCATION = [
+        EducationOrExperience('School', '2006 - 2015', 'Student', 'Berlin, Germany',
+                              [
+                                  Bulletpoint('This is a bulletpointThis is a bulletpointThis is a bulletpointThis is a bulletpointThis is a bulletpointThis is a bulletpointThis is a bulletpointThis is a bulletpointThis is a bulletpointThis is a bulletpointThis is a bulletpointThis is a bulletpointThis is a bulletpointThis is a bulletpointThis is a bulletpointThis is a bulletpointThis is a bulletpointThis is a bulletpointThis is a bulletpointThis is a bulletpointThis is a bulletpointThis is a bulletpoint'),
+                                  Bulletpoint('me too')
+                              ])
+    ]
+    EXPERIENCE = [
+        EducationOrExperience('Job', '2016 - 2022', 'Developer', 'Berlin, Germany',
+                              [
+                                  Bulletpoint('This is a bulletpoint'),
+                                  Bulletpoint('me too')
+                              ])
+    ]
+```
+
+
 
 ### Export
+You can easily export your job-applications as `json` or `csv`
 
-### Others
-...
-
-## What you can do:
-* Manage the CVs: `/cv`
-* Import Jobs from LinkedIn to have a better overview: `/linkedin`
-* Generate your own CV in easy mode(This will require knowledge from my side-project: `cv-template`)
+## Others:
 * Easy job application report export in json format
 * Easy job application report export in csv format
 * Auto-extract the phone-number, e-mail & address from the linkedin job page.
 
-## Workflow
-- Create a Job or importing the jobs from linkedIn
+## 🗺Development-Status
+Work in progress:
 
+* MVP completed✅
+* All functionalitys planned for the MVP-State are implemented right now.✅
+* The documentation for developers is unfinished.❌
+* The documentation for users is "finished".⚠(Some things might be unclear! Please file an issue in this case.)
 
-## 🗺Roadmap
-* [ ]
-* [ ] Add CVC Builder
-    * We need Javascript to create multiple elements on the fly
-* [ ] Set the job application timestamp.
-* [ ] Add the AI improve-writing to CV creator
-
-
-# After MVP
+In the future i will add:
 * [ ] Auto apply: Sends a prefab(generated by the user) to the companys email address. (Needs 2-Factor-Auth for google)
 * [ ] Coverletter Creator
 * [ ] Email Content Generator
-* [ ] The Application via E-Mail:
-    We need to send the CV, the Coverletter(optional) & the email content itself.
+* [ ] The AI improve_writing function(delayed & moved to `after_mvp`)
 
-#### Prebuild Application
-
-#### An E-mail application process(q&d)
-***
-For each Application you should create a new set of CV, CL & Mail-content.
-
-All of this stuff will be bundled into one site: `application/mail`
-
-1. Add your Coverletter Template, this will also create the mail-content, takes also the the CVC Data into account.
-
-2. Add your CVC
-
-For this we need two more tables:
-* CL
-* Mail-Content
-
-### More README will be added later
-...
+[^1] Copyright 2025 Justus Decker - Project Application-Manager licensed under GPL V3
