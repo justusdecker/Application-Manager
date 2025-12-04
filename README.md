@@ -1,6 +1,6 @@
 # Application-Manager(WIP)
 
-<img src="./src/backend/static/logo.png" width="25%">
+<img src="./src/frontend/static/logo.png" width="25%">
 
 This is an easy to use Manager for your job-applications.
 
@@ -8,9 +8,58 @@ Did you ever struggle with the massive ammount of data, errors, the linkedIn sea
 
 Then is this your go to app for job-applications.
 
+## Functionality
+
+### Import Jobs from LinkedIn
+
+You can easily import Jobs from LinkedIn by parsing the `LinkedIn/jobs` site `html` to the app.
+
+1. Load the `https://www.linkedin.com/jobs/search/` site and search for your desired profession / job_title
+2. Open the dev-console with `F12`
+3. Goto Tab: `Elements`
+3. Scroll to the bottom in the job-listings
+4. in the dev-console
+    1. right-click on the html-tag
+    2. click `edit as HTML`
+    3. Copy the entire HTML from here
+    4. insert the HTML into the textinput in `/linkedin/create`
+    5. Press on Add
+
+> [!NOTE]
+> If you want to import: site 1...2...3... you need to :
+> * reload the linkedin site each time.
+> * Do the step 3 & 4 again
+
+### Creating Jobs
+You can save your job-applications for later use or statistics in `jobs/create`.
+
+The following values are accepted here:
+* **Company**(*): The company name.
+* **Job title**(*): You can select from already existing `job-titles`. If you can see nothing in the dropdown, you did forget to create a `job-title`.
+* **URL**(*): The companys website.
+* **Mail**
+* **phone_number**
+* **description**
+
+### Creating a job-id
+
+A job/profession-id is needed for creating a job.
+
+The following values are accepted here:
+* **name**
+
+### Creating CVC Data
+...
+
+### Creating a CV
+...
+
+### Export
+
+### Others
+...
+
 ## What you can do:
-* Manage your applications: `/jobs`
-* Manage the Job Titles your are looking for: `/job_ids`
 * Manage the CVs: `/cv`
 * Import Jobs from LinkedIn to have a better overview: `/linkedin`
 * Generate your own CV in easy mode(This will require knowledge from my side-project: `cv-template`)
@@ -23,6 +72,7 @@ Then is this your go to app for job-applications.
 
 
 ## 🗺Roadmap
+* [ ]
 * [ ] Add CVC Builder
     * We need Javascript to create multiple elements on the fly
 * [ ] Set the job application timestamp.
