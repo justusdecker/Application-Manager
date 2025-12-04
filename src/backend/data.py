@@ -1,3 +1,6 @@
+"""
+Contains all file-accesses, Table-definitions, SQL-interactions & other file-related functions, classes for the runtime.
+"""
 from sqlalchemy.orm.session import Session
 from sqlalchemy.exc import IntegrityError
 from src.backend.validation import integer_or_default
@@ -14,17 +17,27 @@ DATABASE_URL = f'sqlite:///{DATABASE_PATH}'
 Base = declarative_base()
 
 def sfa(fp: str, m: str, d: str = None) -> str | None:
-    """
-    single-file-access
+    """single-file-access
     you dont need to write the 'with' stuff anymore :D
-    
+
     Does the same as context manager open()
     ```python
     with open(fp, m) as f:
         return f.read()
         return f.read() -> str | return f.write(d) -> None
     ```
-    """
+    
+    Args:
+        fp (str): filepath
+        m (str): mode
+        d (str, optional): data. Defaults to None.
+
+    Raises:
+        TypeError: If the mode is writing and the data is None
+
+    Returns:
+        str | None: The read-data if mode `r`
+    """    
     if (m == 'w' or m == 'x') and d is None: raise TypeError('Illegal None-writing')
     with open(fp, m) as f:
         if m == 'r': return f.read()
@@ -32,16 +45,43 @@ def sfa(fp: str, m: str, d: str = None) -> str | None:
         if m == 'x': f.write(d)
 
 def create_file_if_not_exist(filepath: str, default_data: str):
+    """Will create a file with the `default_data` if file does not exist.
+
+    Args:
+        filepath (str)
+        default_data (str): If the file does not exist, this data will be written to the `filepath`
+    """
     if not isfile(filepath):
         sfa(filepath, 'x', default_data)
 
 def file_read(filepath : str) -> str:
+    """Reads from `filepath` in mode: `r`
+
+    Args:
+        filepath (str)
+
+    Returns:
+        str: the data that the file contains
+    """    
     return sfa(filepath, 'r')
 
 def file_write(filepath : str, data : str):
+    """
+    Writes `data` to `filepath` in mode: `w`
+    
+    Args:
+        filepath (str)
+        data (str)
+    """
     sfa(filepath, 'w', data)
 
 class JobApplianceStates:
+    """
+    A simple Dataclass used for the State in the job-appliance.
+    
+    Used for the read, show page for jobs.
+    
+    ```python
     INVALID = -1
     NOT_APPLIED = 0
     APPLIED = 1
@@ -49,7 +89,21 @@ class JobApplianceStates:
     INTERVIEW = 3
     OFFER = 4
     DENIED = 5
-    def get():
+    ```
+    """
+    INVALID = -1
+    NOT_APPLIED = 0
+    APPLIED = 1
+    SCREEN = 2
+    INTERVIEW = 3
+    OFFER = 4
+    DENIED = 5
+    def get() -> list[tuple[str, int]]:
+        """gives you all states
+
+        Returns:
+            list[tuple[str, int]]: [`name`, `id`]
+        """        
         return [
             ('INVALID', JobApplianceStates.INVALID),
             ('NOT_APPLIED', JobApplianceStates.NOT_APPLIED),
@@ -59,13 +113,32 @@ class JobApplianceStates:
             ('OFFER', JobApplianceStates.OFFER),
             ('DENIED', JobApplianceStates.DENIED)
         ]
+    
+    def _get_state_as_text(id: int) -> str:
+        """
+
+        Args:
+            id (int): the id you want to get the name of
+
+        Returns:
+            str: the name
+        """        
+        for key, val in JobApplianceStates.get():
+            if id == val:
+                return key
 
 class JobIdsTable(Base):
+    """
+    The JobIdsTable alias(Job-title or Profession)
+    """    
     __tablename__ = "JobIds"
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable = False)
     
 class JobsTable(Base):
+    """
+    The Jobs-Table
+    """
     __tablename__ = "Jobs"
     id = Column(Integer, primary_key=True)
     company = Column(String, nullable = False)
@@ -77,6 +150,11 @@ class JobsTable(Base):
     state_id = Column(Integer, default=JobApplianceStates.NOT_APPLIED)
 
 class LinkedInJobsTable(Base):
+    """
+    The LinkedInJobsTable
+    
+    This is a "temp" Database so the Jobs-DB(The jobs you apply to) is not crowded everytime the user imports from linkedIn.
+    """
     __tablename__ = "LinkedInJobs"
     id = Column(Integer, primary_key=True)
     lid = Column(String)
@@ -86,15 +164,17 @@ class LinkedInJobsTable(Base):
     description = Column(String, nullable = False)
     
 class CVCTable(Base):
+    """
+    The CVCTable
+    
+    > [!ATTENTION]
+    > Only store the python-script in the `cvc` column.
+    > Otherwise the app will not work!
+    """
     __tablename__ = "CVCS"
     id = Column(Integer, primary_key=True)
     cvc = Column(String, nullable= False)
     name = Column(String, nullable= False)
-
-def _get_state_as_text(id: int) -> str:
-    for key, val in JobApplianceStates.get():
-        if id == val:
-            return key
 
 class SQL:
     """
@@ -281,6 +361,14 @@ class JobIds(SQL):
         return None
     
     def get_job_exist(self, name: str) -> int:
+        """
+
+        Args:
+            name (str): the name of the job
+
+        Returns:
+            int | False: The corresponding id or False
+        """        
         e = self.SESSION.query(self.TABLE).filter_by(name=name).first()
         return e.id if e else False
         
@@ -356,8 +444,9 @@ class Jobs(SQL):
 
 
     def read_all(self, as_dict: bool = False, job_id_instance: JobIds = None) -> list:
-        if job_id_instance is None: return []
         """Reads all job-entrys"""
+        if job_id_instance is None: return []
+        
         query = self.SESSION.query(self.TABLE).all()
         
         if as_dict:
@@ -376,7 +465,7 @@ class Jobs(SQL):
         data = self._to_dict(entry)
         try:
             title = job_id_instance.get_job_name(data['title_id'])
-            state = _get_state_as_text(data['state_id'])
+            state = JobApplianceStates._get_state_as_text(data['state_id'])
             
             data['title'] = title
             data['state'] = state
@@ -428,6 +517,7 @@ class LinkedInJobs(SQL):
             logo: str
         """
         if self.is_lid_inthere(lid):
+            
             print('Entry already exists')
             return False
         return super().create(**{
@@ -473,6 +563,14 @@ class LinkedInJobs(SQL):
         return data
 
     def is_lid_inthere(self, lid) -> bool:
+        """
+
+        Args:
+            lid (str): the linkedIn id
+
+        Returns:
+            bool: Is linkedIn id in the database?
+        """        
         entry = self.SESSION.query(self.TABLE).filter_by(lid=lid).first()
 
         return entry is not None
@@ -558,6 +656,9 @@ class CVC(SQL):
         return {k: v for k, v in entry.__dict__.items() if not k.startswith('_')}
 
 def connect() -> tuple[Engine, Session]:
+    """
+    Creates the SQL Engine & Session for the runtime
+    """
     engine = create_engine(DATABASE_URL)
     Base.metadata.create_all(engine)
     session = sessionmaker(bind=engine)()
