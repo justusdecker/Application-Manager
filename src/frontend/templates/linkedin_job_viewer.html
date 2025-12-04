@@ -4,12 +4,14 @@
 {% block content %}
 <div class="user-input-div">
 <h1>LinkedIn Jobviewer ({{ ammount }} {% if max_ammount != ammount %}/ {{ max_ammount }}{% endif %} results)</h1>
-<form action="/linkedin/create" method="get">
+<div class="btns-flex">
+    <form action="/linkedin/create" method="get">
     <button type="submit" class="btn-create"><span class="material-symbols-outlined">add_ad</span></button>
-</form>
-<form action="/jobsearch_settings" method="get">
-    <button type="submit"><span class="material-symbols-outlined">settings</span></button>
-</form>
+    </form>
+    <form action="/jobsearch_settings" method="get">
+        <button type="submit"><span class="material-symbols-outlined">settings</span></button>
+    </form>
+</div>
 <form action="" method="post">
     <div class="btns-flex">
     <input type="search" name="search" style="width:25%" value="{{ searchfor }}">
@@ -27,24 +29,22 @@
     <tr>
         <th>logo</th>
         <th>title</th>
-        <th>lid</th>
         <th>actions</th>
         
     </tr>
     {% for row, _tags in zip(data, tags) %}
    
     <tr>
-        <td><a class="telement" href="https://www.linkedin.com/jobs/view/{{ row['lid'] }}/"><img src="{{ row['logo'] }}"></a></td>
+        <td><a class="telement" href="https://www.linkedin.com/jobs/view/{{ row['lid'] }}/"><img src="{{ row['logo'] }}" class="rimg"></a></td>
         <td>
             <a class="telement" href="https://www.linkedin.com/jobs/view/{{ row['lid'] }}/"><h2 class="telement">{{ row['company'] }}</h2></a>
             <h3 class="telement">{{ row['job_title'] }}</h3>
-            <div>
+            <div class="skill-container">
             {% for tag, c in _tags %}
-            <b class="skill" style="background-color:{{ c }}">{{ tag }}</b>
+            <div class="skill" style="background-color:{{ c }}">{{ tag }}</div>
             {% endfor %}
             </div>
         </td>
-        <td>{{ row['lid'] }}</td>
         <td>
             <div class="btns-flex">
                 <form action="/create_by_linkedin/{{ row['id'] }}" method="post">
