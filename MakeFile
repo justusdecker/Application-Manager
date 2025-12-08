@@ -1,11 +1,11 @@
 all:
 	python ./main.py --debug
 push:
-	python ./tools/auto_docs.py
-	python ./tools/update_version.py
+	python -c "import ncu; ncu.UpdateVersion();"
+	python -c "import ncu; ncu.AutoDocs('./docs/auto-docs.md',['__init__', 'ai_api'],['__init__'],[],[]).generate()"
 	python ./tools/git_automation.py
 info:
-	python ./tools/code_statistics.py
+	python -c "import pycode_info; pycode_info.print_language_summary()"
 doc:
 	python ./tools/auto_docs.py
 debug:
