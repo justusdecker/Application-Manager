@@ -1,0 +1,16 @@
+[SETTINGS]
+instruction: Create the content for a CV based on the settings.
+words: less than 90
+language: english
+
+[Experience]
+{{ experience }}
+
+[skills]
+{{ skills }}
+
+[Education]:
+{{ education }}
+
+[What i do]
+{{ whatido }}
