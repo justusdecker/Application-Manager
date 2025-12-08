@@ -3,11 +3,13 @@
 {% block content %}
 <script src="{{ url_for('static', filename='linkedin_create_workaround.js') }}"></script>
 <div class="user-input-div">
+
+    
     <form action="", method="post" enctype="multipart/form-data">
         <label for="filename">Text: </label>
         <input type="text" id="filename" name="filename">
         <label for="html">Text: </label>
-        <textarea name="html" id="html"></textarea>
+        <textarea name="html" id="html" style="width:45vw; height: 50vh"></textarea>
         <br>
         <button type="button" class="btn-create" onclick="send('/cv/create', '/cv')" id="send-btn"><span class="material-symbols-outlined">add_ad</span></button>
     </form>
