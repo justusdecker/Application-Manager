@@ -217,8 +217,8 @@ def linkedin_create():
         jobs = fetch_job_ids(data)
         all_jobs.extend([fetch_linkedin_job_data(id) for id in jobs])
         for job in all_jobs:
-            if job is None: 
-                print('Job is corrupted')
+            if job.get('error') is not None: 
+                print(job['error'])
                 continue
             LJOBS.create(**job)
         return redirect(url_for('linkedin_show'))
@@ -313,7 +313,8 @@ def create_job_from_linkedin(id: int):
     """
     data = LJOBS.read_as_dict(id)
     if data is None: return "no data"
-    
+    if data.get('alreadyinjobs') is not None:
+        return "already in jobs"
     # Job title assign
     job_exist = JOBIDS.get_job_exist(data['job_title'])
     if not job_exist:
@@ -336,6 +337,8 @@ def create_job_from_linkedin(id: int):
     }
     
     print(new_jobs)
+    data['alreadyinjobs'] = True
+    LJOBS.update(id, data)
     
     JOBS.create(**new_jobs)
     
@@ -368,4 +371,11 @@ def jobsearch_settings_as_json():
     data = file_read('./settings/jobsearch_settings.json')
     #res = ";".join([",".join([tag for tag in taglist]) for taglist in data])
     return data
-    
+
+@app.route('/aiiw',methods = [GET, POST])
+def ai_improve_writing():
+    if request.method.upper() == POST:
+        from ai_api import improve_writing
+        
+        return render_template('cv_ai.html', answer=improve_writing(request.form['html']))
+    return render_template('cv_ai.html')
