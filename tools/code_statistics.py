@@ -1,2 +1,0 @@
-import pycode_info
-pycode_info.print_language_summary()
