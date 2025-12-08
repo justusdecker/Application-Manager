@@ -2,3 +2,4 @@ flask
 jinja2
 sqlalchemy
 requests
+nice-coding-utils>=0.1.9
