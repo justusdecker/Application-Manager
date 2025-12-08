@@ -4,7 +4,7 @@ Contains all file-accesses, Table-definitions, SQL-interactions & other file-rel
 from sqlalchemy.orm.session import Session
 from sqlalchemy.exc import IntegrityError
 from src.backend.validation import integer_or_default
-from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy import create_engine, Column, Integer, String, Boolean
 from sqlalchemy.engine.base import Engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy.orm.session import Session
@@ -162,6 +162,8 @@ class LinkedInJobsTable(Base):
     job_title = Column(String, nullable = False)
     logo = Column(String, nullable = False)
     description = Column(String, nullable = False)
+    fast = Column(Boolean)
+    alreadyinjobs = Column(Boolean)
     
 class CVCTable(Base):
     """
@@ -505,7 +507,8 @@ class LinkedInJobs(SQL):
                job_title: int,
                lid: str, 
                description: str,
-               logo: str) -> bool:
+               logo: str,
+               fast: bool) -> bool:
         """
         Creates a new linkedInjob-entry.
         ### Valid data:
@@ -525,7 +528,8 @@ class LinkedInJobs(SQL):
             'job_title': job_title,
             'lid': lid,
             'logo': logo,
-            'description': description})
+            'description': description,
+            'fast': fast})
     
     def update(self, id: int | str, **data) -> bool | None:
         """
