@@ -1,0 +1,15 @@
+{% extends "default.html" %}
+{% block header %}Create a Job{% endblock %}
+{% block content %}
+<script src="{{ url_for('static', filename='linkedin_create_workaround.js') }}"></script>
+<div class="user-input-div">
+    <h1>AI Writing improve</h1>
+    <form action="", method="post" enctype="multipart/form-data">
+        <label for="html">Text: </label>
+        <textarea name="html" id="html" style="width:45vw; height: 25vh">{{ answer }}</textarea>
+        <br>
+        <input type="submit">
+    </form>
+</div>
+
+{% endblock %}
