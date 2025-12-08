@@ -1,0 +1,20 @@
+[SETTINGS]
+instruction: Create the content for a coverletter based on the settings.
+words: less than 200
+language: english
+other: if experience is not existing, say it so
+
+[Experience]
+{{ experience }}
+
+[Skills]
+{{ skills }}
+
+[Education]:
+{{ education }}
+
+[What i do]
+{{ whatido }}
+
+[Job description]
+{{ job_description }}
