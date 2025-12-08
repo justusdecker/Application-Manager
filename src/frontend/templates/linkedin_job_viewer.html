@@ -37,7 +37,7 @@
     <tr>
         <td><a class="telement" href="https://www.linkedin.com/jobs/view/{{ row['lid'] }}/"><img src="{{ row['logo'] }}" class="rimg"></a></td>
         <td>
-            <a class="telement" href="https://www.linkedin.com/jobs/view/{{ row['lid'] }}/"><h2 class="telement">{{ row['company'] }}</h2></a>
+            <a class="telement" href="https://www.linkedin.com/jobs/view/{{ row['lid'] }}/"><h2 class="telement">{{ row['company'] }} {% if row['fast'] %}🏃‍♂️{% endif%}</h2></a>
             <h3 class="telement">{{ row['job_title'] }}</h3>
             <div class="skill-container">
             {% for tag, c in _tags %}
