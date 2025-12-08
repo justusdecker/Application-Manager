@@ -1,21 +1,12 @@
-# Automatic-Documentator by Justus Decker
+# AutoDocs
 
-# .//ai_api.py
+# ./main.py
 
-## improve_writing
-Returns a improved version of the text you input.
-
-Uses the Masterschool API.
-
-# .//main.py
-
-## err_return
+### err_return
 Returns a simple template for debugging purposes.
-
-## index
+### index
 Index redirects to /Jobs
-
-# .//t.py
+# ./t.py
 
 # ./src/constants.py
 
@@ -24,10 +15,8 @@ Index redirects to /Jobs
 # ./src/version.py
 
 # ./src/backend/data.py
-
 Contains all file-accesses, Table-definitions, SQL-interactions & other file-related functions, classes for the runtime.
-
-## sfa
+### sfa
 single-file-access
 you dont need to write the 'with' stuff anymore :D
 
@@ -48,15 +37,13 @@ Raises:
 
 Returns:
     str | None: The read-data if mode `r`
-
-## create_file_if_not_exist
+### create_file_if_not_exist
 Will create a file with the `default_data` if file does not exist.
 
 Args:
     filepath (str)
     default_data (str): If the file does not exist, this data will be written to the `filepath`
-
-## file_read
+### file_read
 Reads from `filepath` in mode: `r`
 
 Args:
@@ -64,14 +51,12 @@ Args:
 
 Returns:
     str: the data that the file contains
-
-## file_write
+### file_write
 Writes `data` to `filepath` in mode: `w`
 
 Args:
     filepath (str)
     data (str)
-
 ## JobApplianceStates
 A simple Dataclass used for the State in the job-appliance.
 
@@ -86,62 +71,35 @@ INTERVIEW = 3
 OFFER = 4
 DENIED = 5
 ```
+### get -> JobApplianceStates
+gives you all states
 
+Returns:
+    list[tuple[str, int]]: [`name`, `id`]
+### _get_state_as_text -> JobApplianceStates
+Args:
+    id (int): the id you want to get the name of
+
+Returns:
+    str: the name
 ## JobIdsTable
 The JobIdsTable alias(Job-title or Profession)
-
 ## JobsTable
 The Jobs-Table
-
 ## LinkedInJobsTable
 The LinkedInJobsTable
 
 This is a "temp" Database so the Jobs-DB(The jobs you apply to) is not crowded everytime the user imports from linkedIn.
-
 ## CVCTable
 The CVCTable
 
 > [!ATTENTION]
 > Only store the python-script in the `cvc` column.
 > Otherwise the app will not work!
-
 ## SQL
 A generic wrapper for CRUD operations (Create, Read, Update, Delete)
 on a specific SQLAlchemy model.
-
-## JobIds
-Specialized Class for JobId-Operations.
-Inherits all CRUD-Functions from SQL & expand it by JobId-specific logic.
-
-## Jobs
-Specialized Class for Job-Operations.
-Inherits all CRUD-Functions from SQL and expand these by Job-Logic.
-
-## LinkedInJobs
-Specialized Class for LinkedInJob-Operations.
-Inherits all CRUD-Functions from SQL and expand these by LinkedInJob-Logic.
-
-## CVC
-Specialized Class for CV-Operations.
-Inherits all CRUD-Functions from SQL and expand these by CV-Logic.
-
-## connect
-Creates the SQL Engine & Session for the runtime
-
-## get
-gives you all states
-
-Returns:
-    list[tuple[str, int]]: [`name`, `id`]
-
-## _get_state_as_text
-Args:
-    id (int): the id you want to get the name of
-
-Returns:
-    str: the name
-
-## read
+### read -> SQL
 Retrieves a record by its ID.
 
 Behavior:
@@ -155,8 +113,7 @@ Args:
 Returns:
     Object | None: The found database object or the last entry as fallback.
                    Returns None if the table is empty.
-
-## create
+### create -> SQL
 Creates a new record.
 
 Args:
@@ -164,8 +121,7 @@ Args:
 
 Returns:
     bool: True if successful, None if an error occurred (e.g., IntegrityError).
-
-## delete
+### delete -> SQL
 Deletes a record by its ID.
 
 Safety:
@@ -179,8 +135,7 @@ Args:
 Returns:
     bool: True if commit was successful, None on database error.
     None: If the ID was not found.
-
-## update
+### update -> SQL
 Updates an existing record.
 
 Safety:
@@ -195,14 +150,12 @@ Args:
 Returns:
     bool: True if commit was successful (or nothing changed).
     None: If the ID was not found.
-
-## commit
+### commit -> SQL
 Executes the database commit and handles errors.
 
 Returns:
     bool: True on success, None on error (triggers rollback).
-
-## validate_id_and_get
+### validate_id_and_get -> SQL
 Attempts to safely retrieve an object (with fallback logic).
 
 Logic:
@@ -215,42 +168,38 @@ Args:
 
 Returns:
     Object | None: The found object or None if table is empty/error.
-
-## create
+## JobIds
+Specialized Class for JobId-Operations.
+Inherits all CRUD-Functions from SQL & expand it by JobId-specific logic.
+### create -> JobIds
 Creates a new job with the given name
-
-## update
+### update -> JobIds
 Updates the name of a job.
-
-## read_all
+### read_all -> JobIds
 Reads all jobs.
 
 if as_dict: gives you a list[dict]
 else: gives you a list[SQLTable]
-
-## read_as_dict
+### read_as_dict -> JobIds
 Reads a single jb & returns it as dictionary
-
-## get_job_name
+### get_job_name -> JobIds
 Gets only the job name corresponding to the id
-
-## get_job_exist
+### get_job_exist -> JobIds
 Args:
     name (str): the name of the job
 
 Returns:
     int | False: The corresponding id or False
-
-## get_ids
+### get_ids -> JobIds
 Gets the list of existing ids
-
-## get_last_entry
+### get_last_entry -> JobIds
 Gets the last(newest) JobId-Object.
-
-## _to_dict
+### _to_dict -> JobIds
 Internal Helper: Converts SQLAlchemy Object to dict.
-
-## create
+## Jobs
+Specialized Class for Job-Operations.
+Inherits all CRUD-Functions from SQL and expand these by Job-Logic.
+### create -> Jobs
 Creates a new job-entry.
 ### Valid data:
 
@@ -261,8 +210,7 @@ Creates a new job-entry.
     phone_number: str, 
     description: str, 
     state_id: int
-
-## update
+### update -> Jobs
 Updates the Job-Entry
 
 ### Valid data:
@@ -274,21 +222,19 @@ Updates the Job-Entry
     phone_number: str, 
     description: str, 
     state_id: int
-
-## read_all
+### read_all -> Jobs
 Reads all job-entrys
-
-## read_as_dict
+### read_as_dict -> Jobs
 Reads a single job-entry and returns it as dict.
 Returns None if id does not exist
-
-## get_last_id
+### get_last_id -> Jobs
 Returns the last id in the table or None
-
-## _to_dict
+### _to_dict -> Jobs
 Internal Helper: Converts SQLAlchemy Object to dict
-
-## create
+## LinkedInJobs
+Specialized Class for LinkedInJob-Operations.
+Inherits all CRUD-Functions from SQL and expand these by LinkedInJob-Logic.
+### create -> LinkedInJobs
 Creates a new linkedInjob-entry.
 ### Valid data:
 
@@ -297,8 +243,7 @@ Creates a new linkedInjob-entry.
     lid: int, 
     description: str,
     logo: str
-
-## update
+### update -> LinkedInJobs
 Updates the LinkedInJob-Entry
 
 ### Valid data:
@@ -308,94 +253,78 @@ Updates the LinkedInJob-Entry
     lid: int, 
     description: str,
     logo: str
-
-## read_all
+### read_all -> LinkedInJobs
 Reads all LinkedInjob-entrys
-
-## read_as_dict
+### read_as_dict -> LinkedInJobs
 Reads a single LinkedInjob-entry and returns it as dict.
 Returns None if id does not exist
-
-## is_lid_inthere
+### is_lid_inthere -> LinkedInJobs
 Args:
     lid (str): the linkedIn id
 
 Returns:
     bool: Is linkedIn id in the database?
-
-## get_last_id
+### get_last_id -> LinkedInJobs
 Returns the last id in the table or None
-
-## _to_dict
+### _to_dict -> LinkedInJobs
 Internal Helper: Converts SQLAlchemy Object to dict
-
-## create
+## CVC
+Specialized Class for CV-Operations.
+Inherits all CRUD-Functions from SQL and expand these by CV-Logic.
+### create -> CVC
 Creates a new CV-entry.
 ### Valid data:
 
     cvc: str
     name: str
-
-## update
+### update -> CVC
 Updates the CV-Entry
 
 ### Valid data:
     cvc: str
     name: str
-
-## read_all
+### read_all -> CVC
 Reads all CV-entrys
-
-## read_as_dict
+### read_as_dict -> CVC
 Reads a single CV-entry and returns it as dict.
 Returns None if id does not exist
-
-## get_last_id
+### get_last_id -> CVC
 Returns the last id in the table or None
-
-## _to_dict
+### _to_dict -> CVC
 Internal Helper: Converts SQLAlchemy Object to dict
-
+### connect
+Creates the SQL Engine & Session for the runtime
 # ./src/backend/gemini_api.py
-
 The Gemini API Access
 
 To use this you must create a .env file in the root directory with the `GOOGLE_API_KEY` inside.
-
-## configuration
+### configuration
 Load the `GOOGLE_API_KEY` from the .env File
-
-## create_payload
+### create_payload
 Create & get the JSON structure required for the Gemini API
-
-## send_gemini
+### send_gemini
 Sends a POST Request to gemini & receives the generated `text` from it.
 
 Returns the gemini result -> `str`.
 
 If a error occoures: 
     returns a dict that only contains the `error`.
-
 # ./src/backend/linkedin_job_search_fetch.py
 
-## fetch_linkedin_job_data
+### fetch_linkedin_job_data
 Gets you the logo, job_title, company_name, description & also returns the job_id in the dict.
-
-## fetch_job_ids
+### fetch_job_ids
 Takes a html-structure in string form, runs the HTML parser and fetches the job ids from there.
 For this to work you need to copy the html from your browser and paste this into a file!
-
 # ./src/backend/logic.py
 
-## delete_job
+### delete_job
 Deletes the entry of a job in the Database.
 Redirects to show_jobs with id = -1
-
-## read_job
+### read_job
 Shows the information about a single Job
 redirect to itself with data id if data id is not input
-
-## update_job
+### update_job
 For updating an existing Job in the Database
 redirect to itself with data id if data id is not input
 GET:
@@ -403,8 +332,7 @@ GET:
 POST:
     Adds the Job to the Database
     Redirects to show_jobs with id = -1
-
-## create_job
+### create_job
 For creating a new Job in the Database
 
 GET:
@@ -412,11 +340,9 @@ GET:
 POST:
     Adds the Job to the Database
     Redirects to jobs/read/-1
-
-## show_jobs
+### show_jobs
 Shows all jobs, listed in the database.
-
-## create_job_title
+### create_job_title
 For creating a new Job-title in the Database
 
 GET:
@@ -424,14 +350,11 @@ GET:
 POST:
     Adds the Job-title to the Database
     Redirects to job_titles/read/-1
-
-## export_json
+### export_json
 Downloads the jobs-database as json.
-
-## export_csv
+### export_csv
 Downloads the jobs-database as csv.
-
-## create_job_from_linkedin
+### create_job_from_linkedin
 company: str, 
 title_id: int, 
 url: str, 
@@ -443,9 +366,6 @@ state_id: int
 edge cases:
     - job-title does not exist
     
-
-# ./src/backend/mail.py
-
 # ./src/backend/search.py
 
 ## LowerCaseStr
@@ -455,7 +375,6 @@ For performance & case-insensitive search reasons.
 ```python
 a: str = "".lower()
 ```
-
 # ./src/backend/validation.py
 
 # ./src/backend/cv_creator/cv_generator.py
@@ -465,58 +384,50 @@ a: str = "".lower()
 ## Links
 Represents a collection of hyperlinked text elements, typically for a sidebar,
 and generates the corresponding HTML string.
-
-## Head
-Represents a main heading for a section, typically in a sidebar,
-and generates the corresponding HTML string.
-
-## Title
-Represents a sub-title or secondary heading, typically in a sidebar,
-and generates the corresponding HTML string.
-
-## Content
-Represents a block of general text content, typically in a sidebar,
-and generates the corresponding HTML string.
-
-## Bulletpoint
-Represents a single bullet point item, and generates the corresponding HTML string.
-Note: This does not wrap the content in a standard HTML list (ul/li).
-
-## Project
-A data structure class representing a project entry, likely for a resume or portfolio.
-It holds data but does not generate HTML itself.
-
-## EducationOrExperience
-A data structure class representing an entry for education or professional experience.
-It holds data but does not generate HTML itself.
-
-## get
+### get -> Links
 Generates the HTML string containing all links, enclosed in a div with
 specific sidebar styling.
 
 :return: An HTML string of linked titles separated by ", ".
-
-## get
+## Head
+Represents a main heading for a section, typically in a sidebar,
+and generates the corresponding HTML string.
+### get -> Head
 Generates the HTML string for the heading, wrapped in a div with
 border and main title styling.
 
 :return: An HTML string for the section heading.
-
-## get
+## Title
+Represents a sub-title or secondary heading, typically in a sidebar,
+and generates the corresponding HTML string.
+### get -> Title
 Generates the HTML string for the sub-title, wrapped in a div with
 secondary title styling.
 
 :return: An HTML string for the sub-title.
-
-## get
+## Content
+Represents a block of general text content, typically in a sidebar,
+and generates the corresponding HTML string.
+### get -> Content
 Generates the HTML string for the content, wrapped in a div and a paragraph
 tag with specific sidebar text styling.
 
 :return: An HTML string for the content block.
-
-## get
+## Bulletpoint
+Represents a single bullet point item, and generates the corresponding HTML string.
+Note: This does not wrap the content in a standard HTML list (ul/li).
+### get -> Bulletpoint
 Generates the HTML string for the bullet point content, wrapped in a paragraph
 tag with a specific class for viewing.
 
 :return: An HTML string for the bullet point.
+## Project
+A data structure class representing a project entry, likely for a resume or portfolio.
+It holds data but does not generate HTML itself.
+## EducationOrExperience
+A data structure class representing an entry for education or professional experience.
+It holds data but does not generate HTML itself.
+# ./tools/git_automation.py
 
+### run_git_command
+Runs a git command and returns the output.
