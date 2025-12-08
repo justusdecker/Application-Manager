@@ -25,6 +25,8 @@ class FetchJob(HTMLParser):
         self.company_name_miss = 0
         self.description = ""
         self.error = False
+        self.fast = False
+        self.next_is_fast = False
         
     def feed(self, data):
         # Find the current job
@@ -38,7 +40,7 @@ class FetchJob(HTMLParser):
             new_data = new_data.replace(old, new)
         new_data = new_data.split('">\n')[-1].strip()
         self.description = new_data
-
+        self.c = 0
         return super().feed(data)
     
     def handle_starttag(self, tag, attrs):
@@ -46,6 +48,11 @@ class FetchJob(HTMLParser):
         ALT = attr_finder(attrs, 'alt')
         HREF = attr_finder(attrs, 'href')
         DATA_DELAYED_URL = attr_finder(attrs, 'data-delayed-url')
+        if tag == 'button':
+            ARTDECO = attr_finder(attrs, 'class')
+            if ARTDECO and 'apply-button apply-button--default' in ARTDECO[0][1]:
+                self.c += 1
+                self.fast = True
         if tag == 'img':
             if attrs: 
                 if not self.logo and DATA_DELAYED_URL and ALT and 'company' in DATA_DELAYED_URL[0][1].lower():
@@ -127,6 +134,11 @@ def fetch_linkedin_job_data(job_id: int) -> dict:
     Gets you the logo, job_title, company_name, description & also returns the job_id in the dict.
     """
     print(job_id)
+    
+    from src.backend.data import LJOBS
+    if LJOBS.is_lid_inthere(job_id):
+        print(f'i know this {job_id}')
+        return {'error': 'Already in DB'}
     content = get_linkedin_job_site(job_id)
     if content is None: 
         return {'error': 'Get return is none'}
@@ -134,12 +146,13 @@ def fetch_linkedin_job_data(job_id: int) -> dict:
     parser.feed(content)
     if None in [parser.logo, parser.job_title, parser.company_name, parser.description, job_id]:
         #! Investigate this error further
-        return None
+        return {'error': 'This job is corrupted'}
     return {
         'logo': parser.logo, 
         'job_title': parser.job_title, 
         'company': parser.company_name,
         'description': parser.description,
+        'fast': parser.fast,
         'lid': job_id
     }
 
