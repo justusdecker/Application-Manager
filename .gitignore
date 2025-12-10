@@ -5,4 +5,5 @@ ai_api.py
 src/backend/cv_creator/cvc.py
 t.py
 .env
-settings/jobsearch_settings.json
+settings/*
+src/frontend/static/profile_overwrite.png
