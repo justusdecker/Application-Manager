@@ -8,6 +8,8 @@ Returns a simple template for debugging purposes.
 Index redirects to /Jobs
 # ./t.py
 
+# ./settings/preset.py
+
 # ./src/constants.py
 
 # ./src/flask_main.py
