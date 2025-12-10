@@ -35,9 +35,9 @@
     {% for row, _tags in zip(data, tags) %}
    
     <tr>
-        <td><a class="telement" href="https://www.linkedin.com/jobs/view/{{ row['lid'] }}/"><img src="{{ row['logo'] }}" class="rimg"></a></td>
+        <td><a class="telement" href="https://www.linkedin.com/jobs/view/{{ row['lid'] }}/"><img src="{{ row['logo'] }}" class="rimg {% if row['alreadyinjobs'] %}aaimg{% endif %}"></a></td>
         <td>
-            <a class="telement" href="https://www.linkedin.com/jobs/view/{{ row['lid'] }}/"><h2 class="telement">{{ row['company'] }} {% if row['fast'] %}🏃‍♂️{% endif%}</h2></a>
+            <a class="telement" href="https://www.linkedin.com/jobs/view/{{ row['lid'] }}/"><h2 class="telement">{% if row['alreadyinjobs'] %}<del>{% endif %}{{ row['company'] }} {% if row['fast'] %}🏃‍♂️{% endif %}{% if row['alreadyinjobs'] %}</del>{% endif %}</h2></a>
             <h3 class="telement">{{ row['job_title'] }}</h3>
             <div class="skill-container">
             {% for tag, c in _tags %}
