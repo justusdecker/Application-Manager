@@ -198,7 +198,14 @@ def summary():
     
 @app.route('/linkedin',methods = [GET, POST])
 def linkedin_show(): 
-    all_jobs = LJOBS.read_all(True)
+    print(request.query_string)
+    q = {}
+    if request.query_string:
+        q = {q.split('=')[0]: q.split('=')[1] for q in request.query_string.decode().split('&')}
+    if q.get('fast'):
+        all_jobs = [j for j in LJOBS.read_all(True) if j['fast']]
+    else:
+        all_jobs = LJOBS.read_all(True)
     all_jobs_length = len(all_jobs)
     tags = [get_tags(job['description']) for job in all_jobs]
     
@@ -246,17 +253,25 @@ def load():
 @app.route('/cv/create',methods = [GET, POST])
 def cv_create():
     if request.method.upper() == POST:
-        files = request.files.getlist('file')
-        file = files[0]
-
-        name = file.filename.split('.', maxsplit=1)[0]
-        content = file.stream.read().decode()
+        f = request.form
+        name = f.get('name')
+        profession = f.get('profession')
+        summary = f.get('summary')
+        if not name or not profession or not summary:
+            return "Not all values are set"
         
+        if not os.path.isfile('./settings/preset.py'):
+            return "You have not defined a preset -> insert a cvc preset in ./settings/preset.py."
+        with open('./settings/preset.py','rb') as f:
+            preset = f.read().decode()
+            
+        content = preset.replace('__SUMMARY__',f'{summary}').replace('__PROFESSION__', f'{profession}')
+
         CVCS.create(content, name)
-                
+        
         return redirect(url_for('cv_read',id=-1))
     return render_template(
-        'cv_c.html'
+        'cv_c.html', jobs = JOBIDS.read_all(True)
     )
 
 @app.route('/cv/read/<id>',methods = [GET])
@@ -333,12 +348,14 @@ def create_job_from_linkedin(id: int):
         'url': f'https://www.linkedin.com/jobs/view/{data["lid"]}',
         'mail': mails,
         'phone_number': phone_numbers,
-        'title_id': job_exist
+        'title_id': job_exist,
+        'state_id': JobApplianceStates.APPLIED
     }
     
     print(new_jobs)
     data['alreadyinjobs'] = True
-    LJOBS.update(id, data)
+    LJOBS.update(**data)
+    
     
     JOBS.create(**new_jobs)
     
@@ -372,10 +389,12 @@ def jobsearch_settings_as_json():
     #res = ";".join([",".join([tag for tag in taglist]) for taglist in data])
     return data
 
-@app.route('/aiiw',methods = [GET, POST])
+@app.route('/aiiw',methods = [POST])
 def ai_improve_writing():
     if request.method.upper() == POST:
+        print(request.form)
         from ai_api import improve_writing
-        
-        return render_template('cv_ai.html', answer=improve_writing(request.form['html']))
-    return render_template('cv_ai.html')
+        r = improve_writing(request.form['text'])
+        if r is None: return {'text': ''}
+        return jsonify({'text': r})
+    #return render_template('cv_ai.html')
