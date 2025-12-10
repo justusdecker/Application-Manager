@@ -319,3 +319,8 @@ a.telement {
 .btn-delete {
     background-color: var(--delete-color);
 }
+
+.aaimg {
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+}
