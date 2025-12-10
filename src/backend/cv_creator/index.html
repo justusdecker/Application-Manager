@@ -46,7 +46,7 @@
                                 <p class="more-weight text-header-relocate">{{ project.TITLE }}</p>
                                 <p class="more-weight text-header-relocate">{{ project.SPAN }}</p>
                             </div>
-                            <a href="{{ project['github_link'] }}">GitHub Repository</a>
+                            <a href="{{ project.LINK }}">GitHub Repository</a>
                             <ul>
                                 {% for bulletpoint in project.BULLETPOINTS %}
                                 <li>
@@ -64,7 +64,7 @@
                 <div id="education">
                     <div id="first-project">
 
-                        <div class="borderline-spacer bold-text">Education</div>
+                        <div class="borderline-spacer bold-text more-weight">Education</div>
                         {% for xp in data.EXPERIENCE %}
                         <div>
                             <div class="title-aligner">
@@ -93,7 +93,7 @@
                 <div id="experience">
                     <div id="first-project">
 
-                        <div class="borderline-spacer bold-text">Experience</div>
+                        <div class="borderline-spacer bold-text more-weight">Experience</div>
                         {% for edu in data.EDUCATION %}
                         <div>
                             <div class="title-aligner">
